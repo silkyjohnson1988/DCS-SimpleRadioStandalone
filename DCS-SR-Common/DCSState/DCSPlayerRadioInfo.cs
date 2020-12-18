@@ -250,7 +250,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Common
                         && (receivingRadio.modulation == modulation)
                         && (receivingRadio.freq > 10000))
                     {
-                        bool isDecryptable = (encryptionKey == 0 || (receivingRadio.enc ? receivingRadio.encKey : (byte)0) == encryptionKey);
+                        bool isDecryptable =  (receivingRadio.enc ? receivingRadio.encKey : (byte)0) == encryptionKey;
 
                         if (isDecryptable && !blockedRadios.Contains(i))
                         {
@@ -276,7 +276,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Common
                     if ((receivingRadio.secFreq == frequency)
                         && (receivingRadio.secFreq > 10000))
                     {
-                        if (encryptionKey == 0 || (receivingRadio.enc ? receivingRadio.encKey : (byte)0) == encryptionKey)
+                        if ((receivingRadio.enc ? receivingRadio.encKey : (byte)0) == encryptionKey)
                         {
                             receivingState = new RadioReceivingState
                             {

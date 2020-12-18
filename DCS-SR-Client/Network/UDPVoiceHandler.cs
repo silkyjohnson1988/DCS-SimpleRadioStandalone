@@ -404,7 +404,6 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network
                                             )
                                             {
                                                 decryptable =
-                                                    (udpVoicePacket.Encryptions[i] == 0) ||
                                                     (udpVoicePacket.Encryptions[i] == radio.encKey && radio.enc);
 
                                                 radioReceivingPriorities.Add(new RadioReceivingPriority()
@@ -469,7 +468,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network
                                                 (radioState == null || radioState.PlayedEndOfTransmission ||
                                                  !radioState.IsReceiving))
                                             {
-                                                var audioDecryptable = audio.Decryptable || (audio.Encryption == 0);
+                                                var audioDecryptable = audio.Decryptable;
 
                                                 //mark that we have decrypted encrypted audio for sound effects
                                                 if (audioDecryptable && (audio.Encryption > 0))
@@ -567,7 +566,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network
             //and only if we can decrypt it (or no encryption)
             //and not received on Guard
             var receivingWithRetransmit = radioReceivingPriorities.Where(receivingRadio => 
-                (receivingRadio.Decryptable || (receivingRadio.Encryption == 0)) 
+                (receivingRadio.Decryptable ) 
                 && receivingRadio.ReceivingRadio.retransmit
                 //check global
                 && !globalFrequencies.Any(freq => DCSPlayerRadioInfo.FreqCloseEnough(receivingRadio.ReceivingRadio.freq, freq))

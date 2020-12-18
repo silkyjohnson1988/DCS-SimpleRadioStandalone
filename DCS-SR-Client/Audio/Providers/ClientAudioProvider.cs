@@ -115,7 +115,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client
 
             audio.PcmAudioShort = ConversionHelpers.ByteArrayToShortArray(tmp);
 
-            var decrytable = audio.Decryptable || (audio.Encryption == 0);
+            var decrytable = audio.Decryptable;
 
             if (decrytable)
             {
