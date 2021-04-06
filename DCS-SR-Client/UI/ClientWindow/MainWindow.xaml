@@ -22,112 +22,106 @@
             <converters:MicAvailabilityTooltipConverter x:Key="MicAvailabilityTooltipConverter" />
         </TabControl.Resources>
         <TabItem Header="General">
-            <GroupBox x:Name="GroupBox"
-                      Margin="5"
-                      Header="Setup">
-                <StackPanel Margin="0">
-                    <Label x:Name="MicLabel"
-                           HorizontalAlignment="Center"
-                           Content="Microphone" />
-                    <ComboBox x:Name="Mic"
-                              Width="250"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Top"
-                              ItemsSource="{Binding Path=AudioInput.InputAudioDevices}"
-                              SelectedItem="{Binding Path=AudioInput.SelectedAudioInput, Mode=TwoWay}"
-                              ToolTip="{Binding Path=AudioInput.MicrophoneAvailable, Converter={StaticResource MicAvailabilityTooltipConverter}}" />
-                    <StackPanel Margin="0"
+            
+            <StackPanel>
+                <GroupBox Header="Audio">
+                    <StackPanel Margin="0">
+                       
+                        <StackPanel Margin="0"
+                                HorizontalAlignment="Left"
+                                Orientation="Horizontal">
+                            <Label x:Name="MicLabel"
+                                   HorizontalAlignment="Left"
+                                   Content="Microphone" Width="100" />
+                            <ComboBox x:Name="Mic"
+                                      Width="250"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Top"
+                                      ItemsSource="{Binding Path=AudioInput.InputAudioDevices}"
+                                      SelectedItem="{Binding Path=AudioInput.SelectedAudioInput, Mode=TwoWay}"
+                                      ToolTip="{Binding Path=AudioInput.MicrophoneAvailable, Converter={StaticResource MicAvailabilityTooltipConverter}}" />
+                            <ProgressBar Name="Mic_VU"
+                                         Width="150"
+                                         Height="20"
+                                         Margin="5,0,0,0"
+                                         Value="-100"
+                                         Maximum="18"
+                                         Minimum="-100"
+                                         ToolTip="{Binding Path=AudioInput.MicrophoneAvailable, Converter={StaticResource MicAvailabilityTooltipConverter}}" />
+                        </StackPanel>
+
+                        <StackPanel Margin="0"
+                                    HorizontalAlignment="Left"
+                                    Orientation="Horizontal">
+
+                            <Label x:Name="SpeakerLabel"
+                                   HorizontalAlignment="Left"
+                                   Content="Speakers Output" Width="100" />
+                            <ComboBox x:Name="Speakers"
+                                      Width="250"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Top"
+                                      ItemsSource="{Binding Path=AudioOutput.OutputAudioDevices}"
+                                      SelectedItem="{Binding Path=AudioOutput.SelectedAudioOutput, Mode=TwoWay}" />
+
+                            <ProgressBar Name="Speaker_VU"
+                                         Width="150"
+                                         Height="20"
+                                         Margin="5,0,0,0"
+                                         Value="-100"
+                                         Maximum="18"
+                                         Minimum="-100" />
+                        </StackPanel>
+
+                        <StackPanel Margin="0"
+                                    HorizontalAlignment="Left"
+                                    Orientation="Horizontal">
+                            <Label HorizontalAlignment="Left" Content="Speaker Boost" Width="100" />
+
+                            <Label x:Name="SpeakerBoostLabel"
+                                   HorizontalAlignment="Center"
+                                   
+                                   Content="+/- %" Width="250" />
+
+                            <Slider x:Name="SpeakerBoost"
+                                    Width="150"
+                                    Margin="0,10,0,0"
+                                    VerticalAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Maximum="1.0"
+                                    Minimum="0.0"
+                                    IsMoveToPointEnabled="true"
+                                    ValueChanged="SpeakerBoost_ValueChanged" />
+                        </StackPanel>
+
+                        <StackPanel Margin="0"
                                 HorizontalAlignment="Center"
                                 Orientation="Horizontal">
-                        <ProgressBar Name="Mic_VU"
-                                     Width="150"
-                                     Height="20"
-                                     Margin="10,10,0,0"
-                                     Value="-100"
-                                     Maximum="18"
-                                     Minimum="-100"
-                                     ToolTip="{Binding Path=AudioInput.MicrophoneAvailable, Converter={StaticResource MicAvailabilityTooltipConverter}}" />
-                    </StackPanel>
+                        </StackPanel>
 
-                    <StackPanel Margin="0"
-                                HorizontalAlignment="Center"
-                                Orientation="Horizontal" />
-
-                    <Button x:Name="Preview"
-                            Margin="0,10,0,0"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Top"
-                            Click="PreviewAudio"
-                            Content="Audio Preview"
-                            Style="{DynamicResource SquareButtonStyle}"
-                            ToolTipService.ShowOnDisabled="True"
-                            IsEnabled="{Binding AudioInput.MicrophoneAvailable}"
-                            ToolTip="{Binding Path=AudioInput.MicrophoneAvailable, Converter={StaticResource MicAvailabilityTooltipConverter}}" />
-
-                    <Label x:Name="SpeakerLabel"
-                           HorizontalAlignment="Center"
-                           Content="Speakers &amp; Optional Mic Output" />
-                    <StackPanel Margin="0"
-                                HorizontalAlignment="Center"
-                                Orientation="Horizontal">
-                        <ComboBox x:Name="Speakers"
-                                  Width="200"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Top" Margin="0,0,5,0"
-                                  ItemsSource="{Binding Path=AudioOutput.OutputAudioDevices}"
-                                  SelectedItem="{Binding Path=AudioOutput.SelectedAudioOutput, Mode=TwoWay}" />
-                        <ComboBox x:Name="MicOutput"
-                                  Width="200"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Top" Margin="5,0,0,0"
-                                  ItemsSource="{Binding Path=AudioOutput.MicOutputAudioDevices}"
-                                  SelectedItem="{Binding Path=AudioOutput.SelectedMicAudioOutput, Mode=TwoWay}" />
-                    </StackPanel>
-
-
-                    <StackPanel Margin="0"
-                                HorizontalAlignment="Center"
-                                Orientation="Horizontal">
-
-                        <Slider x:Name="SpeakerBoost"
-                                Width="150"
+                        <Button x:Name="Preview"
                                 Margin="0,10,0,0"
-                                VerticalAlignment="Center"
-                                VerticalContentAlignment="Center"
-                                Maximum="1.0"
-                                Minimum="0.0"
-                                IsMoveToPointEnabled="true"
-                                ValueChanged="SpeakerBoost_ValueChanged" />
-
-                        <ProgressBar Name="Speaker_VU"
-                                     Width="150"
-                                     Height="20"
-                                     Margin="10,10,0,0"
-                                     Value="-100"
-                                     Maximum="18"
-                                     Minimum="-100" />
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                Click="PreviewAudio"
+                                Content="Audio Preview"
+                                Style="{DynamicResource SquareButtonStyle}"
+                                ToolTipService.ShowOnDisabled="True"
+                                IsEnabled="{Binding AudioInput.MicrophoneAvailable}"
+                                ToolTip="{Binding Path=AudioInput.MicrophoneAvailable, Converter={StaticResource MicAvailabilityTooltipConverter}}" />
                     </StackPanel>
 
-                    <StackPanel Margin="0"
-                                HorizontalAlignment="Center"
-                                Orientation="Horizontal">
-                        <Label HorizontalAlignment="Center" Content="Speaker Boost:" />
+                </GroupBox>
+                <GroupBox x:Name="GroupBox"
+                      Margin="5"
+                      Header="Connection">
+                    <StackPanel Margin="0">
 
-                        <Label x:Name="SpeakerBoostLabel"
-                               HorizontalAlignment="Center"
-                               Content="+/- %" />
+                        <StackPanel Margin="0,10,0,0"
+                                    HorizontalAlignment="Center"
+                                    Orientation="Horizontal">
 
-                    </StackPanel>
-
-                    <Label HorizontalAlignment="Center"
-                           HorizontalContentAlignment="Center"
-                           Content="Server" />
-
-                    <StackPanel Margin="0,10,0,0"
-                                HorizontalAlignment="Center"
-                                Orientation="Horizontal">
-
-                        <TextBox x:Name="ServerIp"
+                            <TextBox x:Name="ServerIp"
                                  Width="180"
                                  Height="23"
                                  Margin="0,0,5,0"
@@ -135,29 +129,29 @@
                                  Text="127.0.0.1:5002"
                                  TextWrapping="Wrap" />
 
-                        <ComboBox x:Name="ServerAddressPicker"
+                            <ComboBox x:Name="ServerAddressPicker"
                                   Width="180"
                                   Height="23"
                                   DisplayMemberPath="Name"
                                   ItemsSource="{Binding Path=FavouriteServersViewModel.Addresses}"
                                   SelectedItem="{Binding Path=ServerAddress}" />
 
-                        <Button Height="23"
+                            <Button Height="23"
                                 Margin="5,0,0,0"
                                 Click="LaunchAddressTab"
                                 ToolTip="Go to saved address tab">
-                            <Path
+                                <Path
                                 Data="F1 M 0,13.44C 1.28003,12.69 1.92004,11.61 1.92004,10.2C 1.92004,8.94998 1.28003,7.94998 0,7.19998C 0.184998,6.56003 0.45752,5.92001 0.817505,5.28C 2.00751,5.50998 3.09753,5.12253 4.08752,4.11752C 4.95251,3.24252 5.19,2.14499 4.80005,0.824982C 5.45502,0.464996 6.09503,0.190033 6.72003,3.05176e-005C 7.55505,1.28 8.68005,1.92001 10.095,1.92001C 11.47,1.92001 12.585,1.28 13.44,3.05176e-005C 14.065,0.190033 14.705,0.464996 15.36,0.824982C 14.97,2.14499 15.2001,3.24252 16.05,4.11752C 17.04,5.12253 18.1376,5.50998 19.3425,5.28C 19.6525,5.86002 19.9401,6.50003 20.205,7.19998C 18.895,7.95499 18.24,8.95627 18.24,10.2038C 18.24,11.4513 18.895,12.4525 20.205,13.2075C 19.955,13.9025 19.6675,14.54 19.3425,15.12C 18.1525,14.77 17.0551,15.09 16.05,16.08C 15.185,17.005 14.955,18.0925 15.36,19.3425C 14.705,19.7025 14.065,19.9775 13.44,20.1675C 12.605,18.8825 11.49,18.24 10.095,18.24C 8.68005,18.24 7.55505,18.8825 6.72003,20.1675C 6.09503,19.9775 5.45502,19.7025 4.80005,19.3425C 5.19,18.0925 4.95251,17.01 4.08752,16.095C 3.22253,15.24 2.13251,14.995 0.817505,15.36C 0.45752,14.72 0.184998,14.08 0,13.44 Z M 6.97504,7.04251C 6.16504,7.89749 5.76001,8.94998 5.76001,10.2C 5.76001,11.45 6.16626,12.4625 6.97876,13.2375C 7.79126,14.0125 8.83374,14.4 10.1063,14.4C 11.3788,14.4 12.4125,14.0125 13.2075,13.2375C 14.0025,12.4625 14.4,11.45 14.4,10.2C 14.4,8.94998 14.0025,7.89749 13.2075,7.04251C 12.4125,6.18753 11.3788,5.75998 10.1063,5.75998C 8.83374,5.75998 7.79004,6.18753 6.97504,7.04251 Z "
                                 Fill="Black"
                                 Stretch="Uniform"
                                 UseLayoutRounding="False" />
-                        </Button>
-                    </StackPanel>
+                            </Button>
+                        </StackPanel>
 
-                    <StackPanel Margin="0"
+                        <StackPanel Margin="0"
                                 HorizontalAlignment="Center"
                                 Orientation="Horizontal">
-                        <Button x:Name="StartStop"
+                            <Button x:Name="StartStop"
                                 Width="125"
                                 Margin="0,10,20,0"
                                 HorizontalAlignment="Center"
@@ -165,7 +159,7 @@
                                 Content="Connect"
                                 Style="{DynamicResource SquareButtonStyle}"
                                 ToolTip="{Binding Path=AudioInput.MicrophoneAvailable, Converter={StaticResource MicAvailabilityTooltipConverter}}" />
-                        <Button x:Name="ToggleServerSettings"
+                            <Button x:Name="ToggleServerSettings"
                                 Width="125"
                                 Margin="0,10,0,0"
                                 HorizontalAlignment="Center"
@@ -174,65 +168,40 @@
                                 IsEnabled="False"
                                 Style="{DynamicResource SquareButtonStyle}" />
 
-                    </StackPanel>
-                    <StackPanel Margin="0"
-                                HorizontalAlignment="Center"
-                                Orientation="Horizontal">
-                        <Button x:Name="ShowOverlay"
-                                Width="125"
-                                Margin="0,15,20,0"
-                                HorizontalAlignment="Center"
-                                Click="ShowOverlay_OnClick"
-                                Content="Toggle Radio Overlay"
-                                Style="{DynamicResource SquareButtonStyle}" />
-                        <Button x:Name="ShowAwacsOverlay"
-                                Width="125"
-                                Margin="0,15,20,0"
-                                HorizontalAlignment="Center"
-                                Click="ShowAwacsOverlay_OnClick"
-                                Content="Toggle AWACS Overlay"
-                                Style="{DynamicResource SquareButtonStyle}" />
-                        <Button x:Name="ShowClientList"
-                                Width="125"
-                                Margin="0,15,0,0"
-                                HorizontalAlignment="Center"
-                                Click="ShowClientList_OnClick"
-                                Content="Toggle Client List"
-                                Style="{DynamicResource SquareButtonStyle}" />
-                    </StackPanel>
+                        </StackPanel>
 
-                    <StackPanel Margin="0"
-                                HorizontalAlignment="Center"
-                                Orientation="Horizontal">
-                        <StackPanel.Resources>
-                            <converters:BooleanInverterConverter x:Key="BooleanInverterConverter" />
-                        </StackPanel.Resources>
                         <StackPanel Margin="0"
                                     HorizontalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <StackPanel.Resources>
+                                <converters:BooleanInverterConverter x:Key="BooleanInverterConverter" />
+                            </StackPanel.Resources>
+                            <StackPanel Margin="0"
+                                    HorizontalAlignment="Center"
                                     Orientation="Vertical">
-                            <Label x:Name="ExternalAWACSModePasswordLabel"
+                                <Label x:Name="ExternalAWACSModePasswordLabel"
                                    HorizontalAlignment="Center"
                                    HorizontalContentAlignment="Center"
                                    Margin="0,10,10,0"
                                    Content="EAM coalition password"
                                    IsEnabled="{Binding Path=ClientState.ExternalAWACSModeConnected, Converter={StaticResource BooleanInverterConverter}}" />
-                            <PasswordBox x:Name="ExternalAWACSModePassword"
+                                <PasswordBox x:Name="ExternalAWACSModePassword"
                                          Width="200"
                                          Height="23"
                                          Margin="0,0,10,0"
                                          HorizontalAlignment="Center"
                                          IsEnabled="{Binding Path=ClientState.ExternalAWACSModeConnected, Converter={StaticResource BooleanInverterConverter}}" />
-                        </StackPanel>
-                        <StackPanel Margin="0"
+                            </StackPanel>
+                            <StackPanel Margin="0"
                                     HorizontalAlignment="Center"
                                     Orientation="Vertical">
-                            <Label x:Name="ExternalAWACSModeNameLabel"
+                                <Label x:Name="ExternalAWACSModeNameLabel"
                                    HorizontalAlignment="Center"
                                    HorizontalContentAlignment="Center"
                                    Margin="0,10,0,0"
                                    Content="EAM name"
                                    IsEnabled="{Binding Path=ClientState.ExternalAWACSModeConnected, Converter={StaticResource BooleanInverterConverter}}" />
-                            <TextBox x:Name="ExternalAWACSModeName"
+                                <TextBox x:Name="ExternalAWACSModeName"
                                      Width="200"
                                      Height="23"
                                      Margin="0,0,0,0"
@@ -240,12 +209,12 @@
                                      TextWrapping="Wrap"
                                      HorizontalAlignment="Center"
                                      IsEnabled="{Binding Path=ClientState.ExternalAWACSModeConnected, Converter={StaticResource BooleanInverterConverter}}" />
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
-                    <StackPanel Margin="0"
+                        <StackPanel Margin="0"
                                 HorizontalAlignment="Center"
                                 Orientation="Horizontal">
-                        <Button x:Name="ConnectExternalAWACSMode"
+                            <Button x:Name="ConnectExternalAWACSMode"
                                 Width="220"
                                 Margin="0,10,0,0"
                                 HorizontalAlignment="Center"
@@ -253,76 +222,116 @@
                                 Content="Connect External AWACS Mode (EAM)"
                                 IsEnabled="False"
                                 Style="{DynamicResource SquareButtonStyle}" />
-                    </StackPanel>
+                        </StackPanel>
 
-                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,0,0,0">
-                        <Label Content="Current Profile:" />
-                        <Label Name="CurrentProfile" Content="None" />
+
                     </StackPanel>
+                </GroupBox>
+                <GroupBox x:Name="Overlays"
+                          Margin="5"
+                          Header="Overlays">
                     <StackPanel Margin="0"
+                                    HorizontalAlignment="Center"
+                                    Orientation="Horizontal">
+                        <Button x:Name="ShowOverlay"
+                                HorizontalAlignment="Center"
+                                Click="ShowOverlay_OnClick"
+                                Content="Toggle Radio Overlay"
+                                Style="{DynamicResource SquareButtonStyle}" />
+                        <Button x:Name="ShowAwacsOverlay"
+                                HorizontalAlignment="Center"
+                            Click="ShowAwacsOverlay_OnClick"
+                            Content="Toggle AWACS Overlay"
+                            Style="{DynamicResource SquareButtonStyle}" />
+                        <Button x:Name="ShowClientList"
+                            Width="125"
+                            Click="ShowClientList_OnClick"
+                            Content="Toggle Client List"
+                            Style="{DynamicResource SquareButtonStyle}"
+                            HorizontalAlignment="Center"
+                        />
+                    </StackPanel>
+                </GroupBox>
+
+                    
+
+
+                <GroupBox x:Name="Status"
+                          Margin="5"
+                          Header="Status">
+                    <StackPanel Orientation="Vertical">
+
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,0,0,0">
+                            <Label Content="Current Profile:" />
+                            <Label Name="CurrentProfile" Content="None" />
+                        </StackPanel>
+                        <StackPanel Margin="0"
                                 HorizontalAlignment="Center"
                                 Orientation="Horizontal">
-                        <Label HorizontalAlignment="Center" Content="Connected Clients:" />
-                        <Label x:Name="ClientCount"
+                            <Label HorizontalAlignment="Center" Content="Connected Clients:" />
+                            <Label x:Name="ClientCount"
                                HorizontalAlignment="Center">
-                            <Label.Content>
-                                <TextBlock> <!-- https://stackoverflow.com/questions/4399178/stringformat-and-multibinding-with-label -->
-                                    <TextBlock.Text>
-                                        <MultiBinding StringFormat=" {0}">
-                                            <Binding Path="Clients.Total" />
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-                            </Label.Content>
-                        </Label>
-                        <Label Content="Current Position:" />
-                        <Label>
-                            <TextBlock Name="CurrentPosition" Text="0,0 - Alt:0"
+                                <Label.Content>
+                                    <TextBlock> <!-- https://stackoverflow.com/questions/4399178/stringformat-and-multibinding-with-label -->
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat=" {0}">
+                                                <Binding Path="Clients.Total" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Label.Content>
+                            </Label>
+                            <Label Content="Current Position:" />
+                            <Label>
+                                <TextBlock Name="CurrentPosition" Text="0,0 - Alt:0"
                                        MouseLeftButtonUp="CurrentPosition_OnClick" />
-                        </Label>
-                    </StackPanel>
+                            </Label>
+                        </StackPanel>
 
-                    <StackPanel Margin="0"
+                        <StackPanel Margin="0"
                                 HorizontalAlignment="Center"
                                 Orientation="Horizontal">
-                        <StackPanel.Resources>
-                            <converters:ConnectionStatusImageConverter x:Key="ConnectionStatusImageConverter" />
-                        </StackPanel.Resources>
-                        <Label HorizontalAlignment="Center" HorizontalContentAlignment="Center" Content="Server" />
-                        <Image x:Name="ServerConnectionStatus"
+                            <StackPanel.Resources>
+                                <converters:ConnectionStatusImageConverter x:Key="ConnectionStatusImageConverter" />
+                            </StackPanel.Resources>
+                            <Label HorizontalAlignment="Center" HorizontalContentAlignment="Center" Content="Server" />
+                            <Image x:Name="ServerConnectionStatus"
                                Source="{Binding Path=ClientState.IsConnected, Converter={StaticResource ConnectionStatusImageConverter}}"
                                HorizontalAlignment="Center"
                                Height="26"
                                Margin="5,0,5,0" />
-                        <Label HorizontalAlignment="Center" HorizontalContentAlignment="Center" Content="VOIP" />
-                        <Image x:Name="VOIPConnectionStatus"
+                            <Label HorizontalAlignment="Center" HorizontalContentAlignment="Center" Content="VOIP" />
+                            <Image x:Name="VOIPConnectionStatus"
                                Source="{Binding Path=ClientState.IsVoipConnected, Converter={StaticResource ConnectionStatusImageConverter}}"
                                Height="26"
                                HorizontalAlignment="Center"
                                Margin="5,0,5,0" />
-                        <Label HorizontalAlignment="Center" HorizontalContentAlignment="Center" Content="Game" />
-                        <Image x:Name="GameConnectionStatus"
+                            <Label HorizontalAlignment="Center" HorizontalContentAlignment="Center" Content="Game" />
+                            <Image x:Name="GameConnectionStatus"
                                Source="{Binding Path=ClientState.IsGameConnected, Converter={StaticResource ConnectionStatusImageConverter}}"
                                Height="26"
                                HorizontalAlignment="Center"
                                Margin="5,0,5,0" />
-                        <Label HorizontalAlignment="Center" HorizontalContentAlignment="Center" Content="LotATC" />
-                        <Image x:Name="LotATCConnectionStatus"
+                            <Label HorizontalAlignment="Center" HorizontalContentAlignment="Center" Content="LotATC" />
+                            <Image x:Name="LotATCConnectionStatus"
                                Source="{Binding Path=ClientState.IsLotATCConnected, Converter={StaticResource ConnectionStatusImageConverter}}"
                                Height="26"
                                HorizontalAlignment="Center"
                                Margin="5,0,0,0" />
 
-                    </StackPanel>
+                        </StackPanel>
 
-                    <Button Content="Please Support SRS through Patreon"
+                        <Button Content="Please Support SRS through Patreon"
                             Click="Donate_OnClick"
                             Width="220"
                             Margin="0,5,0,0" controls:ButtonHelper.PreserveTextCase="True"
                             Style="{StaticResource AccentedSquareButtonStyle}" />
+                    </StackPanel>
+                </GroupBox>
 
-                </StackPanel>
-            </GroupBox>
+            </StackPanel>
+            
+          
         </TabItem>
 
         <TabItem Header="Controls">
@@ -1121,7 +1130,22 @@
                                 </ToggleButton.Style>
                             </ToggleButton>
 
+                            <Label Grid.Row="18"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Mic Passthrough - For Recording / Streaming" />
 
+                            <ComboBox x:Name="MicOutput"
+                                      Grid.Row="18"
+                                      Grid.Column="1"
+                                      HorizontalContentAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="200"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Top" Margin="5,0,0,0"
+                                      ItemsSource="{Binding Path=AudioOutput.MicOutputAudioDevices}"
+                                      SelectedItem="{Binding Path=AudioOutput.SelectedMicAudioOutput, Mode=TwoWay}" />
                         </Grid>
 
                     </GroupBox>
