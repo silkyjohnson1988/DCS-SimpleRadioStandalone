@@ -1,4 +1,5 @@
 ﻿using Ciribob.DCS.SimpleRadio.Standalone.Common;
+using System;
 
 namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio
 {
@@ -22,5 +23,6 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio
 
         public string Guid { get; set; }
         public string OriginalClientGuid { get; set; }
+        public long ReceiveTime { get; set; }
     }
 }

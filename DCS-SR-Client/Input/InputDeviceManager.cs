@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Network;
+using Ciribob.DCS.SimpleRadio.Standalone.Client.Recording;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Settings;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.UI;
@@ -748,8 +749,9 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Settings
                                     case InputBinding.RadioVolumeDown:
                                         RadioHelper.RadioVolumeDown(dcsPlayerRadioInfo.selected);
                                         break;
-
-
+                                    case InputBinding.RecordingToggle:
+                                        AudioRecordingManager.Instance.Toggle();
+                                        break;
                                     default:
                                         break;
                                 }

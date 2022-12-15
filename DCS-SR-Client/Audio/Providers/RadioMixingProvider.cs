@@ -148,10 +148,6 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
                 }
             }
 
-            //TODO
-            //copy to the recording service - as we have everything we need to know about the audio
-            //at this point
-
             if (_mainAudio.Count > 0 || _secondaryAudio.Count > 0)
             {
                 _audioRecordingManager.AppendClientAudio(_mainAudio, _secondaryAudio, radioId);
@@ -179,11 +175,6 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
             //we're now stereo - double the samples
             outputSamples = outputSamples * 2;
 
-        //    waveWriter.WriteSamples(buffer,offset, outputSamples);
-
-            //clear
-           // _mainAudio.Clear();
-            //_secondaryAudio.Clear();
             return EnsureFullBuffer(buffer, outputSamples, offset, count);
         }
 
