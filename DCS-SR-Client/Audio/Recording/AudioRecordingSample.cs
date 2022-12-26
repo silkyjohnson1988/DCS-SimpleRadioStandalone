@@ -14,9 +14,5 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Recording
         public int RadioId { get; set;}
         public List<DeJitteredTransmission> MainRadioClientTransmissions { get; set; }
         public List<DeJitteredTransmission> SecondaryRadioClientTransmissions { get; set; }
-
-
-
-
     }
 }

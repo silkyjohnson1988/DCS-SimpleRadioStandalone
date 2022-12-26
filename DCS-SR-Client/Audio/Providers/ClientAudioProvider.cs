@@ -75,7 +75,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client
             return false;
         }
 
-        public JitterBufferAudio AddClientAudioSamples(ClientAudio audio)
+        public JitterBufferAudio AddClientAudioSamples(ClientAudio audio, bool record = false)
         {
 
             //sort out volume
@@ -101,12 +101,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client
             //TODO reuse this buffer
             var tmp = new float[decodedLength/4];
             Buffer.BlockCopy(decoded, 0, tmp, 0, decodedLength);
-
-            //convert the byte buffer to a wave buffer
-         //   var waveBuffer = new WaveBuffer(tmp);
-
-       
-            
+    
             audio.PcmAudioFloat = tmp;
 
             var decrytable = audio.Decryptable /* || (audio.Encryption == 0) <--- this test has already been performed by all callers and would require another call to check for STRICT_AUDIO_ENCRYPTION */;
@@ -133,18 +128,10 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client
 
             LastUpdate = DateTime.Now.Ticks;
 
-            //TODO handle recording
-            // if (GlobalSettingsStore.Instance.GetClientSettingBool(GlobalSettingsKeys.RecordAudio))
-            // {
-            //     AudioRecordingManager.Instance.AppendClientAudio(audio);
-            // }
-
-    //        waveWriter.WriteSamples(audio.PcmAudioFloat, 0,audio.PcmAudioFloat.Length);
-
             if (audio.OriginalClientGuid == ClientStateSingleton.Instance.ShortGUID)
             {
                 // catch own transmissions and prevent them from being added to JitterBuffer unless its passthrough
-                if (passThrough)
+                if (passThrough || record)
                 {
                     //return MONO PCM 16 as bytes
                     return new JitterBufferAudio
@@ -184,7 +171,8 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client
                     NoAudioEffects = audio.NoAudioEffects,
                     Guid = audio.ClientGuid,
                     OriginalClientGuid = audio.OriginalClientGuid,
-                    Encryption = audio.Encryption
+                    Encryption = audio.Encryption,
+                    ReceiveTime = audio.ReceiveTime
                 });
 
                 return null;
@@ -205,7 +193,8 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client
                     NoAudioEffects = audio.NoAudioEffects,
                     Guid = audio.ClientGuid,
                     OriginalClientGuid = audio.OriginalClientGuid,
-                    Encryption = audio.Encryption
+                    Encryption = audio.Encryption,
+                    ReceiveTime = audio.ReceiveTime
                 };
             }
 

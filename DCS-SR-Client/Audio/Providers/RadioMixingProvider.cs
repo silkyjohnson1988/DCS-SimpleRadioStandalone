@@ -169,7 +169,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
                     index--;
                 }
             }
-
+            
             //copy to the recording service - as we have everything we need to know about the audio
             //at this point
             if (_mainAudio.Count > 0 || _secondaryAudio.Count > 0)

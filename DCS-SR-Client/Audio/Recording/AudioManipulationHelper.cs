@@ -5,37 +5,17 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Recording
 {
     public static class AudioManipulationHelper
     {
-        public static short[] MixSamplesClipped(short[] pcmAudioOne, short[] pcmAudioTwo, int samplesLength)
+        public static float[] MixSamplesWithHeadroom(List<float[]> samplesToMixdown, int samplesLength)
         {
-            short[] mixedDown = new short[samplesLength];
+            float[] mixedDown = new float[samplesLength];
 
-            for(int i = 0; i < samplesLength; i++)
-            {
-                int result = (pcmAudioOne[i] + pcmAudioTwo[i]);
-                if(result > short.MaxValue)
-                {
-                    result = short.MaxValue;
-                }
-                else if (result < short.MinValue)
-                {
-                    result = short.MinValue;
-                }
-                mixedDown[i] = (short)result;
-            }
-
-            return mixedDown;
-        }
-
-        public static short[] MixSamplesWithHeadroom(List<short[]> samplesToMixdown, int samplesLength)
-        {
-            short[] mixedDown = new short[samplesLength];
-
-            foreach(short[] sample in samplesToMixdown)
+            foreach(float[] sample in samplesToMixdown)
             { 
                 for(int i = 0; i < samplesLength; i++)
                 {
                     // Unlikely to have duplicate signals across n radios, can use sqrt to find a sensible headroom level
-                    mixedDown[i] += (short)(sample[i] / Math.Sqrt(samplesToMixdown.Count));
+                    // FIXME: Users likely want a consistent mixdown regardless of radios in airframe, just hardcode a constant term?
+                    mixedDown[i] += (float)(sample[i] / Math.Sqrt(samplesToMixdown.Count));
                 }
             }
 
@@ -43,10 +23,10 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Recording
         }
 
 
-        public static (short[], short[]) SplitSampleByTime(long samplesRemaining, short[] samples)
+        public static (float[], float[]) SplitSampleByTime(long samplesRemaining, float[] samples)
         {
-            short[] toWrite = new short[samplesRemaining];
-            short[] remainder = new short[samples.Length - samplesRemaining];
+            float[] toWrite = new float[samplesRemaining];
+            float[] remainder = new float[samples.Length - samplesRemaining];
 
             Array.Copy(samples, 0, toWrite, 0, samplesRemaining);
             Array.Copy(samples, samplesRemaining, remainder, 0, remainder.Length);
@@ -57,7 +37,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Recording
         public static float[] SineWaveOut(int sampleLength, int sampleRate, double volume)
         {
             float[] sineBuffer = new float[sampleLength];
-            double amplitude = volume * short.MaxValue;
+            double amplitude = volume * float.MaxValue;
 
             for (int i = 0; i < sineBuffer.Length; i++)
             {

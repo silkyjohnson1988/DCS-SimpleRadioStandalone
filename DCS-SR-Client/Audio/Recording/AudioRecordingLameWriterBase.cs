@@ -15,35 +15,36 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Recording
         protected readonly WaveFormat _waveFormat;
         protected readonly int _sampleRate;
         protected long _lastWrite;
-        protected TransmissionAssembler _assembler;
+        //protected TransmissionAssembler _assembler;
 
         protected AudioRecordingLameWriterBase(int sampleRate)
         {
             _sampleRate = sampleRate;
             _waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(sampleRate,1);
-            _assembler = new TransmissionAssembler();
+            //_assembler = new TransmissionAssembler();
         }
 
-        // protected short[] ProcessRadioAudio(ConcurrentQueue<DeJitteredTransmission>[] queues, int radio)
-        // {
-        //     while (queues[radio].Count > 0)
-        //     {
-        //         queues[radio].TryPeek(out DeJitteredTransmission firstInQueue);
-        //         int indexPosition = AudioManipulationHelper.CalculateSamplesStart(_lastWrite, firstInQueue.ReceiveTime, _sampleRate);
-        //
-        //         if (indexPosition < _sampleRate * 2)
-        //         {
-        //             queues[radio].TryDequeue(out DeJitteredTransmission dequeued);
-        //             _assembler.AddTransmission(dequeued);
-        //         }
-        //         else
-        //         {
-        //             break;
-        //         }
-        //     }
-        //
-        //     return _assembler.GetAssembledSample();
-        // }
+        // TODO: FIX THIS
+        protected float[] ProcessRadioAudio(ConcurrentQueue<DeJitteredTransmission>[] queues, int radio)
+        {
+            while (queues[radio].Count > 0)
+            {
+                queues[radio].TryPeek(out DeJitteredTransmission firstInQueue);
+                int indexPosition = AudioManipulationHelper.CalculateSamplesStart(_lastWrite, firstInQueue.ReceiveTime, _sampleRate);
+
+                if (indexPosition < _sampleRate * 2)
+                {
+                    queues[radio].TryDequeue(out DeJitteredTransmission dequeued);
+                    //_assembler.AddTransmission(dequeued);
+                }
+                else
+                {
+                    break;
+                }
+            }
+            return new float[0];
+            //return _assembler.GetAssembledSample();
+        }
 
         protected string CreateFilePath()
         {
@@ -58,8 +59,8 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Recording
             return $"Recordings\\{sanitisedDate}-{sanitisedTime}";
         }
 
-        public abstract void ProcessAudio(List<CircularFloatBuffer> perRadioAudio);
-        public abstract void Start();
+        public abstract void ProcessAudio(List<CircularFloatBuffer> perRadioAudio, List<CircularFloatBuffer> selfAudio);
+        public abstract void Start(string aircraftName);
         public abstract void Stop();
     }
 }

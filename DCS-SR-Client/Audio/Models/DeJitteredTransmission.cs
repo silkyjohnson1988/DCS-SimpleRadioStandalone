@@ -30,5 +30,10 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Models
         public string Guid { get; set; }
 
         public string OriginalClientGuid { get; set; }
+
+        public long ReceiveTime { get; set; }
+
+        // required to avoid processing effects on recording silence
+        public bool IsSilence { get; set; }
     }
 }

@@ -87,7 +87,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio
                         else
                         {
                             var audio = _bufferedAudio.First.Value;
-                            //no Pop?
+                            //no Pop? 
                             _bufferedAudio.RemoveFirst();
 
                             lastTransmission = new DeJitteredTransmission()
@@ -101,9 +101,8 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio
                                 NoAudioEffects = audio.NoAudioEffects,
                                 Guid = audio.Guid,
                                 OriginalClientGuid = audio.OriginalClientGuid,
-                                Encryption = audio.Encryption
-
-
+                                Encryption = audio.Encryption,
+                                ReceiveTime = audio.ReceiveTime
                             };
 
                             if (_lastRead == 0)
@@ -118,7 +117,6 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio
 
                                     // packet number is always discontinuous at the start of a transmission if you didnt receive a transmission for a while i.e different radio channel
                                     // if the gap is more than 4 assume its just a new transmission
-
                                     if (missing <= 4)
                                     {
                                         var fill = Math.Min(missing, 4);
@@ -138,11 +136,6 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio
                         }
                     }
                 } while (read < count);
-
-//                if (read == 0)
-//                {
-//                    _delayedUntil = Environment.TickCount + INITIAL_DELAY_MS;
-//                }
             }
 
             lastTransmission.PCMAudioLength = read;

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Models;
+using System.Linq;
 
 namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Recording
 {
@@ -16,15 +17,20 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Recording
     {
         private readonly Dictionary<int, string> _filePaths;
         private readonly LameMP3FileWriter[] _mp3FileWriters;
-        private readonly WaveFileWriter waveWriter;
+        private int _radioNum;
+        private float[] _floatArray;
+        private float[] _selfArray;
+        private readonly int _bufferSize = 120000;
+        private readonly float[] _silenceArray;
 
-        public PerRadioLameRecordingWriter(int sampleRate) : base(sampleRate)
+        public PerRadioLameRecordingWriter(int sampleRate, int radioNum) : base(sampleRate)
         {
             _filePaths = new Dictionary<int, string>();
             _mp3FileWriters = new LameMP3FileWriter[11];
-
-            waveWriter = new NAudio.Wave.WaveFileWriter($@"C:\\temp\\output{Guid.NewGuid()}.wav", WaveFormat.CreateIeeeFloatWaveFormat(sampleRate,1));
-
+            _radioNum = radioNum;
+            _silenceArray = new float[_bufferSize];
+            _floatArray = new float[_bufferSize];
+            _selfArray = new float[_bufferSize];
         }
 
         private void OutputToFile(int radio, float[] floatArray)
@@ -38,14 +44,6 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Recording
                     Buffer.BlockCopy(floatArray, 0, byteArray, 0, byteArray.Length);
 
                     _mp3FileWriters[radio].Write(byteArray, 0, byteArray.Length);
-
-                    if (radio == 1)
-                    {
-                        //figure out why the audio is terrible
-                        //calculate the time between the last write - and fill in the rest of the audio with blank audio?
-                        //The effects are now mixing in nicely - its just the actual audio thats wrecked for some reason
-                        waveWriter.WriteSamples(floatArray,0,floatArray.Length);
-                    }
                 }
             }
             catch (Exception ex)
@@ -54,33 +52,36 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Recording
             }
         }
 
-        public override void ProcessAudio(List<CircularFloatBuffer> perRadioAudio)
+        public override void ProcessAudio(List<CircularFloatBuffer> perRadioAudio, List<CircularFloatBuffer> perSelfAudio)
         {
-            
             for (int i = 0; i < perRadioAudio.Count; i++)
             {
-                if (perRadioAudio[i].Count > 0)
+                if (perRadioAudio[i].Count > 0 || perSelfAudio[i].Count > 0)
                 {
-                    float[] floatArrray = new float[perRadioAudio[i].Count];
-
-                    perRadioAudio[i].Read(floatArrray, 0, floatArrray.Length);
-                    OutputToFile(i, floatArrray);
+                    perRadioAudio[i].Read(_floatArray, 0, perRadioAudio[i].Count);
+                    _floatArray = _floatArray.Zip(_silenceArray, (x, y) => x + y).ToArray();
+                    perSelfAudio[i].Read(_selfArray, 0, perSelfAudio[i].Count);
+                    _floatArray = AudioManipulationHelper.MixArraysClipped(_floatArray, _bufferSize, _selfArray, _bufferSize, out int _);
+                    OutputToFile(i, _floatArray);
+                    Array.Clear(_floatArray, 0, _bufferSize);
                 }
-            }
+                else
+                {
+                    OutputToFile(i, _silenceArray);
+                }
 
-            _lastWrite += TimeSpan.TicksPerSecond * 2;
+            }
         }
 
-        public override void Start()
+        public override void Start(string aircraftName)
         {
             string partialFilePath = base.CreateFilePath();
 
-            _lastWrite = DateTime.Now.Ticks;
             var lamePreset = (LAMEPreset)Enum.Parse(typeof(LAMEPreset),
                     GlobalSettingsStore.Instance.GetClientSetting(GlobalSettingsKeys.RecordingQuality).RawValue);
             for (int i = 0; i < 11; i++)
             {
-                _filePaths.Add(i, $"{partialFilePath}-Radio{i}.mp3");
+                _filePaths.Add(i, $"{partialFilePath}-{aircraftName}-Radio{i}.mp3");
 
                 _mp3FileWriters[i] = new LameMP3FileWriter(_filePaths[i], _waveFormat, lamePreset);
             }
@@ -94,8 +95,6 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Recording
                 _mp3FileWriters[i].Dispose();
                 _mp3FileWriters[i] = null;
             }
-            waveWriter.Close();
-            waveWriter.Dispose();
         }
     }
 }
