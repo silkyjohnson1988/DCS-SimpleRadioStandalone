@@ -98,7 +98,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
                     {
                         radioJson = File.ReadAllText(AWACS_RADIOS_CUSTOM_FILE);
                         awacsRadios = JsonConvert.DeserializeObject<RadioInformation[]>(radioJson);
-                        loaded = true
+                        loaded = true;
                     }
                     catch (Exception ex)
                     {
