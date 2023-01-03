@@ -108,8 +108,11 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
                     Logger.Info($"No Custom {AWACS_RADIOS_CUSTOM_FILE} present - Loading {AWACS_RADIOS_FILE}");
                 }
 
-                radioJson = File.ReadAllText(AWACS_RADIOS_FILE);
-                awacsRadios = JsonConvert.DeserializeObject<RadioInformation[]>(radioJson);
+                if(awacsRadios == null)
+                {
+                    radioJson = File.ReadAllText(AWACS_RADIOS_FILE);
+                    awacsRadios = JsonConvert.DeserializeObject<RadioInformation[]>(radioJson);
+                }
             }
             catch (Exception ex)
             {
