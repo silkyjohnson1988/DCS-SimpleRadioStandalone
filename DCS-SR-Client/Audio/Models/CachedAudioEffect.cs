@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers;
-using Ciribob.DCS.SimpleRadio.Standalone.Client.Properties;
 using Ciribob.DCS.SimpleRadio.Standalone.Common;
 using NAudio.Wave;
 using NLog;

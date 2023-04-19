@@ -39,15 +39,13 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private readonly CachedAudioEffectProvider _cachedAudioEffectsProvider;
-
         private readonly ConcurrentDictionary<string, ClientAudioProvider> _clientsBufferedAudio =
             new ConcurrentDictionary<string, ClientAudioProvider>();
 
         //TEMP
         private List<RadioMixingProvider> _radioMixingProvider;
 
-        private MixingSampleProvider _finalMixdown;
+        private SRSMixingSampleProvider _finalMixdown;
 
 
         private OpusEncoder _encoder;
@@ -65,7 +63,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
         private VolumeSampleProviderWithPeak _volumeSampleProvider;
 
         private WasapiCapture _wasapiCapture;
-        private WasapiOut _waveOut;
+        private SRSWasapiOut _waveOut;
         private EventDrivenResampler _resampler;
 
         public float MicMax { get; set; } = -100;
@@ -78,7 +76,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
 
         private WebRtcVad _voxDectection;
 
-        private WasapiOut _micWaveOut;
+        private SRSWasapiOut _micWaveOut;
         private BufferedWaveProvider _micWaveOutBuffer;
 
         private readonly GlobalSettingsStore _globalSettings = GlobalSettingsStore.Instance;
@@ -94,8 +92,6 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
         public AudioManager(bool windowsN)
         {
             this.windowsN = windowsN;
-
-            _cachedAudioEffectsProvider = CachedAudioEffectProvider.Instance;
             _clientEffectsPipeline = new ClientEffectsPipeline();
 
             //_beforeWaveFile = new WaveFileWriter(@"C:\Temp\Test-Preview-Before.wav", new WaveFormat(AudioManager.OUTPUT_SAMPLE_RATE, 32, 1));
@@ -122,7 +118,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
             MMDevice speakers = null;
             if (_audioOutputSingleton.SelectedAudioOutput.Value == null)
             {
-                speakers = WasapiOut.GetDefaultAudioEndpoint();
+                speakers = SRSWasapiOut.GetDefaultAudioEndpoint();
             }
             else 
             {
@@ -148,7 +144,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
                 //Audio manager should start / stop and cleanup based on connection successfull and disconnect
                 //Should use listeners to synchronise all the state
 
-                _waveOut = new WasapiOut(speakers, AudioClientShareMode.Shared, true, 40,windowsN);
+                _waveOut = new SRSWasapiOut(speakers, AudioClientShareMode.Shared, true, 40,windowsN);
 
                 //add final volume boost to all mixed audio
                 _volumeSampleProvider = new VolumeSampleProviderWithPeak(_finalMixdown,
@@ -205,7 +201,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
             {
                 try
                 {
-                    _micWaveOut = new WasapiOut(micOutput, AudioClientShareMode.Shared, true, 40,windowsN);
+                    _micWaveOut = new SRSWasapiOut(micOutput, AudioClientShareMode.Shared, true, 40,windowsN);
 
                     _micWaveOutBuffer = new BufferedWaveProvider(WaveFormat.CreateIeeeFloatWaveFormat(OUTPUT_SAMPLE_RATE, 1));
                     _micWaveOutBuffer.ReadFully = true;
@@ -524,7 +520,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
 
         private void InitMixers()
         {
-            _finalMixdown = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(OUTPUT_SAMPLE_RATE, 2));
+            _finalMixdown = new SRSMixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(OUTPUT_SAMPLE_RATE, 2));
             _finalMixdown.ReadFully = true;
 
             _radioMixingProvider = new List<RadioMixingProvider>();

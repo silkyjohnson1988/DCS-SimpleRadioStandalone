@@ -10,7 +10,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Ciribob.DCS.SimpleRadio.Standalone.Common;
-using Ciribob.DCS.SimpleRadio.Standalone.Common.DCSState;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Helpers;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Setting;
@@ -46,31 +45,38 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
             StartServer();
         }
 
-        public void Handle(BanClientMessage message)
+        public Task HandleAsync(BanClientMessage message, CancellationToken token)
         {
             WriteBanIP(message.Client);
 
             KickClient(message.Client);
+
+            return Task.CompletedTask;
         }
 
-        public void Handle(KickClientMessage message)
+        public Task HandleAsync(KickClientMessage message, CancellationToken token)
         {
             var client = message.Client;
             KickClient(client);
+
+            return Task.CompletedTask;
         }
 
-        public void Handle(StartServerMessage message)
+        public Task HandleAsync(StartServerMessage message, CancellationToken token)
         {
             StartServer();
-            _eventAggregator.PublishOnUIThread(new ServerStateMessage(true,
+            _eventAggregator.PublishOnUIThreadAsync(new ServerStateMessage(true,
                 new List<SRClient>(_connectedClients.Values)));
+            return Task.CompletedTask;
         }
 
-        public void Handle(StopServerMessage message)
+        public Task HandleAsync(StopServerMessage message, CancellationToken token)
         {
             StopServer();
-            _eventAggregator.PublishOnUIThread(new ServerStateMessage(false,
+            _eventAggregator.PublishOnUIThreadAsync(new ServerStateMessage(false,
                 new List<SRClient>(_connectedClients.Values)));
+            
+            return Task.CompletedTask;
         }
 
         private void StartExport()

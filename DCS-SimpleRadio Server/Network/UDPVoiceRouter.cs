@@ -7,7 +7,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using Caliburn.Micro;
+ using System.Threading.Tasks;
+ using Caliburn.Micro;
 using Ciribob.DCS.SimpleRadio.Standalone.Common;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Setting;
@@ -413,7 +414,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
             }
         }
 
-        public void Handle(ServerFrequenciesChanged message)
+        public async Task HandleAsync(ServerFrequenciesChanged message, CancellationToken token)
         {
             if (message.TestFrequencies != null)
             {

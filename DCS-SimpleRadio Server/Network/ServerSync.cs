@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using Ciribob.DCS.SimpleRadio.Standalone.Common;
@@ -14,7 +15,6 @@ using Ciribob.DCS.SimpleRadio.Standalone.Server.Settings;
 using NetCoreServer;
 using Newtonsoft.Json;
 using NLog;
-using Open.Nat;
 using LogManager = NLog.LogManager;
 
 namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
@@ -29,8 +29,6 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
         private readonly IEventAggregator _eventAggregator;
 
         private readonly ServerSettingsStore _serverSettings;
-        private NatHandler _natHandler;
-
 
         public ServerSync(ConcurrentDictionary<string, SRClient> connectedClients, HashSet<IPAddress> _bannedIps,
             IEventAggregator eventAggregator) : base(ServerSettingsStore.Instance.GetServerIP(), ServerSettingsStore.Instance.GetServerPort())
@@ -43,15 +41,10 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
 
             OptionKeepAlive = true;
 
-            if (_serverSettings.GetServerSetting(ServerSettingsKeys.UPNP_ENABLED).BoolValue)
-            {
-                _natHandler = new NatHandler(_serverSettings.GetServerPort());
-                _natHandler.OpenNAT();
-            }
             
         }
 
-        public void Handle(ServerSettingsChangedMessage message)
+        public Task HandleAsync(ServerSettingsChangedMessage message, CancellationToken cancellationToken)
         {
             try
             {
@@ -61,6 +54,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
             {
                 Logger.Error(ex, "Exception Sending Server Settings ");
             }
+            return Task.CompletedTask;
         }
 
         protected override TcpSession CreateSession() { return new SRSClientSession(this, _clients, _bannedIps); }
@@ -79,13 +73,6 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
             }
             catch(Exception ex)
             {
-                try
-                {
-                    _natHandler?.CloseNAT();
-                }
-                catch
-                {
-                }
 
                 Logger.Error(ex,$"Unable to start the SRS Server {_serverSettings.GetServerIP()}:{_serverSettings.GetServerPort()}");
 
@@ -117,7 +104,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
 
                 try
                 {
-                    _eventAggregator.PublishOnUIThread(
+                    _eventAggregator.PublishOnUIThreadAsync(
                         new ServerStateMessage(true, new List<SRClient>(_clients.Values)));
                 }
                 catch (Exception ex)
@@ -219,7 +206,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
                 state.SRSGuid = srClient.ClientGuid;
                 
 
-                _eventAggregator.PublishOnUIThread(new ServerStateMessage(true,
+                _eventAggregator.PublishOnUIThreadAsync(new ServerStateMessage(true,
                     new List<SRClient>(_clients.Values)));
             }
 
@@ -288,7 +275,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
                     // Only redraw client admin UI of server if really needed
                     if (redrawClientAdminList)
                     {
-                        _eventAggregator.PublishOnUIThread(new ServerStateMessage(true,
+                        _eventAggregator.PublishOnUIThreadAsync(new ServerStateMessage(true,
                             new List<SRClient>(_clients.Values)));
                     }
                 }
@@ -442,7 +429,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
                 _clients[client.ClientGuid].Coalition = clientCoalition;
                 _clients[client.ClientGuid].Name = client.Name;
 
-                _eventAggregator.PublishOnUIThread(new ServerStateMessage(true,
+                _eventAggregator.PublishOnUIThreadAsync(new ServerStateMessage(true,
                     new List<SRClient>(_clients.Values)));
             }
 
@@ -482,7 +469,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
                 _clients[client.ClientGuid].Coalition = 0;
                 _clients[client.ClientGuid].Name = "";
 
-                _eventAggregator.PublishOnUIThread(new ServerStateMessage(true,
+                _eventAggregator.PublishOnUIThreadAsync(new ServerStateMessage(true,
                     new List<SRClient>(_clients.Values)));
 
                 var message = new NetworkMessage
@@ -507,14 +494,6 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
 
         public void RequestStop()
         {
-            try
-            {
-                _natHandler?.CloseNAT();
-            }
-            catch
-            {
-            }
-
             try
             {
                 DisconnectAll();

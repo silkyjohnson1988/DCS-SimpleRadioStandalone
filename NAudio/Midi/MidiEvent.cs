@@ -57,9 +57,6 @@ namespace NAudio.Midi
                         me = new NoteEvent(absoluteTime, channel, commandCode, data1, data2);
                     }
                     break;
-                case MidiCommandCode.ControlChange:
-                    me = new ControlChangeEvent(absoluteTime, channel, (MidiController) data1, data2);
-                    break;
                 case MidiCommandCode.PatchChange:
                     me = new PatchChangeEvent(absoluteTime, channel, data1);
                     break;
@@ -127,9 +124,6 @@ namespace NAudio.Midi
                 case MidiCommandCode.NoteOff:
                 case MidiCommandCode.KeyAfterTouch:
                     me = new NoteEvent(br);
-                    break;
-                case MidiCommandCode.ControlChange:
-                    me = new ControlChangeEvent(br);
                     break;
                 case MidiCommandCode.PatchChange:
                     me = new PatchChangeEvent(br);

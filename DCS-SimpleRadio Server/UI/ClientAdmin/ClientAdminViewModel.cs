@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using Ciribob.DCS.SimpleRadio.Standalone.Server.Network;
@@ -29,24 +31,22 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.UI.ClientAdmin
 
         public ObservableCollection<ClientViewModel> Clients { get; } = new ObservableCollection<ClientViewModel>();
 
-        protected override void OnActivate()
+        protected override async Task OnActivateAsync(CancellationToken token)
         {
             _updateTimer?.Start();
 
-            base.OnActivate();
+            base.OnActivateAsync(token);
         }
 
-        protected override void OnDeactivate(bool close)
+
+        protected override async Task OnDeactivateAsync(bool close, CancellationToken token)
         {
-            if (close)
-            {
-                _updateTimer?.Stop();
-            }
+            if (close) _updateTimer?.Stop();
 
-            base.OnDeactivate(close);
+            base.OnDeactivateAsync(close, token);
         }
 
-        public void Handle(ServerStateMessage message)
+        public async Task HandleAsync(ServerStateMessage message, CancellationToken token)
         {
             Clients.Clear();
 
