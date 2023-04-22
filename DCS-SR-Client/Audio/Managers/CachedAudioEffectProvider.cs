@@ -172,32 +172,37 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
 
         private void LoadRadioStartAndEndEffects()
         {
-            var audioEffectsList = Directory.EnumerateFiles(sourceFolder);
-
-            //might need to split the path - we'll see
-            foreach (var effectPath in audioEffectsList)
+            if (Directory.Exists(sourceFolder))
             {
-                var effect =  effectPath.Split(Path.DirectorySeparatorChar).Last();
+                var audioEffectsList = Directory.EnumerateFiles(sourceFolder);
 
-                if (effect.ToLowerInvariant().StartsWith(CachedAudioEffect.AudioEffectTypes.RADIO_TRANS_START
-                    .ToString().ToLowerInvariant()))
+                //might need to split the path - we'll see
+                foreach (var effectPath in audioEffectsList)
                 {
-                    var audioEffect = new CachedAudioEffect(CachedAudioEffect.AudioEffectTypes.RADIO_TRANS_START, effect, effectPath);
+                    var effect = effectPath.Split(Path.DirectorySeparatorChar).Last();
 
-                    if (audioEffect.AudioEffectFloat != null)
+                    if (effect.ToLowerInvariant().StartsWith(CachedAudioEffect.AudioEffectTypes.RADIO_TRANS_START
+                            .ToString().ToLowerInvariant()))
                     {
-                        RadioTransmissionStart.Add(audioEffect);
+                        var audioEffect = new CachedAudioEffect(CachedAudioEffect.AudioEffectTypes.RADIO_TRANS_START,
+                            effect, effectPath);
+
+                        if (audioEffect.AudioEffectFloat != null)
+                        {
+                            RadioTransmissionStart.Add(audioEffect);
+                        }
+
                     }
-
-                }
-                else if (effect.ToLowerInvariant().StartsWith(CachedAudioEffect.AudioEffectTypes.RADIO_TRANS_END
-                    .ToString().ToLowerInvariant()))
-                {
-                    var audioEffect = new CachedAudioEffect(CachedAudioEffect.AudioEffectTypes.RADIO_TRANS_END, effect,effectPath);
-
-                    if (audioEffect.AudioEffectFloat != null)
+                    else if (effect.ToLowerInvariant().StartsWith(CachedAudioEffect.AudioEffectTypes.RADIO_TRANS_END
+                                 .ToString().ToLowerInvariant()))
                     {
-                        RadioTransmissionEnd.Add(audioEffect);
+                        var audioEffect = new CachedAudioEffect(CachedAudioEffect.AudioEffectTypes.RADIO_TRANS_END,
+                            effect, effectPath);
+
+                        if (audioEffect.AudioEffectFloat != null)
+                        {
+                            RadioTransmissionEnd.Add(audioEffect);
+                        }
                     }
                 }
             }
@@ -216,32 +221,37 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
 
         private void LoadIntercomStartAndEndEffects()
         {
-            var audioEffectsList = Directory.EnumerateFiles(sourceFolder);
-
-            //might need to split the path - we'll see
-            foreach (var effectPath in audioEffectsList)
+            if (Directory.Exists(sourceFolder))
             {
-                var effect = effectPath.Split(Path.DirectorySeparatorChar).Last();
+                var audioEffectsList = Directory.EnumerateFiles(sourceFolder);
 
-                if (effect.ToLowerInvariant().StartsWith(CachedAudioEffect.AudioEffectTypes.INTERCOM_TRANS_START
-                    .ToString().ToLowerInvariant()))
+                //might need to split the path - we'll see
+                foreach (var effectPath in audioEffectsList)
                 {
-                    var audioEffect = new CachedAudioEffect(CachedAudioEffect.AudioEffectTypes.INTERCOM_TRANS_START, effect, effectPath);
+                    var effect = effectPath.Split(Path.DirectorySeparatorChar).Last();
 
-                    if (audioEffect.AudioEffectFloat != null)
+                    if (effect.ToLowerInvariant().StartsWith(CachedAudioEffect.AudioEffectTypes.INTERCOM_TRANS_START
+                            .ToString().ToLowerInvariant()))
                     {
-                        IntercomTransmissionStart.Add(audioEffect);
+                        var audioEffect = new CachedAudioEffect(CachedAudioEffect.AudioEffectTypes.INTERCOM_TRANS_START,
+                            effect, effectPath);
+
+                        if (audioEffect.AudioEffectFloat != null)
+                        {
+                            IntercomTransmissionStart.Add(audioEffect);
+                        }
+
                     }
-
-                }
-                else if (effect.ToLowerInvariant().StartsWith(CachedAudioEffect.AudioEffectTypes.INTERCOM_TRANS_END
-                    .ToString().ToLowerInvariant()))
-                {
-                    var audioEffect = new CachedAudioEffect(CachedAudioEffect.AudioEffectTypes.INTERCOM_TRANS_END, effect, effectPath);
-
-                    if (audioEffect.AudioEffectFloat != null)
+                    else if (effect.ToLowerInvariant().StartsWith(CachedAudioEffect.AudioEffectTypes.INTERCOM_TRANS_END
+                                 .ToString().ToLowerInvariant()))
                     {
-                        IntercomTransmissionEnd.Add(audioEffect);
+                        var audioEffect = new CachedAudioEffect(CachedAudioEffect.AudioEffectTypes.INTERCOM_TRANS_END,
+                            effect, effectPath);
+
+                        if (audioEffect.AudioEffectFloat != null)
+                        {
+                            IntercomTransmissionEnd.Add(audioEffect);
+                        }
                     }
                 }
             }

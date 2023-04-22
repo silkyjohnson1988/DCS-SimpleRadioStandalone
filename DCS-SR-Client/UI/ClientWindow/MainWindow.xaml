@@ -59,7 +59,7 @@
                             VerticalAlignment="Top"
                             Click="PreviewAudio"
                             Content="Audio Preview"
-                            Style="{DynamicResource SquareButtonStyle}"
+                            Style="{DynamicResource MahApps.Styles.Button.Square}"
                             ToolTipService.ShowOnDisabled="True"
                             IsEnabled="{Binding AudioInput.MicrophoneAvailable}"
                             ToolTip="{Binding Path=AudioInput.MicrophoneAvailable, Converter={StaticResource MicAvailabilityTooltipConverter}}" />
@@ -163,7 +163,7 @@
                                 HorizontalAlignment="Center"
                                 Command="{Binding Path=ConnectCommand}"
                                 Content="Connect"
-                                Style="{DynamicResource SquareButtonStyle}"
+                                Style="{DynamicResource MahApps.Styles.Button.Square}"
                                 ToolTip="{Binding Path=AudioInput.MicrophoneAvailable, Converter={StaticResource MicAvailabilityTooltipConverter}}" />
                         <Button x:Name="ToggleServerSettings"
                                 Width="125"
@@ -172,7 +172,7 @@
                                 Click="ToggleServerSettings_OnClick"
                                 Content="Show Server Settings"
                                 IsEnabled="False"
-                                Style="{DynamicResource SquareButtonStyle}" />
+                                Style="{DynamicResource MahApps.Styles.Button.Square}" />
 
                     </StackPanel>
                     <StackPanel Margin="0"
@@ -184,21 +184,21 @@
                                 HorizontalAlignment="Center"
                                 Click="ShowOverlay_OnClick"
                                 Content="Toggle Radio Overlay"
-                                Style="{DynamicResource SquareButtonStyle}" />
+                                Style="{DynamicResource MahApps.Styles.Button.Square}" />
                         <Button x:Name="ShowAwacsOverlay"
                                 Width="125"
                                 Margin="0,15,20,0"
                                 HorizontalAlignment="Center"
                                 Click="ShowAwacsOverlay_OnClick"
                                 Content="Toggle AWACS Overlay"
-                                Style="{DynamicResource SquareButtonStyle}" />
+                                Style="{DynamicResource MahApps.Styles.Button.Square}" />
                         <Button x:Name="ShowClientList"
                                 Width="125"
                                 Margin="0,15,0,0"
                                 HorizontalAlignment="Center"
                                 Click="ShowClientList_OnClick"
                                 Content="Toggle Client List"
-                                Style="{DynamicResource SquareButtonStyle}" />
+                                Style="{DynamicResource MahApps.Styles.Button.Square}" />
                     </StackPanel>
 
                     <StackPanel Margin="0"
@@ -252,7 +252,7 @@
                                 Click="ConnectExternalAWACSMode_OnClick"
                                 Content="Connect External AWACS Mode (EAM)"
                                 IsEnabled="False"
-                                Style="{DynamicResource SquareButtonStyle}" />
+                                Style="{DynamicResource MahApps.Styles.Button.Square}" />
                     </StackPanel>
 
                     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="0,0,0,0">
@@ -319,7 +319,7 @@
                             Click="Donate_OnClick"
                             Width="220"
                             Margin="0,5,0,0" 
-                            Style="{StaticResource AccentedSquareButtonStyle}" />
+                            Style="{StaticResource MahApps.Styles.Button.Square.Accent}" />
 
                 </StackPanel>
             </GroupBox>

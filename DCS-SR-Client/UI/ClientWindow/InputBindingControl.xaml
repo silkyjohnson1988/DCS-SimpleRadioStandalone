@@ -49,13 +49,13 @@
                 Grid.Column="3"
                 Click="Device_Click"
                 Content="Set "
-                Style="{DynamicResource SquareButtonStyle}" />
+                Style="{DynamicResource MahApps.Styles.Button.Square}" />
         <Button x:Name="DeviceClear"
                 Grid.Row="0"
                 Grid.Column="4"
                 Click="DeviceClear_Click"
                 Content="Clear"
-                Style="{DynamicResource SquareButtonStyle}" />
+                Style="{DynamicResource MahApps.Styles.Button.Square}" />
 
         <Label x:Name="ModifierLabel"
                Grid.Row="1"
@@ -81,13 +81,13 @@
                 Grid.Column="3"
                 Click="Modifier_Click"
                 Content="Set "
-                Style="{DynamicResource SquareButtonStyle}" />
+                Style="{DynamicResource MahApps.Styles.Button.Square}" />
         <Button x:Name="ModifierButtonClear"
                 Grid.Row="1"
                 Grid.Column="4"
                 Click="ModifierClear_Click"
                 Content="Clear"
-                Style="{DynamicResource SquareButtonStyle}" />
+                Style="{DynamicResource MahApps.Styles.Button.Square}" />
 
     </Grid>
 
