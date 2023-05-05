@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Ciribob.DCS.SimpleRadio.Standalone.Client</RootNamespace>
     <AssemblyName>SR-ClientRadio</AssemblyName>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationVersion>2.0.8.5</ApplicationVersion>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
@@ -15,7 +15,8 @@
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <LangVersion>11</LangVersion>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -33,9 +34,16 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-    <AssemblyVersion>1.0.0.4</AssemblyVersion>
-    <FileVersion>1.0.0.4</FileVersion>
-    <Version>1.0.0.4</Version>
+    <Title>DCS-SimpleRadio Standalone Client</Title>
+    <Description>Client for DCS-SimpleRadio Standalone</Description>
+    <Configuration></Configuration>
+    <Company>Ciribob</Company>
+    <Product>DCS-SimpleRadio Standalone"</Product>
+    <Authors>Ciribob - GitHub.com/Ciribob</Authors>
+    <Copyright>Copyright ©  2016 - Ciribob</Copyright>
+    <Version>2.0.8.5</Version>
+    <AssemblyVersion>2.0.8.5</AssemblyVersion>
+    <FileVersion>2.0.8.5</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn />
