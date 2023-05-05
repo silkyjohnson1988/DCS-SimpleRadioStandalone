@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
+using System.Windows.Media.Imaging;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Settings;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
 using NLog.Targets.Wrappers;
 using Sentry;
+using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
 
 namespace DCS_SR_Client
 {
@@ -249,35 +254,25 @@ namespace DCS_SR_Client
 
         private void InitNotificationIcon()
         {
-            // if(_notifyIcon != null)
-            // {
-            //     return;
-            // }
-            // System.Windows.Forms.MenuItem notifyIconContextMenuShow = new System.Windows.Forms.MenuItem
-            // {
-            //     Index = 0,
-            //     Text = "Show"
-            // };
-            // notifyIconContextMenuShow.Click += new EventHandler(NotifyIcon_Show);
-            //
-            // System.Windows.Forms.MenuItem notifyIconContextMenuQuit = new System.Windows.Forms.MenuItem
-            // {
-            //     Index = 1,
-            //     Text = "Quit"
-            // };
-            // notifyIconContextMenuQuit.Click += new EventHandler(NotifyIcon_Quit);
-            //
-            // System.Windows.Forms.ContextMenu notifyIconContextMenu = new System.Windows.Forms.ContextMenu();
-            // notifyIconContextMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] { notifyIconContextMenuShow, notifyIconContextMenuQuit });
-            //
-            // _notifyIcon = new System.Windows.Forms.NotifyIcon
-            // {
-            //     Icon = Ciribob.DCS.SimpleRadio.Standalone.Client.Properties.Resources.audio_headset,
-            //     Visible = true
-            // };
-            // _notifyIcon.ContextMenu = notifyIconContextMenu;
-            // _notifyIcon.DoubleClick += new EventHandler(NotifyIcon_Show);
+            if(_notifyIcon != null)
+            {
+                return;
+            }
+            
+            _notifyIcon = new NotifyIcon()
+            {
+                Icon = new Icon(Application.GetResourceStream(new Uri("pack://application:,,,/SR-ClientRadio;component/audio-headset.ico")).Stream),
+                ContextMenuStrip = new ContextMenuStrip(),
+                Visible = true
+            };
 
+            _notifyIcon.ContextMenuStrip.Items.AddRange(new ToolStripItem[]
+            {
+                new ToolStripMenuItem("Show", null, new EventHandler(NotifyIcon_Show), "Show"),
+                new ToolStripMenuItem("Quit", null, new EventHandler(NotifyIcon_Quit), "Quit")
+            });
+            
+            _notifyIcon.DoubleClick += new EventHandler(NotifyIcon_Show);
         }
 
         private void NotifyIcon_Show(object sender, EventArgs args)
@@ -289,7 +284,6 @@ namespace DCS_SR_Client
         private void NotifyIcon_Quit(object sender, EventArgs args)
         {
             MainWindow.Close();
-
         }
 
         protected override void OnExit(ExitEventArgs e)
