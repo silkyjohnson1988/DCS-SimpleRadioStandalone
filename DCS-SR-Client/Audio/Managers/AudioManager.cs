@@ -94,6 +94,8 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
             this.windowsN = windowsN;
             _clientEffectsPipeline = new ClientEffectsPipeline();
 
+            _guid = ClientStateSingleton.Instance.ShortGUID;
+
             //_beforeWaveFile = new WaveFileWriter(@"C:\Temp\Test-Preview-Before.wav", new WaveFormat(AudioManager.OUTPUT_SAMPLE_RATE, 32, 1));
         }
 

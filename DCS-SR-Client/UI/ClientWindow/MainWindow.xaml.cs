@@ -318,7 +318,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI
         void ReloadProfile()
         {
             //switch profiles
-            Logger.Info(ControlsProfile.SelectedValue as string + " - Profile now in use");
+            Logger.Info(ControlsProfile.SelectedValue as string + (" - Profile now in use"));
             _globalSettings.ProfileSettingsStore.CurrentProfileName = ControlsProfile.SelectedValue as string;
 
             //redraw UI

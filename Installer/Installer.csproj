@@ -118,7 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MahApps.Metro.Resources" Version="0.6.1.0" />
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.410601">
+    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.421302">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="MahApps.Metro" Version="2.4.9" />
