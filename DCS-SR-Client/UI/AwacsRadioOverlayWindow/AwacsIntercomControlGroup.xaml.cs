@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Network;
+using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons;
 using Ciribob.DCS.SimpleRadio.Standalone.Common;
 
@@ -28,7 +29,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.AwacsRadioOverlayWindow
         {
             var currentRadio = _clientStateSingleton.DcsPlayerRadioInfo.radios[RadioId];
 
-            if (currentRadio.modulation != RadioInformation.Modulation.DISABLED)
+            if (currentRadio.modulation != DCSRadioInformation.Modulation.DISABLED)
             {
                 if (_clientStateSingleton.DcsPlayerRadioInfo.control ==
                     DCSPlayerRadioInfo.RadioSwitchControls.HOTAS)
@@ -48,9 +49,9 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.AwacsRadioOverlayWindow
         {
             var currentRadio = _clientStateSingleton.DcsPlayerRadioInfo.radios[RadioId];
 
-            if (currentRadio.modulation != RadioInformation.Modulation.DISABLED)
+            if (currentRadio.modulation != DCSRadioInformation.Modulation.DISABLED)
             {
-                if (currentRadio.volMode == RadioInformation.VolumeMode.OVERLAY)
+                if (currentRadio.volMode == DCSRadioInformation.VolumeMode.OVERLAY)
                 {
                     var clientRadio = _clientStateSingleton.DcsPlayerRadioInfo.radios[RadioId];
 
@@ -121,11 +122,11 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.AwacsRadioOverlayWindow
 
 
 
-                if (currentRadio.modulation == RadioInformation.Modulation.INTERCOM) //intercom
+                if (currentRadio.modulation == DCSRadioInformation.Modulation.INTERCOM) //intercom
                 {
                     RadioLabel.Text = "INTERCOM";
 
-                    RadioVolume.IsEnabled = currentRadio.volMode == RadioInformation.VolumeMode.OVERLAY;
+                    RadioVolume.IsEnabled = currentRadio.volMode == DCSRadioInformation.VolumeMode.OVERLAY;
 
                     if (dcsPlayerRadioInfo.unitId >= DCSPlayerRadioInfo.UnitIdOffset)
                     {

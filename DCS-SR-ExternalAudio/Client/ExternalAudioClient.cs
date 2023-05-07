@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Threading;
-using Ciribob.DCS.SimpleRadio.Standalone.Common;
-using Ciribob.DCS.SimpleRadio.Standalone.Common.DCSState;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 using Ciribob.DCS.SimpleRadio.Standalone.ExternalAudioClient.Audio;
 using Ciribob.DCS.SimpleRadio.Standalone.ExternalAudioClient.Models;
@@ -18,17 +16,17 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.ExternalAudioClient.Client
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private double[] freq;
-        private RadioInformation.Modulation[] modulation;
+        private Radio.Modulation[] modulation;
         private byte[] modulationBytes;
 
         private readonly string Guid = ShortGuid.NewGuid();
 
         private CancellationTokenSource finished = new CancellationTokenSource();
-        private DCSPlayerRadioInfo gameState;
+        private RadioInfo gameState;
         private UdpVoiceHandler udpVoiceHandler;
         private Program.Options opts;
 
-        public ExternalAudioClient(double[] freq, RadioInformation.Modulation[] modulation, Program.Options opts)
+        public ExternalAudioClient(double[] freq, Radio.Modulation[] modulation, Program.Options opts)
         {
             this.freq = freq;
             this.modulation = modulation;
@@ -46,10 +44,10 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.ExternalAudioClient.Client
             MessageHub.Instance.Subscribe<ReadyMessage>(ReadyToSend);
             MessageHub.Instance.Subscribe<DisconnectedMessage>(Disconnected);
 
-            gameState = new DCSPlayerRadioInfo();
+            gameState = new RadioInfo();
             gameState.radios[1].modulation = modulation[0];
             gameState.radios[1].freq = freq[0]; // get into Hz
-            gameState.radios[1].name = opts.Name;
+
 
             Logger.Info($"Starting with params:");
             for (int i = 0; i < freq.Length; i++)
@@ -57,7 +55,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.ExternalAudioClient.Client
                 Logger.Info($"Frequency: {freq[i]} Hz - {modulation[i]} ");
             }
 
-            DCSLatLngPosition position = new DCSLatLngPosition()
+            LatLngPosition position = new LatLngPosition()
             {
                 alt = opts.Altitude,
                 lat = opts.Latitude,

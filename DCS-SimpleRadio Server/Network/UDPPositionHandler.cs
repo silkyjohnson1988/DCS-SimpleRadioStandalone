@@ -174,8 +174,8 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
                                             // Only trigger transmitting frequency update for "proper" packets (excluding invalid frequencies)
                                             if (mainFrequency > 0)
                                             {
-                                                RadioInformation.Modulation mainModulation = (RadioInformation.Modulation)udpVoicePacket.Modulations[0];
-                                                if (mainModulation == RadioInformation.Modulation.INTERCOM)
+                                                Radio.Modulation mainModulation = (Radio.Modulation)udpVoicePacket.Modulations[0];
+                                                if (mainModulation == Radio.Modulation.INTERCOM)
                                                 {
                                                     client.TransmittingFrequency = "INTERCOM";
                                                 }

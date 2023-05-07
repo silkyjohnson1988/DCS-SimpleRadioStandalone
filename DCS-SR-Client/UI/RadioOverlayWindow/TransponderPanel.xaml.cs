@@ -15,7 +15,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Utils;
-using Ciribob.DCS.SimpleRadio.Standalone.Common.DCSState;
 using UserControl = System.Windows.Controls.UserControl;
 
 namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.RadioOverlayWindow
@@ -54,7 +53,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.RadioOverlayWindow
         {
             var dcsPlayerRadioInfo = _clientStateSingleton.DcsPlayerRadioInfo;
 
-            if ((dcsPlayerRadioInfo == null) || !dcsPlayerRadioInfo.IsCurrent() || dcsPlayerRadioInfo.iff == null || dcsPlayerRadioInfo.iff.control == Common.DCSState.Transponder.IFFControlMode.DISABLED)
+            if ((dcsPlayerRadioInfo == null) || !dcsPlayerRadioInfo.IsCurrent() || dcsPlayerRadioInfo.iff == null || dcsPlayerRadioInfo.iff.control == Network.DCS.Models.DCSTransponder.IFFControlMode.DISABLED)
             {
                 Mode1.IsEnabled = false;
                 Mode1.Text = "--";
@@ -74,7 +73,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.RadioOverlayWindow
             {
                 var iff = dcsPlayerRadioInfo.iff;
 
-                if (iff.control != Common.DCSState.Transponder.IFFControlMode.OVERLAY)
+                if (iff.control != Network.DCS.Models.DCSTransponder.IFFControlMode.OVERLAY)
                 {
                     Mode1.IsEnabled = false;
                     Mode3.IsEnabled = false;
@@ -89,7 +88,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.RadioOverlayWindow
                     Ident.IsEnabled = true;
                 }
 
-                if (iff.status == Common.DCSState.Transponder.IFFStatus.OFF)
+                if (iff.status == Network.DCS.Models.DCSTransponder.IFFStatus.OFF)
                 {
                     Mode1.Text = "--";
                     Mode3.Text = "--";
@@ -145,7 +144,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.RadioOverlayWindow
                         Mode4Button.Foreground = new SolidColorBrush(Colors.Black);
                     }
 
-                    if (iff.status == Common.DCSState.Transponder.IFFStatus.IDENT)
+                    if (iff.status == Network.DCS.Models.DCSTransponder.IFFStatus.IDENT)
                     {
                         Ident.Foreground = _buttonOn;
                     }
@@ -263,7 +262,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.RadioOverlayWindow
         {
             var trans = TransponderHelper.GetTransponder();
            
-            if ((trans == null) || trans.control != Common.DCSState.Transponder.IFFControlMode.OVERLAY)
+            if ((trans == null) || trans.control != Network.DCS.Models.DCSTransponder.IFFControlMode.OVERLAY)
             {
                 return false;
             }

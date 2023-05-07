@@ -310,7 +310,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
                     //shouldnt be the case but just incase...
                     if (message.Client.RadioInfo == null)
                     {
-                        message.Client.RadioInfo = new DCSPlayerRadioInfo();
+                        message.Client.RadioInfo = new RadioInfo();
                     }
                     //update to local ticks
                     message.Client.RadioInfo.LastUpdate = DateTime.Now.Ticks;
@@ -481,7 +481,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
                         Coalition = client.Coalition,
                         Name = client.Name,
                         LastUpdate = client.LastUpdate,
-                        RadioInfo = new DCSPlayerRadioInfo(),
+                        RadioInfo = new RadioInfo(),
                         LatLngPosition = client.LatLngPosition,
                         Seat = client.Seat,
                         AllowRecord = client.AllowRecord

@@ -23,7 +23,7 @@ using NAudio.Wave.SampleProviders;
 using NLog;
 using WebRtcVadSharp;
 using WPFCustomMessageBox;
-using static Ciribob.DCS.SimpleRadio.Standalone.Common.RadioInformation;
+using static Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models.DCSRadioInformation;
 using Application = FragLabs.Audio.Codecs.Opus.Application;
 
 namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers

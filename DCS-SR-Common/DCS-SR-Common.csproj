@@ -27,6 +27,7 @@
     <Reference Include="System.Transactions" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Caliburn.Micro.Core" Version="4.0.212" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="NAudio.Core" Version="2.1.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
@@ -44,5 +45,16 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <SourceLinkSources Remove="DCSState\DCSAircraftCapabilities.cs" />
+    <SourceLinkSources Remove="DCSState\DcsLatLngPosition.cs" />
+    <SourceLinkSources Remove="DCSState\DCSPlayerRadioInfo.cs" />
+    <SourceLinkSources Remove="DCSState\DCSPlayerSideInfo.cs" />
+    <SourceLinkSources Remove="DCSState\RadioInformation.cs" />
+    <SourceLinkSources Remove="DCSState\RadioReceivingPriority.cs" />
+    <SourceLinkSources Remove="DCSState\RadioReceivingState.cs" />
+    <SourceLinkSources Remove="DCSState\RadioTransmit.cs" />
+    <SourceLinkSources Remove="DCSState\Transponder.cs" />
   </ItemGroup>
 </Project>

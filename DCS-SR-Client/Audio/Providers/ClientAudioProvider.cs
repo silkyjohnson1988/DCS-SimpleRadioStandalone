@@ -10,7 +10,7 @@ using NAudio.Wave.SampleProviders;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.DSP;
 using FragLabs.Audio.Codecs;
 using NLog;
-using static Ciribob.DCS.SimpleRadio.Standalone.Common.RadioInformation;
+using static Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models.DCSRadioInformation;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Recording;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons;
 

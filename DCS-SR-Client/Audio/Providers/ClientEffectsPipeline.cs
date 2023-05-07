@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Models;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.DSP;
+using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Settings;
 using Ciribob.DCS.SimpleRadio.Standalone.Common;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Setting;
@@ -133,17 +134,17 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
             // FOR HAVEQUICK - only if its MORE THAN TWO
             if (lastTransmission.ReceivedRadio != 0
                 && !lastTransmission.NoAudioEffects
-                && (lastTransmission.Modulation == RadioInformation.Modulation.AM
-                    || lastTransmission.Modulation == RadioInformation.Modulation.FM
-                    || lastTransmission.Modulation == RadioInformation.Modulation.HAVEQUICK)
+                && (lastTransmission.Modulation == DCSRadioInformation.Modulation.AM
+                    || lastTransmission.Modulation == DCSRadioInformation.Modulation.FM
+                    || lastTransmission.Modulation == DCSRadioInformation.Modulation.HAVEQUICK)
                 && irlRadioRXInterference)
             {
                 if (transmissions.Count > 1)
                 {
                     //All AM is wrecked if more than one transmission
                     //For HQ - only if more than TWO transmissions
-                    if (lastTransmission.Modulation == RadioInformation.Modulation.AM && amCollisionEffect.Loaded
-                    || lastTransmission.Modulation == RadioInformation.Modulation.HAVEQUICK && transmissions.Count > 2)
+                    if (lastTransmission.Modulation == DCSRadioInformation.Modulation.AM && amCollisionEffect.Loaded
+                    || lastTransmission.Modulation == DCSRadioInformation.Modulation.HAVEQUICK && transmissions.Count > 2)
                     {
                         //replace the buffer with our own
                         int outIndex = 0;
@@ -161,7 +162,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
 
                         process = false;
                     }
-                    else if (lastTransmission.Modulation == RadioInformation.Modulation.FM)
+                    else if (lastTransmission.Modulation == DCSRadioInformation.Modulation.FM)
                     {
                         //FM picketing / picket fencing - pick one transmission at random
                         //TODO improve this to pick the stronger frequency?
@@ -192,9 +193,9 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
         {
             if (!transmission.NoAudioEffects)
             {
-                if (transmission.Modulation == RadioInformation.Modulation.MIDS
-                    || transmission.Modulation == RadioInformation.Modulation.SATCOM
-                    || transmission.Modulation == RadioInformation.Modulation.INTERCOM)
+                if (transmission.Modulation == DCSRadioInformation.Modulation.MIDS
+                    || transmission.Modulation == DCSRadioInformation.Modulation.SATCOM
+                    || transmission.Modulation == DCSRadioInformation.Modulation.INTERCOM)
                 {
                     if (radioEffects)
                     {
@@ -224,7 +225,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
             }
         }
 
-        private void AddRadioEffectIntercom(float[] buffer, int count, int offset,RadioInformation.Modulation modulation)
+        private void AddRadioEffectIntercom(float[] buffer, int count, int offset,DCSRadioInformation.Modulation modulation)
         {
             int outputIndex = offset;
             while (outputIndex < offset + count)
@@ -254,7 +255,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
         }
 
 
-        private void AddRadioEffect(float[] buffer, int count, int offset, RadioInformation.Modulation modulation, double freq)
+        private void AddRadioEffect(float[] buffer, int count, int offset, DCSRadioInformation.Modulation modulation, double freq)
         {
             int outputIndex = offset;
              
@@ -290,7 +291,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
                     }
                 }
 
-                if (modulation == RadioInformation.Modulation.FM
+                if (modulation == DCSRadioInformation.Modulation.FM
                     && effectProvider.NATOTone.Loaded
                     && natoToneEnabled)
                 {
@@ -304,7 +305,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
                     }
                 }
 
-                if (modulation == RadioInformation.Modulation.HAVEQUICK
+                if (modulation == DCSRadioInformation.Modulation.HAVEQUICK
                      && effectProvider.HAVEQUICKTone.Loaded
                      && hqToneEnabled)
                 {
@@ -343,11 +344,11 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
             }
         }
 
-        private double AddRadioBackgroundNoiseEffect(double audio, RadioInformation.Modulation modulation, double freq)
+        private double AddRadioBackgroundNoiseEffect(double audio, DCSRadioInformation.Modulation modulation, double freq)
         {
             if (radioBackgroundNoiseEffect)
             {
-                if (modulation == RadioInformation.Modulation.HAVEQUICK || modulation == RadioInformation.Modulation.AM)
+                if (modulation == DCSRadioInformation.Modulation.HAVEQUICK || modulation == DCSRadioInformation.Modulation.AM)
                 {
                     //mix in based on frequency
                     if (freq >= 200d * 1000000)
@@ -396,7 +397,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
                         }
                     }
                 }
-                else if (modulation == RadioInformation.Modulation.FM)
+                else if (modulation == DCSRadioInformation.Modulation.FM)
                 {
                     if (effectProvider.FMNoise.Loaded)
                     {

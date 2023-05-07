@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Speech.Synthesis;
 using Ciribob.DCS.SimpleRadio.Standalone.Common;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 using CommandLine;
 using Google.Cloud.TextToSpeech.V1;
 using NLog;
@@ -192,11 +193,11 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.ExternalAudioClient.Client
 
             var modulationStr = opts.Modulations.Split(',');
 
-            List<RadioInformation.Modulation> modulation = new List<RadioInformation.Modulation>();
+            List<Radio.Modulation> modulation = new List<Radio.Modulation>();
             foreach (var s in modulationStr)
             {
-                RadioInformation.Modulation mod;
-                if (RadioInformation.Modulation.TryParse(s.Trim().ToUpper(), out mod))
+                Radio.Modulation mod;
+                if (Radio.Modulation.TryParse(s.Trim().ToUpper(), out mod))
                 {
                     modulation.Add(mod);
                 }

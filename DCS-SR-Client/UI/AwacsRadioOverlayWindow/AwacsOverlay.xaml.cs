@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Network;
+using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Settings;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons;
 using Ciribob.DCS.SimpleRadio.Standalone.Common;
@@ -113,7 +114,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.AwacsRadioOverlayWindow
 
                     for (var i = 0; i < dcsPlayerRadioInfo.radios.Length; i++)
                     {
-                        if (dcsPlayerRadioInfo.radios[i].modulation != RadioInformation.Modulation.DISABLED)
+                        if (dcsPlayerRadioInfo.radios[i].modulation != DCSRadioInformation.Modulation.DISABLED)
                         {
                             avalilableRadios++;
                         }

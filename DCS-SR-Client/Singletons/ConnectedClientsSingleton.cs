@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Settings;
 using Ciribob.DCS.SimpleRadio.Standalone.Common;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
@@ -104,7 +105,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons
             return _clients.ContainsKey(key);
         }
 
-        public int ClientsOnFreq(double freq, RadioInformation.Modulation modulation)
+        public int ClientsOnFreq(double freq, DCSRadioInformation.Modulation modulation)
         {
             if (!_serverSettings.GetSettingAsBool(ServerSettingsKeys.SHOW_TUNED_COUNT))
             {

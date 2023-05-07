@@ -164,7 +164,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
                                         var newClient = new SRClient()
                                         {
                                             ClientGuid = srClient.ClientGuid,
-                                            RadioInfo = new DCSPlayerRadioInfo()
+                                            RadioInfo = new RadioInfo()
                                             {
                                                 radios = null,
                                                 unitId = srClient.RadioInfo.unitId,

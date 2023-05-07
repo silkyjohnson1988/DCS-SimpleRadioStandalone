@@ -13,7 +13,6 @@ using Ciribob.DCS.SimpleRadio.Standalone.Client.Utils;
 using Ciribob.DCS.SimpleRadio.Standalone.Common;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Setting;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.UI.AwacsRadioOverlayWindow;
-using Ciribob.DCS.SimpleRadio.Standalone.Common.DCSState;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Helpers;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 using Newtonsoft.Json;
@@ -175,7 +174,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
                     {
                         var clientRadio = _clientStateSingleton.DcsPlayerRadioInfo.radios[i];
                         
-                        if (clientRadio.modulation != RadioInformation.Modulation.DISABLED)
+                        if (clientRadio.modulation != DCSRadioInformation.Modulation.DISABLED)
                         {
                             tunedClients[i] = connectedClientsSingleton.ClientsOnFreq(clientRadio.freq, clientRadio.modulation);
                         }
@@ -298,15 +297,15 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
                     clientRadio.freqMax = 1;
                     clientRadio.secFreq = 0;
                     clientRadio.retransmit = false;
-                    clientRadio.modulation = RadioInformation.Modulation.DISABLED;
+                    clientRadio.modulation = DCSRadioInformation.Modulation.DISABLED;
                     clientRadio.name = "No Radio";
-                    clientRadio.rtMode = RadioInformation.RetransmitMode.DISABLED;
+                    clientRadio.rtMode = DCSRadioInformation.RetransmitMode.DISABLED;
                     clientRadio.retransmit = false;
 
-                    clientRadio.freqMode = RadioInformation.FreqMode.COCKPIT;
-                    clientRadio.guardFreqMode = RadioInformation.FreqMode.COCKPIT;
-                    clientRadio.encMode = RadioInformation.EncryptionMode.NO_ENCRYPTION;
-                    clientRadio.volMode = RadioInformation.VolumeMode.COCKPIT;
+                    clientRadio.freqMode = DCSRadioInformation.FreqMode.COCKPIT;
+                    clientRadio.guardFreqMode = DCSRadioInformation.FreqMode.COCKPIT;
+                    clientRadio.encMode = DCSRadioInformation.EncryptionMode.NO_ENCRYPTION;
+                    clientRadio.volMode = DCSRadioInformation.VolumeMode.COCKPIT;
 
                     continue;
                 }
@@ -315,7 +314,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
 
 
                 if ((updateRadio.expansion && !expansion) ||
-                    (updateRadio.modulation == RadioInformation.Modulation.DISABLED))
+                    (updateRadio.modulation == DCSRadioInformation.Modulation.DISABLED))
                 {
                     //expansion radio, not allowed
                     clientRadio.freq = 1;
@@ -323,15 +322,15 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
                     clientRadio.freqMax = 1;
                     clientRadio.secFreq = 0;
                     clientRadio.retransmit = false;
-                    clientRadio.modulation = RadioInformation.Modulation.DISABLED;
+                    clientRadio.modulation = DCSRadioInformation.Modulation.DISABLED;
                     clientRadio.name = "No Radio";
-                    clientRadio.rtMode = RadioInformation.RetransmitMode.DISABLED;
+                    clientRadio.rtMode = DCSRadioInformation.RetransmitMode.DISABLED;
                     clientRadio.retransmit = false;
 
-                    clientRadio.freqMode = RadioInformation.FreqMode.COCKPIT;
-                    clientRadio.guardFreqMode = RadioInformation.FreqMode.COCKPIT;
-                    clientRadio.encMode = RadioInformation.EncryptionMode.NO_ENCRYPTION;
-                    clientRadio.volMode = RadioInformation.VolumeMode.COCKPIT;
+                    clientRadio.freqMode = DCSRadioInformation.FreqMode.COCKPIT;
+                    clientRadio.guardFreqMode = DCSRadioInformation.FreqMode.COCKPIT;
+                    clientRadio.encMode = DCSRadioInformation.EncryptionMode.NO_ENCRYPTION;
+                    clientRadio.volMode = DCSRadioInformation.VolumeMode.COCKPIT;
                 }
                 else
                 {
@@ -364,28 +363,28 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
                     }
                     else
                     {
-                        clientRadio.encMode = RadioInformation.EncryptionMode.NO_ENCRYPTION;
+                        clientRadio.encMode = DCSRadioInformation.EncryptionMode.NO_ENCRYPTION;
                     }
 
                     clientRadio.volMode = updateRadio.volMode;
 
-                    if ((updateRadio.freqMode == RadioInformation.FreqMode.COCKPIT) || overrideFreqAndVol)
+                    if ((updateRadio.freqMode == DCSRadioInformation.FreqMode.COCKPIT) || overrideFreqAndVol)
                     {
                         clientRadio.freq = updateRadio.freq;
 
-                        if (newAircraft && updateRadio.guardFreqMode == RadioInformation.FreqMode.OVERLAY)
+                        if (newAircraft && updateRadio.guardFreqMode == DCSRadioInformation.FreqMode.OVERLAY)
                         {
                             //default guard to off
                             clientRadio.secFreq = 0;
                         }
                         else
                         {
-                            if (clientRadio.secFreq != 0 && updateRadio.guardFreqMode == RadioInformation.FreqMode.OVERLAY)
+                            if (clientRadio.secFreq != 0 && updateRadio.guardFreqMode == DCSRadioInformation.FreqMode.OVERLAY)
                             {
                                 //put back
                                 clientRadio.secFreq = updateRadio.secFreq;
                             }
-                            else if (clientRadio.secFreq == 0 && updateRadio.guardFreqMode == RadioInformation.FreqMode.OVERLAY)
+                            else if (clientRadio.secFreq == 0 && updateRadio.guardFreqMode == DCSRadioInformation.FreqMode.OVERLAY)
                             {
                                 clientRadio.secFreq = 0;
                             }
@@ -425,7 +424,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
                     }
 
                     //Handle Encryption
-                    if (updateRadio.encMode == RadioInformation.EncryptionMode.ENCRYPTION_JUST_OVERLAY)
+                    if (updateRadio.encMode == DCSRadioInformation.EncryptionMode.ENCRYPTION_JUST_OVERLAY)
                     {
                         if (clientRadio.encKey == 0)
                         {
@@ -433,7 +432,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
                         }
                     }
                     else if (clientRadio.encMode ==
-                             RadioInformation.EncryptionMode.ENCRYPTION_COCKPIT_TOGGLE_OVERLAY_CODE)
+                             DCSRadioInformation.EncryptionMode.ENCRYPTION_COCKPIT_TOGGLE_OVERLAY_CODE)
                     {
                         clientRadio.enc = updateRadio.enc;
 
@@ -442,7 +441,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
                             clientRadio.encKey = 1;
                         }
                     }
-                    else if (clientRadio.encMode == RadioInformation.EncryptionMode.ENCRYPTION_FULL)
+                    else if (clientRadio.encMode == DCSRadioInformation.EncryptionMode.ENCRYPTION_FULL)
                     {
                         clientRadio.enc = updateRadio.enc;
                         clientRadio.encKey = updateRadio.encKey;
@@ -454,17 +453,17 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
                     }
 
                     //handle volume
-                    if ((updateRadio.volMode == RadioInformation.VolumeMode.COCKPIT) || overrideFreqAndVol)
+                    if ((updateRadio.volMode == DCSRadioInformation.VolumeMode.COCKPIT) || overrideFreqAndVol)
                     {
                         clientRadio.volume = updateRadio.volume;
                     }
 
                     //handle Retransmit mode
-                    if ((updateRadio.rtMode == RadioInformation.RetransmitMode.COCKPIT))
+                    if ((updateRadio.rtMode == DCSRadioInformation.RetransmitMode.COCKPIT))
                     {
                         clientRadio.rtMode = updateRadio.rtMode;
                         clientRadio.retransmit = updateRadio.retransmit;
-                    }else if (updateRadio.rtMode == RadioInformation.RetransmitMode.DISABLED)
+                    }else if (updateRadio.rtMode == DCSRadioInformation.RetransmitMode.DISABLED)
                     {
                         clientRadio.rtMode = updateRadio.rtMode;
                         clientRadio.retransmit = false;
@@ -473,7 +472,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
                     //handle Channels load for radios
                     if (newAircraft && i > 0)
                     {
-                        if (clientRadio.freqMode == RadioInformation.FreqMode.OVERLAY)
+                        if (clientRadio.freqMode == DCSRadioInformation.FreqMode.OVERLAY)
                         {
                             var channelModel = _clientStateSingleton.FixedChannels[i - 1];
                             channelModel.Max = clientRadio.freqMax;
@@ -519,14 +518,14 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
             if (_globalSettings.ProfileSettingsStore.GetClientSettingBool(ProfileSettingsKeys
                 .AlwaysAllowTransponderOverlay))
             {
-                if (message.iff.control != Transponder.IFFControlMode.DISABLED)
+                if (message.iff.control != DCSTransponder.IFFControlMode.DISABLED)
                 {
-                    playerRadioInfo.iff.control = Transponder.IFFControlMode.OVERLAY;
-                    message.iff.control = Transponder.IFFControlMode.OVERLAY;
+                    playerRadioInfo.iff.control = DCSTransponder.IFFControlMode.OVERLAY;
+                    message.iff.control = DCSTransponder.IFFControlMode.OVERLAY;
                 }
             }
 
-            if (message.iff.control == Transponder.IFFControlMode.COCKPIT)
+            if (message.iff.control == DCSTransponder.IFFControlMode.COCKPIT)
             {
                 playerRadioInfo.iff = message.iff;
             }
@@ -537,12 +536,12 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
             {
                 if (_clientStateSingleton.RadioSendingState.SendingOn == playerRadioInfo.iff.mic)
                 {
-                    playerRadioInfo.iff.status = Transponder.IFFStatus.IDENT;
+                    playerRadioInfo.iff.status = DCSTransponder.IFFStatus.IDENT;
                 }
             }
 
             //Handle IDENT only lasting for 40 seconds at most - need to toggle it
-            if (playerRadioInfo.iff.status == Transponder.IFFStatus.IDENT)
+            if (playerRadioInfo.iff.status == DCSTransponder.IFFStatus.IDENT)
             {
                 if (_identStart == 0)
                 {
@@ -551,7 +550,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
 
                 if (TimeSpan.FromTicks(DateTime.Now.Ticks -_identStart).TotalSeconds > 40)
                 {
-                    playerRadioInfo.iff.status = Transponder.IFFStatus.NORMAL;
+                    playerRadioInfo.iff.status = DCSTransponder.IFFStatus.NORMAL;
                 }
 
             }

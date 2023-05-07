@@ -9,7 +9,8 @@ using System.Text;
 using System.Threading;
  using System.Threading.Tasks;
  using Caliburn.Micro;
-using Ciribob.DCS.SimpleRadio.Standalone.Common;
+ using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models;
+ using Ciribob.DCS.SimpleRadio.Standalone.Common;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Setting;
 using Ciribob.DCS.SimpleRadio.Standalone.Server.Network.Models;
@@ -234,8 +235,8 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
                                             // Only trigger transmitting frequency update for "proper" packets (excluding invalid frequencies and magic ping packets with modulation 4)
                                             if (mainFrequency > 0)
                                             {
-                                                RadioInformation.Modulation mainModulation = (RadioInformation.Modulation)udpVoicePacket.Modulations[0];
-                                                if (mainModulation == RadioInformation.Modulation.INTERCOM)
+                                                Radio.Modulation mainModulation = (Radio.Modulation)udpVoicePacket.Modulations[0];
+                                                if (mainModulation == Radio.Modulation.INTERCOM)
                                                 {
                                                     client.TransmittingFrequency = "INTERCOM";
                                                 }
@@ -335,7 +336,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
                         {
                             foreach (var testFrequency in _globalFrequencies)
                             {
-                                if (DCSPlayerRadioInfo.FreqCloseEnough(testFrequency, udpVoice.Frequencies[i]))
+                                if (RadioInfo.FreqCloseEnough(testFrequency, udpVoice.Frequencies[i]))
                                 {
                                     //ignore everything as its global frequency
                                     global = true;
@@ -361,7 +362,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
                                     RadioReceivingState radioReceivingState = null;
                                     bool decryptable;
                                     var receivingRadio = radioInfo.CanHearTransmission(udpVoice.Frequencies[i],
-                                        (RadioInformation.Modulation)udpVoice.Modulations[i],
+                                        (Radio.Modulation)udpVoice.Modulations[i],
                                         udpVoice.Encryptions[i],
                                         strictEncryption,
                                         udpVoice.UnitId,
@@ -389,7 +390,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
                         {
                             foreach (var testFrequency in _testFrequencies)
                             {
-                                if (DCSPlayerRadioInfo.FreqCloseEnough(testFrequency, frequency))
+                                if (RadioInfo.FreqCloseEnough(testFrequency, frequency))
                                 {
                                     //send back to sending client as its a test frequency
                                     outgoingList.Add(ip);

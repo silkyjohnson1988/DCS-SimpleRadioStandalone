@@ -5,7 +5,6 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using Ciribob.DCS.SimpleRadio.Standalone.Common;
-using Ciribob.DCS.SimpleRadio.Standalone.Common.DCSState;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 using Ciribob.DCS.SimpleRadio.Standalone.ExternalAudioClient.Models;
 using Easy.MessageHub;
@@ -21,17 +20,17 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.ExternalAudioClient.Network
         private volatile bool _stop = false;
 
         private readonly string _guid;
-        private readonly DCSPlayerRadioInfo gameState;
+        private readonly RadioInfo gameState;
         private IPEndPoint _serverEndpoint;
         private TcpClient _tcpClient;
 
         private static readonly int MAX_DECODE_ERRORS = 5;
         private readonly string name;
         private readonly int coalition;
-        private DCSLatLngPosition position;
+        private LatLngPosition position;
         private bool _allowRecord;
 
-        public SRSClientSyncHandler(string guid, DCSPlayerRadioInfo gameState, string name, int coalition, DCSLatLngPosition position, bool Record)
+        public SRSClientSyncHandler(string guid, RadioInfo gameState, string name, int coalition, LatLngPosition position, bool Record)
         {
             _guid = guid;
             this.gameState = gameState;

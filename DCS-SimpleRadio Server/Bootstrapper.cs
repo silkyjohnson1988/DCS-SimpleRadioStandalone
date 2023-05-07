@@ -38,8 +38,6 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server
             SetupLogging();
 
             GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;
-
-            Analytics.Log("Server", "Startup", Guid.NewGuid().ToString());
         }
 
         private void SetupLogging()

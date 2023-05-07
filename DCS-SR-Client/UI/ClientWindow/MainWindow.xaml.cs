@@ -131,7 +131,6 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI
             }
 
             _guid = ClientStateSingleton.Instance.ShortGUID;
-            Analytics.Log("Client", "Startup", _globalSettings.GetClientSetting(GlobalSettingsKeys.ClientIdLong).RawValue);
 
             InitSettingsScreen();
 

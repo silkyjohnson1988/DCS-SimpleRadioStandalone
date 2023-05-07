@@ -11,6 +11,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models;
 
 namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network
 {

@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers;
+using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models;
+using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.Models;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Settings;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Utils;
@@ -20,7 +22,7 @@ using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Setting;
 using FragLabs.Audio.Codecs;
 using NLog;
-using static Ciribob.DCS.SimpleRadio.Standalone.Common.RadioInformation;
+using static Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models.DCSRadioInformation;
 using Timer = Cabhishek.Timers.Timer;
 
 namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network
@@ -391,7 +393,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network
 
                                         var radio = _clientStateSingleton.DcsPlayerRadioInfo.CanHearTransmission(
                                             udpVoicePacket.Frequencies[i],
-                                            (RadioInformation.Modulation) udpVoicePacket.Modulations[i],
+                                            (DCSRadioInformation.Modulation) udpVoicePacket.Modulations[i],
                                             udpVoicePacket.Encryptions[i],
                                             strictEncryption,
                                             udpVoicePacket.UnitId,
@@ -405,8 +407,8 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network
                                         if (radio != null && state != null)
                                         {
                                             if (
-                                                radio.modulation == RadioInformation.Modulation.INTERCOM
-                                                || radio.modulation == RadioInformation.Modulation.MIDS // IGNORE LOS and Distance for MIDS - we assume a Link16 Network is in place
+                                                radio.modulation == DCSRadioInformation.Modulation.INTERCOM
+                                                || radio.modulation == DCSRadioInformation.Modulation.MIDS // IGNORE LOS and Distance for MIDS - we assume a Link16 Network is in place
                                                 || globalFrequency
                                                 || (
                                                     HasLineOfSight(udpVoicePacket, out losLoss)
@@ -650,10 +652,10 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network
 
             var currentRadio = _clientStateSingleton.DcsPlayerRadioInfo.radios[_clientStateSingleton.DcsPlayerRadioInfo.selected];
 
-            if (currentRadio.modulation == RadioInformation.Modulation.FM 
-                || currentRadio.modulation == RadioInformation.Modulation.AM 
-                || currentRadio.modulation == RadioInformation.Modulation.MIDS 
-                || currentRadio.modulation == RadioInformation.Modulation.HAVEQUICK)
+            if (currentRadio.modulation == DCSRadioInformation.Modulation.FM 
+                || currentRadio.modulation == DCSRadioInformation.Modulation.AM 
+                || currentRadio.modulation == DCSRadioInformation.Modulation.MIDS 
+                || currentRadio.modulation == DCSRadioInformation.Modulation.HAVEQUICK)
             {
                 //only AM and FM block - SATCOM etc dont
 
@@ -667,7 +669,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network
                 for (int i = 1; i < 11; i++)
                 {
                     var radio = _clientStateSingleton.DcsPlayerRadioInfo.radios[i];
-                    if ( (radio.modulation == RadioInformation.Modulation.FM || radio.modulation == RadioInformation.Modulation.AM )&& radio.simul &&
+                    if ( (radio.modulation == DCSRadioInformation.Modulation.FM || radio.modulation == DCSRadioInformation.Modulation.AM )&& radio.simul &&
                         i != _clientStateSingleton.DcsPlayerRadioInfo.selected)
                     {
                         transmitting.Add(i);
@@ -801,7 +803,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network
             return yScore - xScore;
         }
 
-        private List<RadioInformation> PTTPressed(out int sendingOn, bool voice)
+        private List<DCSRadioInformation> PTTPressed(out int sendingOn, bool voice)
         {
             sendingOn = -1;
             if (_clientStateSingleton.InhibitTX.InhibitTX)
@@ -811,7 +813,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network
                 //inhibit for up to 5 seconds since the last message from VAICOM
                 if (time.TotalSeconds < 5)
                 {
-                    return new List<RadioInformation>();
+                    return new List<DCSRadioInformation>();
                 }
             }
 
@@ -826,10 +828,10 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network
                  && radioInfo.control == DCSPlayerRadioInfo.RadioSwitchControls.IN_COCKPIT)
                 || _intercomPtt)
             {
-                if (radioInfo.radios[0].modulation == RadioInformation.Modulation.INTERCOM)
+                if (radioInfo.radios[0].modulation == DCSRadioInformation.Modulation.INTERCOM)
                 {
 
-                    var intercom = new List<RadioInformation>();
+                    var intercom = new List<DCSRadioInformation>();
                     intercom.Add(radioInfo.radios[0]);
                     sendingOn = 0;
 
@@ -851,7 +853,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network
                         }
 
                         //VOX no longer detected
-                        return new List<RadioInformation>();
+                        return new List<DCSRadioInformation>();
 
                     }
                     else
@@ -861,22 +863,22 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network
                 }
             }
 
-            var transmittingRadios = new List<RadioInformation>();
+            var transmittingRadios = new List<DCSRadioInformation>();
             if (_ptt || _clientStateSingleton.DcsPlayerRadioInfo.ptt)
             {
                 // Always add currently selected radio (if valid)
                 var currentSelected = _clientStateSingleton.DcsPlayerRadioInfo.selected;
-                RadioInformation currentlySelectedRadio = null;
+                DCSRadioInformation currentlySelectedRadio = null;
                 if (currentSelected >= 0
                     && currentSelected < _clientStateSingleton.DcsPlayerRadioInfo.radios.Length)
                 {
                     currentlySelectedRadio = _clientStateSingleton.DcsPlayerRadioInfo.radios[currentSelected];
 
                     if (currentlySelectedRadio != null && currentlySelectedRadio.modulation !=
-                                                       RadioInformation.Modulation.DISABLED
+                                                       DCSRadioInformation.Modulation.DISABLED
                                                        && (currentlySelectedRadio.freq > 100 ||
                                                            currentlySelectedRadio.modulation ==
-                                                           RadioInformation.Modulation.INTERCOM))
+                                                           DCSRadioInformation.Modulation.INTERCOM))
                     {
                         sendingOn = currentSelected;
                         transmittingRadios.Add(currentlySelectedRadio);
@@ -890,7 +892,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network
                     if (currentSelected == 0 && currentlySelectedRadio.modulation == Modulation.INTERCOM && _clientStateSingleton.DcsPlayerRadioInfo.inAircraft == false)
                     {
                         //even if simul transmission is enabled - if we're an AWACS we probably dont want this
-                        var intercom = new List<RadioInformation>();
+                        var intercom = new List<DCSRadioInformation>();
                         intercom.Add(radioInfo.radios[0]);
                         sendingOn = 0;
                         return intercom;
@@ -899,8 +901,8 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network
                     var i = 0;
                     foreach (var radio in _clientStateSingleton.DcsPlayerRadioInfo.radios)
                     {
-                        if (radio != null && radio.simul && radio.modulation != RadioInformation.Modulation.DISABLED
-                            && (radio.freq > 100 || radio.modulation == RadioInformation.Modulation.INTERCOM)
+                        if (radio != null && radio.simul && radio.modulation != DCSRadioInformation.Modulation.DISABLED
+                            && (radio.freq > 100 || radio.modulation == DCSRadioInformation.Modulation.INTERCOM)
                             && !transmittingRadios.Contains(radio)
                         ) // Make sure we don't add the selected radio twice
                         {
@@ -922,7 +924,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network
         public ClientAudio Send(byte[] bytes, int len, bool voice)
         {
             // List of radios the transmission is sent to (can me multiple if simultaneous transmission is enabled)
-            List<RadioInformation> transmittingRadios;
+            List<DCSRadioInformation> transmittingRadios;
             //if either PTT is true, a microphone is available && socket connected etc
             var sendingOn = -1;
             if (_ready

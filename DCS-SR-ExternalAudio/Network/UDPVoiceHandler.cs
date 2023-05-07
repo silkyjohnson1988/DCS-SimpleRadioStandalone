@@ -21,7 +21,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.ExternalAudioClient.Network
         private readonly byte[] _guidAsciiBytes;
         private readonly CancellationTokenSource _pingStop = new CancellationTokenSource();
         private readonly int _port;
-        private readonly DCSPlayerRadioInfo gameState;
+        private readonly RadioInfo gameState;
 
         private readonly CancellationTokenSource _stopFlag = new CancellationTokenSource();
 
@@ -36,7 +36,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.ExternalAudioClient.Network
 
 
 
-        public UdpVoiceHandler(string guid, IPAddress address, int port, DCSPlayerRadioInfo gameState)
+        public UdpVoiceHandler(string guid, IPAddress address, int port, RadioInfo gameState)
         {
             _guidAsciiBytes = Encoding.ASCII.GetBytes(guid);
 

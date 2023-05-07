@@ -5,9 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons;
 using Ciribob.DCS.SimpleRadio.Standalone.Common;
-using Ciribob.DCS.SimpleRadio.Standalone.Common.DCSState;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 using Newtonsoft.Json;
 using NLog;
@@ -86,7 +86,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
         {
             _stopExternalAWACSMode = false;
 
-            RadioInformation[] awacsRadios = null;
+            DCSRadioInformation[] awacsRadios = null;
 
             try
             {
@@ -96,7 +96,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
                     try
                     {
                         radioJson = File.ReadAllText(AWACS_RADIOS_CUSTOM_FILE);
-                        awacsRadios = JsonConvert.DeserializeObject<RadioInformation[]>(radioJson);
+                        awacsRadios = JsonConvert.DeserializeObject<DCSRadioInformation[]>(radioJson);
                     }
                     catch (Exception ex)
                     {
@@ -111,27 +111,27 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
                 if (awacsRadios == null)
                 {
                     radioJson = File.ReadAllText(AWACS_RADIOS_FILE);
-                    awacsRadios = JsonConvert.DeserializeObject<RadioInformation[]>(radioJson);
+                    awacsRadios = JsonConvert.DeserializeObject<DCSRadioInformation[]>(radioJson);
                 }
             }
             catch (Exception ex)
             {
                 Logger.Warn(ex, "Failed to load AWACS radio file");
 
-                awacsRadios = new RadioInformation[11];
+                awacsRadios = new DCSRadioInformation[11];
                 for (int i = 0; i < 11; i++)
                 {
-                    awacsRadios[i] = new RadioInformation
+                    awacsRadios[i] = new DCSRadioInformation
                     {
                         freq = 1,
                         freqMin = 1,
                         freqMax = 1,
                         secFreq = 0,
-                        modulation = RadioInformation.Modulation.DISABLED,
+                        modulation = DCSRadioInformation.Modulation.DISABLED,
                         name = "No Radio",
-                        freqMode = RadioInformation.FreqMode.COCKPIT,
-                        encMode = RadioInformation.EncryptionMode.NO_ENCRYPTION,
-                        volMode = RadioInformation.VolumeMode.COCKPIT
+                        freqMode = DCSRadioInformation.FreqMode.COCKPIT,
+                        encMode = DCSRadioInformation.EncryptionMode.NO_ENCRYPTION,
+                        volMode = DCSRadioInformation.VolumeMode.COCKPIT
                     };
                 }
             }

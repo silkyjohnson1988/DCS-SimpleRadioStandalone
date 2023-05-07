@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS;
+using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.LotATC;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.VAICOM;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Recording;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Settings;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons;
 using Ciribob.DCS.SimpleRadio.Standalone.Common;
-using Ciribob.DCS.SimpleRadio.Standalone.Common.DCSState;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Setting;
 using Easy.MessageHub;
@@ -326,7 +326,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network
                         {
                             Coalition = sideInfo.side,
                             Name = sideInfo.name.Length > 0 ? sideInfo.name : _clientStateSingleton.LastSeenName,
-                            LatLngPosition = sideInfo.LngLngPosition,
+                            LatLngPosition = sideInfo.ToNetworkLatLng(),
                             ClientGuid = _guid,
                             RadioInfo = _clientStateSingleton.DcsPlayerRadioInfo,
                             AllowRecord = GlobalSettingsStore.Instance.GetClientSettingBool(GlobalSettingsKeys.AllowRecording)

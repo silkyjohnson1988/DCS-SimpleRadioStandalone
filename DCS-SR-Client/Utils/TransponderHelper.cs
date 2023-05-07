@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons;
-using Ciribob.DCS.SimpleRadio.Standalone.Common.DCSState;
 
 namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Utils
 {
     public static class TransponderHelper
     {
 
-        public static Transponder GetTransponder(bool onlyIfOverlayControls = false)
+        public static DCSTransponder GetTransponder(bool onlyIfOverlayControls = false)
         {
             var dcsPlayerRadioInfo = ClientStateSingleton.Instance.DcsPlayerRadioInfo;
 
-            if ((dcsPlayerRadioInfo != null) && dcsPlayerRadioInfo.IsCurrent() && dcsPlayerRadioInfo.iff !=null && dcsPlayerRadioInfo.iff.control != Transponder.IFFControlMode.DISABLED)
+            if ((dcsPlayerRadioInfo != null) && dcsPlayerRadioInfo.IsCurrent() && dcsPlayerRadioInfo.iff !=null && dcsPlayerRadioInfo.iff.control != DCSTransponder.IFFControlMode.DISABLED)
             {
                 if (onlyIfOverlayControls)
                 {
-                    if (dcsPlayerRadioInfo.iff.control == Transponder.IFFControlMode.OVERLAY)
+                    if (dcsPlayerRadioInfo.iff.control == DCSTransponder.IFFControlMode.OVERLAY)
                     {
                         return dcsPlayerRadioInfo.iff;
                     }
@@ -38,16 +38,16 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Utils
             ClientStateSingleton.Instance.LastSent = 0;
             var trans = GetTransponder(true);
 
-            if (trans != null && trans.status != Transponder.IFFStatus.OFF)
+            if (trans != null && trans.status != DCSTransponder.IFFStatus.OFF)
             {
-                if (trans.status == Common.DCSState.Transponder.IFFStatus.NORMAL)
+                if (trans.status == DCSTransponder.IFFStatus.NORMAL)
                 {
-                    trans.status = Common.DCSState.Transponder.IFFStatus.IDENT;
+                    trans.status = DCSTransponder.IFFStatus.IDENT;
                     return true;
                 }
                 else
                 {
-                    trans.status = Common.DCSState.Transponder.IFFStatus.NORMAL;
+                    trans.status = DCSTransponder.IFFStatus.NORMAL;
                     return true;
                 }
             }
@@ -153,13 +153,13 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Utils
 
             if (trans != null)
             {
-                if (trans.status == Common.DCSState.Transponder.IFFStatus.OFF)
+                if (trans.status == DCSTransponder.IFFStatus.OFF)
                 {
-                    trans.status = Common.DCSState.Transponder.IFFStatus.NORMAL;
+                    trans.status = DCSTransponder.IFFStatus.NORMAL;
                 }
                 else
                 {
-                    trans.status = Common.DCSState.Transponder.IFFStatus.OFF;
+                    trans.status = DCSTransponder.IFFStatus.OFF;
                 }
 
                 return true;
@@ -177,11 +177,11 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Utils
             {
                 if (on)
                 {
-                    trans.status = Common.DCSState.Transponder.IFFStatus.NORMAL;
+                    trans.status = DCSTransponder.IFFStatus.NORMAL;
                 }
                 else
                 {
-                    trans.status = Common.DCSState.Transponder.IFFStatus.OFF;
+                    trans.status = DCSTransponder.IFFStatus.OFF;
                 }
 
                 return true;
@@ -209,15 +209,15 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Utils
             ClientStateSingleton.Instance.LastSent = 0;
             var trans = GetTransponder(true);
 
-            if (trans != null && trans.status != Transponder.IFFStatus.OFF)
+            if (trans != null && trans.status != DCSTransponder.IFFStatus.OFF)
             {
                 if (on)
                 {
-                    trans.status = Transponder.IFFStatus.IDENT;
+                    trans.status = DCSTransponder.IFFStatus.IDENT;
                 }
                 else
                 {
-                    trans.status = Transponder.IFFStatus.NORMAL;
+                    trans.status = DCSTransponder.IFFStatus.NORMAL;
                 }
 
                 return true;
