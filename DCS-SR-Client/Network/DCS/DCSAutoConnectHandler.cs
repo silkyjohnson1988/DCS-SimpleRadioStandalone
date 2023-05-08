@@ -16,31 +16,32 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
 {
     public class DCSAutoConnectHandler
     {
-        private readonly MainWindow.ReceivedAutoConnect _receivedAutoConnect;
+        //TODO fix
+       // private readonly MainWindow.ReceivedAutoConnect _receivedAutoConnect;
         private readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private UdpClient _dcsUdpListener;
 
         private volatile bool _stop;
 
-
-        public DCSAutoConnectHandler(MainWindow.ReceivedAutoConnect receivedAutoConnect)
-        {
-            _receivedAutoConnect = receivedAutoConnect;
-
-            StartDcsBroadcastListener();
-
-            var args = Environment.GetCommandLineArgs();
-
-            foreach (var arg in args)
-            {
-                if (arg.StartsWith("-host="))
-                {
-                    string host = arg.Replace("-host=", "").Trim();
-                    HandleMessage(host);
-                    Logger.Info("Auto Connect Launch for host: " + host);
-                }
-            }
-        }
+        //TODO FIX
+        // public DCSAutoConnectHandler(MainWindow.ReceivedAutoConnect receivedAutoConnect)
+        // {
+        //     _receivedAutoConnect = receivedAutoConnect;
+        //
+        //     StartDcsBroadcastListener();
+        //
+        //     var args = Environment.GetCommandLineArgs();
+        //
+        //     foreach (var arg in args)
+        //     {
+        //         if (arg.StartsWith("-host="))
+        //         {
+        //             string host = arg.Replace("-host=", "").Trim();
+        //             HandleMessage(host);
+        //             Logger.Info("Auto Connect Launch for host: " + host);
+        //         }
+        //     }
+        // }
 
         private void StartDcsBroadcastListener()
         {
@@ -114,7 +115,8 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
                     {
                         try
                         {
-                            _receivedAutoConnect(address[0].Trim(), int.Parse(address[1].Trim()));
+                            //TODO FIX
+                            //  _receivedAutoConnect(address[0].Trim(), int.Parse(address[1].Trim()));
                         }
                         catch (Exception ex)
                         {
@@ -123,7 +125,8 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
                     }
                     else
                     {
-                        _receivedAutoConnect(message, 5002);
+                        //TODO fix
+                       // _receivedAutoConnect(message, 5002);
                     }
                 }));
         }

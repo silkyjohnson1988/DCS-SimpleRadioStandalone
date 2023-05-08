@@ -6,7 +6,7 @@ using Caliburn.Micro;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 
 namespace Ciribob.DCS.SimpleRadio.Standalone.Common.Singletons;
-
+using PropertyChangedBase = Ciribob.SRS.Common.Helpers.PropertyChangedBase;
 public sealed class ConnectedClientsSingleton : PropertyChangedBase
 {
     private static volatile ConnectedClientsSingleton _instance;
@@ -52,20 +52,20 @@ public sealed class ConnectedClientsSingleton : PropertyChangedBase
 
     public void NotifyAll()
     {
-        NotifyOfPropertyChange("Total");
+        NotifyPropertyChanged("Total");
     }
 
     public bool TryRemove(string key, out SRClient value)
     {
         var result = Clients.TryRemove(key, out value);
-        if (result) NotifyOfPropertyChange("Total");
+        if (result) NotifyPropertyChanged("Total");
         return result;
     }
 
     public void Clear()
     {
         Clients.Clear();
-        NotifyOfPropertyChange("Total");
+        NotifyPropertyChanged("Total");
     }
 
     public bool TryGetValue(string key, out SRClient value)

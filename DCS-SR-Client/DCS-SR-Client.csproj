@@ -172,7 +172,6 @@
     <Resource Include="status-disconnected.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
     <PackageReference Include="Caliburn.Micro.Core" Version="4.0.212" />
     <PackageReference Include="ControlzEx" Version="5.0.2" />
     <PackageReference Include="Fody" Version="6.7.0">

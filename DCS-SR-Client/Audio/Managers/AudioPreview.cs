@@ -64,6 +64,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio
 
         public float MicMax { get; set; } = -100;
         public float SpeakerMax { get; set; } = -100;
+        public bool IsPreviewing => _waveOut != null;
 
         private bool windowsN;
 

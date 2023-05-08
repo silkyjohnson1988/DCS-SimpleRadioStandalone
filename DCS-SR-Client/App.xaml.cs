@@ -98,9 +98,9 @@ namespace DCS_SR_Client
                 }
             }
 #endif
-
+#if !DEBUG
             RequireAdmin();
-
+#endif
             InitNotificationIcon();
 
         }

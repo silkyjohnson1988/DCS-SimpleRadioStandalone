@@ -6,6 +6,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     mc:Ignorable="d"
     Name="ToggleSettingsControl">
+    <UserControl.Resources>
+        <!--This clears the style to use windows defaults -->
+        <Style TargetType="ToggleButton" />
+    </UserControl.Resources>
 
     <ToggleButton
         Name="Toggle"
@@ -13,6 +17,7 @@
         VerticalContentAlignment="Center"
         IsChecked="{Binding ElementName=ToggleSettingsControl, Path=ToggleValue, Mode=TwoWay}"
         Content="OFF">
+  
 
         <!-- <ToggleButton.Style > -->
         <!--     <Style TargetType="{x:Type ToggleButton}"> -->

@@ -38,13 +38,13 @@ public class MainWindowViewModel : PropertyChangedBase, IHandle<TCPClientStatusM
     private Ciribob.DCS.SimpleRadio.Standalone.Client.UI.AwacsRadioOverlayWindow.RadioOverlayWindow _aircraftMultiRadioOverlay;
 
     private AudioPreview _audioPreview;
-    private TCPClientHandler _client;
+   // private TCPClientHandler _client;
 
     private ClientListWindow _clientListWindow;
 
-    private ServerSettingsWindow.ServerSettingsWindow.ServerSettingsWindow _serverSettingsWindow;
+    private ServerSettingsWindow.ServerSettingsWindow _serverSettingsWindow;
 
-    private RadioOverlayWindow _singleRadioOverlay;
+    private RadioOverlayWindow.RadioOverlayWindow _singleRadioOverlay;
 
     public MainWindowViewModel()
     {
@@ -54,24 +54,17 @@ public class MainWindowViewModel : PropertyChangedBase, IHandle<TCPClientStatusM
 
         ConnectCommand = new DelegateCommand(Connect);
 
-        TrayIconCommand = new DelegateCommand(() =>
-        {
-            Application.Current.MainWindow.Show();
-            Application.Current.MainWindow.WindowState = WindowState.Normal;
-        });
-
         HandheldRadioOverlayCommand = new DelegateCommand(HandheldRadioOverlay);
 
         MultiRadioOverlayCommand = new DelegateCommand(MultiRadioOverlay);
-
-        TrayIconQuitCommand = new DelegateCommand(() => { Application.Current.MainWindow.Close(); });
 
         _updateTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
         _updateTimer.Tick += UpdatePlayerCountAndVUMeters;
         _updateTimer.Start();
 
-        ClientStateSingleton.Instance.PlayerUnitState.Name = Name;
-
+        //TODO check this
+      //  ClientStateSingleton.Instance.PlayerUnitState.Name = Name;
+      
         EventBus.Instance.SubscribeOnUIThread(this);
 
         ServerSettingsCommand = new DelegateCommand(ToggleServerSettings);
@@ -92,8 +85,7 @@ public class MainWindowViewModel : PropertyChangedBase, IHandle<TCPClientStatusM
     public AudioOutputSingleton AudioOutput { get; } = AudioOutputSingleton.Instance;
 
     public InputDeviceManager InputManager { get; set; }
-
-
+    
     public bool IsConnected { get; set; }
 
     //WPF cant invert a binding - this controls the input box for address
@@ -182,26 +174,6 @@ public class MainWindowViewModel : PropertyChangedBase, IHandle<TCPClientStatusM
     public string SpeakerBoostText =>
         VolumeConversionHelper.ConvertLinearDiffToDB(
             VolumeConversionHelper.ConvertVolumeSliderToScale((float)SpeakerBoost));
-
-    public string Name
-    {
-        get
-        {
-            var name = _globalSettings.GetClientSetting(GlobalSettingsKeys.LastUsedName);
-
-            if (name == null || name.RawValue == "")
-                return "FS3D Client";
-            return name.RawValue;
-        }
-        set
-        {
-            if (value != null)
-            {
-                _globalSettings.SetClientSetting(GlobalSettingsKeys.LastUsedName, value);
-                NotifyPropertyChanged();
-            }
-        }
-    }
 
     public string ServerAddress
     {
@@ -301,9 +273,10 @@ public class MainWindowViewModel : PropertyChangedBase, IHandle<TCPClientStatusM
                     var resolvedIp = ip;
                     var port = GetPortFromTextBox();
 
-                    _client = new TCPClientHandler(ClientStateSingleton.Instance.GUID,
-                        ClientStateSingleton.Instance.PlayerUnitState.PlayerUnitStateBase);
-                    _client.TryConnect(new IPEndPoint(resolvedIp, port));
+                    //TODO fix this
+                    // _client = new TCPClientHandler(ClientStateSingleton.Instance.GUID,
+                    //     ClientStateSingleton.Instance.PlayerUnitState.PlayerUnitStateBase);
+                    // _client.TryConnect(new IPEndPoint(resolvedIp, port));
                 }
                 else
                 {
@@ -346,8 +319,9 @@ public class MainWindowViewModel : PropertyChangedBase, IHandle<TCPClientStatusM
         {
         }
 
-        _client?.Disconnect();
-        _client = null;
+        //TODO fix
+      //  _client?.Disconnect();
+     //   _client = null;
 
         //TODO
         // ClientState.DcsPlayerRadioInfo.Reset();
@@ -472,7 +446,7 @@ public class MainWindowViewModel : PropertyChangedBase, IHandle<TCPClientStatusM
         {
             try
             {
-                _audioManager.StartEncoding(ClientState.GUID, InputManager, endPoint);
+                _audioManager.StartEncoding(ClientState.ShortGUID, InputManager, endPoint);
             }
             catch (Exception ex)
             {
@@ -506,7 +480,7 @@ public class MainWindowViewModel : PropertyChangedBase, IHandle<TCPClientStatusM
 
             _singleRadioOverlay?.Close();
 
-            _singleRadioOverlay = new RadioOverlayWindow();
+            _singleRadioOverlay = new RadioOverlayWindow.RadioOverlayWindow();
 
 
             _singleRadioOverlay.ShowInTaskbar =
@@ -536,7 +510,7 @@ public class MainWindowViewModel : PropertyChangedBase, IHandle<TCPClientStatusM
 
             _aircraftMultiRadioOverlay?.Close();
 
-            _aircraftMultiRadioOverlay = new MultiRadioOverlayWindow();
+            _aircraftMultiRadioOverlay = new AwacsRadioOverlayWindow.RadioOverlayWindow();
             _aircraftMultiRadioOverlay.ShowInTaskbar =
                 !_globalSettings.GetClientSettingBool(GlobalSettingsKeys.RadioOverlayTaskbarHide);
             _aircraftMultiRadioOverlay.Show();
@@ -592,8 +566,9 @@ public class MainWindowViewModel : PropertyChangedBase, IHandle<TCPClientStatusM
         //stop timer
         _updateTimer?.Stop();
 
-        _client?.Disconnect();
-        _client = null;
+        //TODO fix
+        // _client?.Disconnect();
+        // _client = null;
 
         Stop();
 
