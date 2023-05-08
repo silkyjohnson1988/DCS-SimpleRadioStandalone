@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models;
 
 namespace Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 

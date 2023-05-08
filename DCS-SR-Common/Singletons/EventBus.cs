@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 
-namespace Ciribob.SRS.Common.Network.Singletons;
+namespace Ciribob.DCS.SimpleRadio.Standalone.Common.Singletons;
 
 public class EventBus
 {

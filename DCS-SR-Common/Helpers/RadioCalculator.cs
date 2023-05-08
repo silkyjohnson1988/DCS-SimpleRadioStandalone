@@ -1,7 +1,7 @@
 ﻿using System;
-using Ciribob.DCS.SimpleRadio.Standalone.Common.DCSState;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 
-namespace Ciribob.DCS.SimpleRadio.Standalone.Common
+namespace Ciribob.DCS.SimpleRadio.Standalone.Common.Helpers
 {
     public class RadioCalculator
     {
@@ -61,7 +61,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Common
             return Math.PI * angle / 180.0;
         }
 
-        public static double CalculateDistanceHaversine(DCSLatLngPosition myLatLng, DCSLatLngPosition clientLatLng)
+        public static double CalculateDistanceHaversine(LatLngPosition myLatLng, LatLngPosition clientLatLng)
         {
             if (myLatLng.lat == clientLatLng.lat || myLatLng.lng == clientLatLng.lng)
             {

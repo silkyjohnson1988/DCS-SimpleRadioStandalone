@@ -16,6 +16,7 @@ using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System.IO;
 using System.Diagnostics;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Helpers;
 
 namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Recording
 {
@@ -53,7 +54,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Recording
 
         private AudioRecordingManager()
         {
-            _sampleRate = AudioManager.OUTPUT_SAMPLE_RATE;
+            _sampleRate = Constants.OUTPUT_SAMPLE_RATE;
             _maxSamples = _sampleRate * MAX_BUFFER_SECONDS;
         
             _stop = true;
@@ -201,7 +202,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Recording
             //should be no more than 80 ms of audio
             //should really be 40 but just in case
             //TODO reuse this but return a new array of the right length
-            float[] mixBuffer = new float[AudioManager.OUTPUT_SEGMENT_FRAMES * 2];
+            float[] mixBuffer = new float[Constants.OUTPUT_SEGMENT_FRAMES * 2];
             float[] secondaryMixBuffer = new float[0];
 
             int primarySamples = 0;
@@ -221,7 +222,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Recording
             //handle guard
             if (secondaryAudio?.Count > 0)
             {
-                secondaryMixBuffer =  new float[AudioManager.OUTPUT_SEGMENT_FRAMES * 2];
+                secondaryMixBuffer =  new float[Constants.OUTPUT_SEGMENT_FRAMES * 2];
                 secondaryMixBuffer = pipeline.ProcessClientTransmissions(secondaryMixBuffer, secondaryAudio, out  secondarySamples);
             }
 

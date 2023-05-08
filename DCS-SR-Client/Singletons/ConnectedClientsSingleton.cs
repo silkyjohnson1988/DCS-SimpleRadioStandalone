@@ -105,7 +105,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons
             return _clients.ContainsKey(key);
         }
 
-        public int ClientsOnFreq(double freq, DCSRadioInformation.Modulation modulation)
+        public int ClientsOnFreq(double freq, Radio.Modulation modulation)
         {
             if (!_serverSettings.GetSettingAsBool(ServerSettingsKeys.SHOW_TUNED_COUNT))
             {

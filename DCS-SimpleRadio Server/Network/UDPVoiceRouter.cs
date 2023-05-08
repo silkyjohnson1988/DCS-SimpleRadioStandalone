@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading;
  using System.Threading.Tasks;
  using Caliburn.Micro;
- using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models;
  using Ciribob.DCS.SimpleRadio.Standalone.Common;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Setting;

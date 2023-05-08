@@ -63,7 +63,6 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Settings
 
         private readonly DirectInput _directInput;
         private readonly Dictionary<Guid, dynamic> _inputDevices = new Dictionary<Guid, dynamic>();
-        private readonly MainWindow.ToggleOverlayCallback _toggleOverlayCallback;
 
         private volatile bool _detectPtt;
 
@@ -74,15 +73,14 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Settings
         private Settings.GlobalSettingsStore _globalSettings = Settings.GlobalSettingsStore.Instance;
 
 
-        public InputDeviceManager(Window window, MainWindow.ToggleOverlayCallback _toggleOverlayCallback)
+        public InputDeviceManager()
         {
             _directInput = new DirectInput();
 
 
             WindowHelper =
-                new WindowInteropHelper(window);
-
-            this._toggleOverlayCallback = _toggleOverlayCallback;
+                new WindowInteropHelper(Application.Current.MainWindow);
+            
 
             LoadWhiteList();
 
@@ -604,7 +602,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Settings
             }
         }
 
-        public void StartDetectPtt(DetectPttCallback callback)
+        public void StartPTTListening(DetectPttCallback callback)
         {
             _detectPtt = true;
             //detect the state of all current buttons
@@ -689,15 +687,17 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Settings
                     if (bindState.IsActive && bindState.MainDevice.InputBind == InputBinding.OverlayToggle)
                     {
                         //run on main
-                        Application.Current.Dispatcher.Invoke(
-                            () => { _toggleOverlayCallback(false,false); });
+                        //TODO fix this
+                        // Application.Current.Dispatcher.Invoke(
+                        //     () => { _toggleOverlayCallback(false,false); });
                         break;
                     }
                     else if (bindState.IsActive && bindState.MainDevice.InputBind == InputBinding.AwacsOverlayToggle)
                     {
                         //run on main
-                        Application.Current.Dispatcher.Invoke(
-                            () => { _toggleOverlayCallback(false, true); });
+                        //TODO fix this
+                        // Application.Current.Dispatcher.Invoke(
+                        //     () => { _toggleOverlayCallback(false, true); });
                         break;
                     }
                     else if ((int)bindState.MainDevice.InputBind >= (int)InputBinding.Up100 &&
@@ -944,5 +944,28 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Settings
 
             return bindStates;
         }
+        
+        
+    #region Singleton Definition
+
+    private static volatile InputDeviceManager _instance;
+    private static readonly object _lock = new();
+
+    public static InputDeviceManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+                lock (_lock)
+                {
+                    if (_instance == null)
+                        _instance = new InputDeviceManager();
+                }
+
+            return _instance;
+        }
+    }
+
+    #endregion
     }
 }

@@ -9,6 +9,7 @@ using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Settings;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons;
 using Ciribob.DCS.SimpleRadio.Standalone.Common;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 using NLog;
 
 namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.AwacsRadioOverlayWindow
@@ -114,7 +115,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.AwacsRadioOverlayWindow
 
                     for (var i = 0; i < dcsPlayerRadioInfo.radios.Length; i++)
                     {
-                        if (dcsPlayerRadioInfo.radios[i].modulation != DCSRadioInformation.Modulation.DISABLED)
+                        if (dcsPlayerRadioInfo.radios[i].modulation != Radio.Modulation.DISABLED)
                         {
                             avalilableRadios++;
                         }

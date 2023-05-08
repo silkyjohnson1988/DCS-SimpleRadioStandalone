@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Ciribob.DCS.SimpleRadio.Standalone.Common
+namespace Ciribob.DCS.SimpleRadio.Standalone.Common.Helpers
 {
     public static class ListHelper
     {

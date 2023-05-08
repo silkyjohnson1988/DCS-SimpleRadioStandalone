@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Settings;
 using SharpDX.DirectInput;
 
-namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI
+namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.ClientWindow
 {
     /// <summary>
     ///     Interaction logic for InputBindingControl.xaml

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Ciribob.DCS.SimpleRadio.Standalone.Client.UI"
              xmlns:input="clr-namespace:Ciribob.DCS.SimpleRadio.Standalone.Client.Settings"
+             xmlns:clientWindow="clr-namespace:Ciribob.DCS.SimpleRadio.Standalone.Client.UI.ClientWindow"
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="400">
     <Grid x:Name="ControlsBindGrid">
@@ -16,7 +17,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <local:InputBindingControl></local:InputBindingControl>
+        <clientWindow:InputBindingControl></clientWindow:InputBindingControl>
         <Button Grid.Column="2" x:Name="NewButton" Content="Add Binding"/>
     </Grid>
 </UserControl>

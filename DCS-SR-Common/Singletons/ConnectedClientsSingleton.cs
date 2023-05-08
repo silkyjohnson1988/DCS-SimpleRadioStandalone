@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Caliburn.Micro;
-using Ciribob.SRS.Common.Helpers;
-using Ciribob.SRS.Common.Network.Models;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 
-namespace Ciribob.SRS.Common.Network.Singletons;
+namespace Ciribob.DCS.SimpleRadio.Standalone.Common.Singletons;
 
 public sealed class ConnectedClientsSingleton : PropertyChangedBase
 {
@@ -17,7 +16,7 @@ public sealed class ConnectedClientsSingleton : PropertyChangedBase
     {
     }
 
-    public ConcurrentDictionary<string, SRClientBase> Clients { get; } = new();
+    public ConcurrentDictionary<string, SRClient> Clients { get; } = new();
 
     public static ConnectedClientsSingleton Instance
     {
@@ -34,7 +33,7 @@ public sealed class ConnectedClientsSingleton : PropertyChangedBase
         }
     }
 
-    public SRClientBase this[string key]
+    public SRClient this[string key]
     {
         get => Clients[key];
         set
@@ -44,7 +43,7 @@ public sealed class ConnectedClientsSingleton : PropertyChangedBase
         }
     }
 
-    public ICollection<SRClientBase> Values => Clients.Values;
+    public ICollection<SRClient> Values => Clients.Values;
 
 
     public int Total => Clients.Count();
@@ -53,23 +52,23 @@ public sealed class ConnectedClientsSingleton : PropertyChangedBase
 
     public void NotifyAll()
     {
-        NotifyPropertyChanged("Total");
+        NotifyOfPropertyChange("Total");
     }
 
-    public bool TryRemove(string key, out SRClientBase value)
+    public bool TryRemove(string key, out SRClient value)
     {
         var result = Clients.TryRemove(key, out value);
-        if (result) NotifyPropertyChanged("Total");
+        if (result) NotifyOfPropertyChange("Total");
         return result;
     }
 
     public void Clear()
     {
         Clients.Clear();
-        NotifyPropertyChanged("Total");
+        NotifyOfPropertyChange("Total");
     }
 
-    public bool TryGetValue(string key, out SRClientBase value)
+    public bool TryGetValue(string key, out SRClient value)
     {
         return Clients.TryGetValue(key, out value);
     }

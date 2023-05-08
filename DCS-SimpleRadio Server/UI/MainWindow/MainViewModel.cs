@@ -33,9 +33,9 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.UI.MainWindow
             _clientAdminViewModel = clientAdminViewModel;
             _eventAggregator.Subscribe(this);
 
-            DisplayName = $"DCS-SRS Server - {UpdaterChecker.VERSION} - {ListeningPort}" ;
+            DisplayName = $"DCS-SRS Server - {Constants.VERSION} - {ListeningPort}" ;
 
-            Logger.Info("DCS-SRS Server Running - " + UpdaterChecker.VERSION);
+            Logger.Info("DCS-SRS Server Running - " + Constants.VERSION);
         }
 
         public bool IsServerRunning { get; private set; } = true;

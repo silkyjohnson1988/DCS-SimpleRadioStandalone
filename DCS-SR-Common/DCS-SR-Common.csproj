@@ -1,12 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <OutputType>Library</OutputType>
     <RootNamespace>Ciribob.DCS.SimpleRadio.Standalone.Common</RootNamespace>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <UseWindowsForms>true</UseWindowsForms>
-    <UseWPF>true</UseWPF>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <LangVersion>11</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -44,6 +41,7 @@
     <PackageReference Include="SourceLink.Create.GitHub" Version="2.8.3" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Network\Models\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -56,5 +54,7 @@
     <SourceLinkSources Remove="DCSState\RadioReceivingState.cs" />
     <SourceLinkSources Remove="DCSState\RadioTransmit.cs" />
     <SourceLinkSources Remove="DCSState\Transponder.cs" />
+    <SourceLinkSources Remove="Timers\ITimer.cs" />
+    <SourceLinkSources Remove="Timers\Timer.cs" />
   </ItemGroup>
 </Project>

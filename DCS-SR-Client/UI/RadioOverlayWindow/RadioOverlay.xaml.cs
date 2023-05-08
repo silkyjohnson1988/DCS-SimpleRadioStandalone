@@ -1,22 +1,17 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
-using Ciribob.DCS.SimpleRadio.Standalone.Client;
-using Ciribob.DCS.SimpleRadio.Standalone.Client.Network;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Settings;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons;
-using Ciribob.DCS.SimpleRadio.Standalone.Client.UI;
-using Ciribob.DCS.SimpleRadio.Standalone.Client.UI.RadioOverlayWindow;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 using NLog;
-using Ciribob.DCS.SimpleRadio.Standalone.Common;
 
-namespace Ciribob.DCS.SimpleRadio.Standalone.Overlay
+namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.RadioOverlayWindow
 {
     /// <summary>
     ///     Interaction logic for RadioOverlayWindow.xaml
@@ -118,7 +113,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Overlay
 
                 for (var i = 0; i < dcsPlayerRadioInfo.radios.Length; i++)
                 {
-                    if (dcsPlayerRadioInfo.radios[i].modulation != DCSRadioInformation.Modulation.DISABLED)
+                    if (dcsPlayerRadioInfo.radios[i].modulation != Radio.Modulation.DISABLED)
                     {
                         availableRadios++;
 
@@ -127,7 +122,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Overlay
 
                 if (availableRadios == 6 
                     || dcsPlayerRadioInfo.radios.Length >=6 
-                    && dcsPlayerRadioInfo.radios[5].modulation != DCSRadioInformation.Modulation.DISABLED)
+                    && dcsPlayerRadioInfo.radios[5].modulation != Radio.Modulation.DISABLED)
                 {
                     Radio5.Visibility = Visibility.Visible;
                     Radio4.Visibility = Visibility.Visible;
@@ -140,7 +135,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Overlay
                 }
                 else if (availableRadios == 5
                          || dcsPlayerRadioInfo.radios.Length >= 5
-                         && dcsPlayerRadioInfo.radios[4].modulation != DCSRadioInformation.Modulation.DISABLED)
+                         && dcsPlayerRadioInfo.radios[4].modulation != Radio.Modulation.DISABLED)
                 {
                     Radio5.Visibility = Visibility.Collapsed;
                     Radio4.Visibility = Visibility.Visible;

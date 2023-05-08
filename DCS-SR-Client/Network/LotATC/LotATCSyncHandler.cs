@@ -223,7 +223,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.LotATC
                 {
                     //only check if its worth it
                     if ((client.LatLngPosition != null
-                         && client.LatLngPosition.isValid()) 
+                         && client.LatLngPosition.IsValid()) 
                         && (client.ClientGuid != _guid)
                         )
                     {

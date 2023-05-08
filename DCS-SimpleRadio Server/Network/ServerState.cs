@@ -119,7 +119,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
                 {
                     if (ServerSettingsStore.Instance.GetGeneralSetting(ServerSettingsKeys.CLIENT_EXPORT_ENABLED).BoolValue)
                     {
-                        ClientListExport data = new ClientListExport { Clients = _connectedClients.Values, ServerVersion = UpdaterChecker.VERSION };
+                        ClientListExport data = new ClientListExport { Clients = _connectedClients.Values, ServerVersion = Constants.VERSION };
                         var json = JsonConvert.SerializeObject(data, new JsonSerializerSettings { ContractResolver = new JsonNetworkPropertiesResolver() }) + "\n";
                         try
                         {
@@ -152,7 +152,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
                                 var host = new IPEndPoint(IPAddress.Parse(ServerSettingsStore.Instance.GetGeneralSetting(ServerSettingsKeys.LOTATC_EXPORT_IP).StringValue),
                                     ServerSettingsStore.Instance.GetGeneralSetting(ServerSettingsKeys.LOTATC_EXPORT_PORT).IntValue);
 
-                                ClientListExport data = new ClientListExport { ServerVersion = UpdaterChecker.VERSION, Clients = new List<SRClient>()};
+                                ClientListExport data = new ClientListExport { ServerVersion = Constants.VERSION, Clients = new List<SRClient>()};
 
                                 Dictionary<uint, SRClient> firstSeatDict = new Dictionary<uint, SRClient>();
                                 Dictionary<uint, SRClient> secondSeatDict = new Dictionary<uint, SRClient>();

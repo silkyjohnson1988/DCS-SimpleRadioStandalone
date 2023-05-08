@@ -184,7 +184,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
                 }
 
                 var clientVersion = Version.Parse(message.Version);
-                var protocolVersion = Version.Parse(UpdaterChecker.MINIMUM_PROTOCOL_VERSION);
+                var protocolVersion = Version.Parse(Constants.MINIMUM_PROTOCOL_VERSION);
 
                 if (clientVersion < protocolVersion)
                 {
@@ -382,7 +382,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Server.Network
                 MsgType = NetworkMessage.MessageType.SYNC,
                 Clients = new List<SRClient>(_clients.Values),
                 ServerSettings = _serverSettings.ToDictionary(),
-                Version = UpdaterChecker.VERSION
+                Version = Constants.VERSION
             };
 
             session.Send(replyMessage.Encode());

@@ -2,6 +2,7 @@
 using System.IO;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers;
 using Ciribob.DCS.SimpleRadio.Standalone.Common;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Helpers;
 using NAudio.Wave;
 using NLog;
 
@@ -11,7 +12,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private static readonly WaveFormat RequiredFormat = new WaveFormat(AudioManager.OUTPUT_SAMPLE_RATE,16,1);
+        private static readonly WaveFormat RequiredFormat = new WaveFormat(Constants.OUTPUT_SAMPLE_RATE,16,1);
 
         /** Needed for list view ***/
         public string Text

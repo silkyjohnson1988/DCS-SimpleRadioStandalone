@@ -23,18 +23,7 @@ public class DCSRadioInformation
         COCKPIT = 0,
         OVERLAY = 1
     }
-
-    public enum Modulation
-    {
-        AM = 0,
-        FM = 1,
-        INTERCOM = 2,
-        DISABLED = 3,
-        HAVEQUICK = 4,
-        SATCOM = 5,
-        MIDS = 6
-    }
-
+    
     public enum RetransmitMode
     {
         COCKPIT = 0,
@@ -72,7 +61,7 @@ public class DCSRadioInformation
     [JsonNetworkIgnoreSerialization] [JsonDCSIgnoreSerialization]
     public FreqMode guardFreqMode = FreqMode.COCKPIT;
 
-    public Modulation modulation = Modulation.DISABLED;
+    public Radio.Modulation modulation = Radio.Modulation.DISABLED;
 
     [JsonNetworkIgnoreSerialization] public string name = "";
 

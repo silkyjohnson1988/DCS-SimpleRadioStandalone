@@ -175,7 +175,6 @@
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
     <PackageReference Include="Caliburn.Micro.Core" Version="4.0.212" />
     <PackageReference Include="ControlzEx" Version="5.0.2" />
-    <PackageReference Include="Easy.MessageHub" Version="3.4.0" />
     <PackageReference Include="Fody" Version="6.7.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

@@ -1,5 +1,6 @@
 ﻿using Ciribob.DCS.SimpleRadio.Standalone.Common;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Helpers;
 
 namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Recording
 {
@@ -11,7 +12,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Recording
         readonly CircularFloatBuffer _fullSamples;
         readonly float[] _deadSamples;
 
-        readonly int _samplesPerMsec = AudioManager.OUTPUT_SAMPLE_RATE / 1000;
+        readonly int _samplesPerMsec = Constants.OUTPUT_SAMPLE_RATE / 1000;
 
         long _curStreamTime;
         long _prevTickTime;

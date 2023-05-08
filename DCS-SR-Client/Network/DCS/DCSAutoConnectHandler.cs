@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Threading;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Settings;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.UI;
+using Ciribob.DCS.SimpleRadio.Standalone.Client.UI.ClientWindow;
 using NLog;
 
 namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS

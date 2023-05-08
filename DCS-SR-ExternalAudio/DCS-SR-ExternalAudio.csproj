@@ -37,6 +37,7 @@
     <Reference Include="System.Transactions" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common-Windows\Common-Windows.csproj" />
     <ProjectReference Include="..\DCS-SR-Common\DCS-SR-Common.csproj" />
     <ProjectReference Include="..\OpusWrapper\OpusWrapper.csproj" />
   </ItemGroup>

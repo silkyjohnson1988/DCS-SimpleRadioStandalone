@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Windows;
 
-namespace WPFCustomMessageBox
+namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.WPFCustomMessageBox
 {
     internal class MessageBoxData
     {

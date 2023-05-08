@@ -11,6 +11,7 @@ using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Settings;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons;
 using Ciribob.DCS.SimpleRadio.Standalone.Common;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Helpers;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Setting;
 using Newtonsoft.Json;
@@ -187,7 +188,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
                 {
                     //only check if its worth it
                     if (client.LatLngPosition !=null 
-                        && client.LatLngPosition.isValid()
+                        && client.LatLngPosition.IsValid()
                         && client.ClientGuid != _guid
                         )
                     {

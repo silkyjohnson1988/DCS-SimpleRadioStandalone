@@ -127,7 +127,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
                         freqMin = 1,
                         freqMax = 1,
                         secFreq = 0,
-                        modulation = DCSRadioInformation.Modulation.DISABLED,
+                        modulation = Radio.Modulation.DISABLED,
                         name = "No Radio",
                         freqMode = DCSRadioInformation.FreqMode.COCKPIT,
                         encMode = DCSRadioInformation.EncryptionMode.NO_ENCRYPTION,

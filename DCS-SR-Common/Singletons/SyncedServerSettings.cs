@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Network.EventMessages;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Setting;
-using Ciribob.FS3D.SimpleRadio.Standalone.Common.Settings.Setting;
-using Ciribob.SRS.Common.Network.Models.EventMessages;
 using NLog;
 
-namespace Ciribob.SRS.Common.Network.Singletons;
+namespace Ciribob.DCS.SimpleRadio.Standalone.Common.Singletons;
 
 public class SyncedServerSettings
 {

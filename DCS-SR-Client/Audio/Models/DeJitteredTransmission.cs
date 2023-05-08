@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models;
 using Ciribob.DCS.SimpleRadio.Standalone.Common;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 
 namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Models
 {
@@ -13,7 +14,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Models
     {
         public int ReceivedRadio { get; set; }
 
-        public DCSRadioInformation.Modulation Modulation { get; internal set; }
+        public Radio.Modulation Modulation { get; internal set; }
 
         public bool Decryptable { get; internal set; }
         public short Encryption { get; internal set; }

@@ -4,17 +4,20 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Models;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Utility;
-using Ciribob.DCS.SimpleRadio.Standalone.Client.Network;
-using Ciribob.DCS.SimpleRadio.Standalone.Client.Recording;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Settings;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons;
+using Ciribob.DCS.SimpleRadio.Standalone.Client.UI.WPFCustomMessageBox;
+using Ciribob.DCS.SimpleRadio.Standalone.Common;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Helpers;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
-using Easy.MessageHub;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Network.Client;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Network.EventMessages;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Singletons;
 using FragLabs.Audio.Codecs;
 using NAudio.CoreAudioApi;
 using NAudio.Utils;
@@ -22,72 +25,75 @@ using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using NLog;
 using WebRtcVadSharp;
-using WPFCustomMessageBox;
-using static Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models.DCSRadioInformation;
 using Application = FragLabs.Audio.Codecs.Opus.Application;
 
 namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
 {
     public class AudioManager
     {
-        public static readonly int MIC_SAMPLE_RATE = 16000;
-        public static readonly int MIC_INPUT_AUDIO_LENGTH_MS = 40;
-        public static readonly int MIC_SEGMENT_FRAMES = (MIC_SAMPLE_RATE / 1000) * MIC_INPUT_AUDIO_LENGTH_MS;
-        public static readonly int OUTPUT_SAMPLE_RATE = 48000;
-        public static readonly int OUTPUT_AUDIO_LENGTH_MS = 40;
-        public static readonly int OUTPUT_SEGMENT_FRAMES = (OUTPUT_SAMPLE_RATE / 1000) * OUTPUT_AUDIO_LENGTH_MS;
 
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+      private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly AudioInputSingleton _audioInputSingleton = AudioInputSingleton.Instance;
+        private readonly AudioOutputSingleton _audioOutputSingleton = AudioOutputSingleton.Instance;
 
-        private readonly ConcurrentDictionary<string, ClientAudioProvider> _clientsBufferedAudio =
-            new ConcurrentDictionary<string, ClientAudioProvider>();
+        private readonly ConcurrentDictionary<string, ClientAudioProvider> _clientsBufferedAudio = new();
 
-        //TEMP
-        private List<RadioMixingProvider> _radioMixingProvider;
+        private readonly ClientStateSingleton _clientStateSingleton = ClientStateSingleton.Instance;
 
-        private SRSMixingSampleProvider _finalMixdown;
+        private readonly GlobalSettingsStore _globalSettings = GlobalSettingsStore.Instance;
 
+        private readonly Queue<short> _micInputQueue = new(Constants.MIC_SEGMENT_FRAMES * 3);
+        //Stopwatch _stopwatch = new Stopwatch();
+
+        private readonly object lockObj = new();
+
+        private readonly bool windowsN;
+
+        private readonly ClientEffectsPipeline _clientEffectsPipeline;
 
         private OpusEncoder _encoder;
 
-        private readonly Queue<short> _micInputQueue = new Queue<short>(MIC_SEGMENT_FRAMES * 3);
+        private int _errorCount;
 
-        //buffers intialised once for use repeatedly
-        short[] _pcmShort = new short[AudioManager.MIC_SEGMENT_FRAMES];
-        byte[] _pcmBytes = new byte[AudioManager.MIC_SEGMENT_FRAMES * 2];
+        private SRSMixingSampleProvider _finalMixdown;
 
-        private byte[] _tempMicOutputBuffer = null;
-
-        private float _speakerBoost = 1.0f;
-        private UdpVoiceHandler _udpVoiceHandler;
-        private VolumeSampleProviderWithPeak _volumeSampleProvider;
-
-        private WasapiCapture _wasapiCapture;
-        private SRSWasapiOut _waveOut;
-        private EventDrivenResampler _resampler;
-
-        public float MicMax { get; set; } = -100;
-        public float SpeakerMax { get; set; } = -100;
-
-        private readonly ClientStateSingleton _clientStateSingleton = ClientStateSingleton.Instance;
-        private readonly AudioInputSingleton _audioInputSingleton = AudioInputSingleton.Instance;
-        private readonly AudioOutputSingleton _audioOutputSingleton = AudioOutputSingleton.Instance;
-        private readonly AudioRecordingManager _audioRecordingManager = AudioRecordingManager.Instance;
-
-        private WebRtcVad _voxDectection;
+        private readonly string _guid;
 
         private SRSWasapiOut _micWaveOut;
         private BufferedWaveProvider _micWaveOutBuffer;
 
-        private readonly GlobalSettingsStore _globalSettings = GlobalSettingsStore.Instance;
-        private Preprocessor _speex;
-        private readonly bool windowsN;
-
         private ClientAudioProvider _passThroughAudioProvider;
+        private readonly byte[] _pcmBytes = new byte[Constants.MIC_SEGMENT_FRAMES * 2];
 
-        private ClientEffectsPipeline _clientEffectsPipeline;
 
-        private string _guid;
+        //buffers intialised once for use repeatedly
+        private readonly short[] _pcmShort = new short[Constants.MIC_SEGMENT_FRAMES];
+
+        private List<RadioMixingProvider> _radioMixingProvider;
+        private EventDrivenResampler _resampler;
+
+        private float _speakerBoost = 1.0f;
+        private Preprocessor _speex;
+
+        private byte[] _tempMicOutputBuffer;
+
+        //private Stopwatch _stopwatch = new();
+
+        private UDPClientAudioProcessor _udpClientAudioProcessor;
+        private UDPVoiceHandler _udpVoiceHandler;
+        private VolumeSampleProviderWithPeak _volumeSampleProvider;
+
+        private WebRtcVad _voxDectection;
+
+        private WasapiCapture _wasapiCapture;
+
+        private SRSWasapiOut _waveOut;
+
+        //MIC SEGMENT FRAMES IS SHORTS not bytes - which is two bytes
+        //however we only want half of a frame IN BYTES not short - so its MIC_SEGMENT_FRAMES *2 (for bytes) then / 2 for bytes again
+        //declare here to save on garbage collection
+        private readonly byte[] tempBuffferFirst20ms = new byte[Constants.MIC_SEGMENT_FRAMES];
+        private readonly byte[] tempBuffferSecond20ms = new byte[Constants.MIC_SEGMENT_FRAMES];
 
         public AudioManager(bool windowsN)
         {
@@ -99,39 +105,130 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
             //_beforeWaveFile = new WaveFileWriter(@"C:\Temp\Test-Preview-Before.wav", new WaveFormat(AudioManager.OUTPUT_SAMPLE_RATE, 32, 1));
         }
 
+        public float MicMax { get; set; } = -100;
+        public float SpeakerMax { get; set; } = -100;
+
         public float SpeakerBoost
         {
-            get { return _speakerBoost; }
+            get => _speakerBoost;
             set
             {
                 _speakerBoost = value;
-                if (_volumeSampleProvider != null)
-                {
-                    _volumeSampleProvider.Volume = value;
-                }
+                if (_volumeSampleProvider != null) _volumeSampleProvider.Volume = value;
             }
         }
-
-        public void StartEncoding(string guid, InputDeviceManager inputManager,
-            IPAddress ipAddress, int port)
+        
+        public Task HandleAsync(SRClientUpdateMessage message, CancellationToken cancellationToken)
         {
-            guid = ClientStateSingleton.Instance.ShortGUID;
+            if (!message.Connected) RemoveClientBuffer(message.SrClient);
 
+            return Task.CompletedTask;
+        }
+        
+        public void InitWaveOut()
+        {
             MMDevice speakers = null;
             if (_audioOutputSingleton.SelectedAudioOutput.Value == null)
-            {
                 speakers = SRSWasapiOut.GetDefaultAudioEndpoint();
-            }
-            else 
-            {
+            else
                 speakers = (MMDevice)_audioOutputSingleton.SelectedAudioOutput.Value;
+
+            _waveOut = new SRSWasapiOut(speakers, AudioClientShareMode.Shared, true, 40, windowsN);
+
+            //add final volume boost to all mixed audio
+            _volumeSampleProvider = new VolumeSampleProviderWithPeak(_finalMixdown,
+                peak => SpeakerMax = (float)VolumeConversionHelper.ConvertFloatToDB(peak));
+            _volumeSampleProvider.Volume = SpeakerBoost;
+
+            if (speakers.AudioClient.MixFormat.Channels == 1)
+            {
+                if (_volumeSampleProvider.WaveFormat.Channels == 2)
+                    _waveOut.Init(_volumeSampleProvider.ToMono());
+                else
+                    //already mono
+                    _waveOut.Init(_volumeSampleProvider);
+            }
+            else
+            {
+                if (_volumeSampleProvider.WaveFormat.Channels == 1)
+                    _waveOut.Init(_volumeSampleProvider.ToStereo());
+                else
+                    //already stereo
+                    _waveOut.Init(_volumeSampleProvider);
             }
 
+            _waveOut.Play();
+        }
+        public void InitMicPassthrough()
+        {
             MMDevice micOutput = null;
             if (_audioOutputSingleton.SelectedMicAudioOutput.Value != null)
             {
                 micOutput = (MMDevice)_audioOutputSingleton.SelectedMicAudioOutput.Value;
+
+                _passThroughAudioProvider = new ClientAudioProvider(true);
+                _micWaveOut = new SRSWasapiOut(micOutput, AudioClientShareMode.Shared, true, 40, windowsN);
+
+                _micWaveOutBuffer =
+                    new BufferedWaveProvider(WaveFormat.CreateIeeeFloatWaveFormat(Constants.OUTPUT_SAMPLE_RATE, 1));
+                _micWaveOutBuffer.ReadFully = true;
+                _micWaveOutBuffer.DiscardOnBufferOverflow = true;
+
+                var sampleProvider = _micWaveOutBuffer.ToSampleProvider();
+
+                if (micOutput.AudioClient.MixFormat.Channels == 1)
+                {
+                    if (sampleProvider.WaveFormat.Channels == 2)
+                        _micWaveOut.Init(sampleProvider.ToMono());
+                    else
+                        //already mono
+                        _micWaveOut.Init(sampleProvider);
+                }
+                else
+                {
+                    if (sampleProvider.WaveFormat.Channels == 1)
+                        _micWaveOut.Init(sampleProvider.ToStereo());
+                    else
+                        //already stereo
+                        _micWaveOut.Init(sampleProvider);
+                }
+
+                _micWaveOut.Play();
             }
+        }
+
+        public void InitEncodersSpeex()
+        {
+            //opus
+            _encoder = OpusEncoder.Create(Constants.MIC_SAMPLE_RATE, 1, Application.Voip);
+            _encoder.ForwardErrorCorrection = false;
+
+            //speex
+            _speex = new Preprocessor(Constants.MIC_SEGMENT_FRAMES, Constants.MIC_SAMPLE_RATE);
+        }
+
+
+        public void InitMicInput()
+        {
+            //TODO handle No MIC scenario
+            var device = (MMDevice)_audioInputSingleton.SelectedAudioInput.Value;
+
+            if (device == null) device = WasapiCapture.GetDefaultCaptureDevice();
+
+            device.AudioEndpointVolume.Mute = false;
+
+            _wasapiCapture = new WasapiCapture(device, true);
+            _wasapiCapture.ShareMode = AudioClientShareMode.Shared;
+            _wasapiCapture.DataAvailable += WasapiCaptureOnDataAvailable;
+            _wasapiCapture.RecordingStopped += WasapiCaptureOnRecordingStopped;
+
+            _wasapiCapture.StartRecording();
+        }
+
+        public void StartEncoding(string guid, InputDeviceManager inputManager,
+            IPEndPoint endPoint)
+        {
+            InitEncodersSpeex();
 
             try
             {
@@ -139,143 +236,33 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
 
                 InitMixers();
 
-                InitVox();
-
-                AudioRecordingManager.Instance.Start();
-
                 //Audio manager should start / stop and cleanup based on connection successfull and disconnect
                 //Should use listeners to synchronise all the state
-
-                _waveOut = new SRSWasapiOut(speakers, AudioClientShareMode.Shared, true, 40,windowsN);
-
-                //add final volume boost to all mixed audio
-                _volumeSampleProvider = new VolumeSampleProviderWithPeak(_finalMixdown,
-                    (peak => SpeakerMax = peak));
-                _volumeSampleProvider.Volume = SpeakerBoost;
-
-                if (speakers.AudioClient.MixFormat.Channels == 1)
-                {
-                    if (_volumeSampleProvider.WaveFormat.Channels == 2)
-                    {
-                        _waveOut.Init(_volumeSampleProvider.ToMono());
-                    }
-                    else
-                    {
-                        //already mono
-                        _waveOut.Init(_volumeSampleProvider);
-                    }
-                }
-                else
-                {
-                    if (_volumeSampleProvider.WaveFormat.Channels == 1)
-                    {
-                        _waveOut.Init(_volumeSampleProvider.ToStereo());
-                    }
-                    else
-                    {
-                        //already stereo
-                        _waveOut.Init(_volumeSampleProvider);
-                    }
-                }
-                _waveOut.Play();
-
-                //opus
-                _encoder = OpusEncoder.Create(MIC_SAMPLE_RATE, 1, Application.Voip);
-                _encoder.ForwardErrorCorrection = false;
-
-                //speex
-                _speex = new Preprocessor(AudioManager.MIC_SEGMENT_FRAMES, AudioManager.MIC_SAMPLE_RATE);
+                InitWaveOut();
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "Error starting audio Output - Quitting! " + ex.Message);
-
-
                 ShowOutputError("Problem Initialising Audio Output!");
-
-
                 Environment.Exit(1);
             }
 
-            _passThroughAudioProvider = new ClientAudioProvider(true);
-
-            if (micOutput != null) // && micOutput !=speakers
+            try
             {
-                try
-                {
-                    _micWaveOut = new SRSWasapiOut(micOutput, AudioClientShareMode.Shared, true, 40,windowsN);
+                InitMicPassthrough();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Error starting mic audio Output - Quitting! " + ex.Message);
 
-                    _micWaveOutBuffer = new BufferedWaveProvider(WaveFormat.CreateIeeeFloatWaveFormat(OUTPUT_SAMPLE_RATE, 1));
-                    _micWaveOutBuffer.ReadFully = true;
-                    _micWaveOutBuffer.DiscardOnBufferOverflow = true;
-
-                    var sampleProvider = _micWaveOutBuffer.ToSampleProvider();
-
-                    if (micOutput.AudioClient.MixFormat.Channels == 1)
-                    {
-                        if (sampleProvider.WaveFormat.Channels == 2)
-                        {
-                            _micWaveOut.Init(sampleProvider.ToMono());
-                        }
-                        else
-                        {
-                            //already mono
-                            _micWaveOut.Init(sampleProvider);
-                        }
-                    }
-                    else
-                    {
-                        if (sampleProvider.WaveFormat.Channels == 1)
-                        {
-                            _micWaveOut.Init(sampleProvider.ToStereo());
-                        }
-                        else
-                        {
-                            //already stereo
-                            _micWaveOut.Init(sampleProvider);
-                        }
-                    }
-
-                    _micWaveOut.Play();
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex, "Error starting mic audio Output - Quitting! " + ex.Message);
-
-                    ShowOutputError("Problem Initialising Mic Audio Output!");
-
-
-                    Environment.Exit(1);
-                }
+                ShowOutputError("Problem Initialising Mic Audio Output!");
+                Environment.Exit(1);
             }
 
             if (_audioInputSingleton.MicrophoneAvailable)
-            {
                 try
                 {
-                    var device = (MMDevice) _audioInputSingleton.SelectedAudioInput.Value;
-
-                    if (device == null)
-                    {
-                        device = WasapiCapture.GetDefaultCaptureDevice();
-                    }
-
-                    device.AudioEndpointVolume.Mute = false;
-
-                    _wasapiCapture = new WasapiCapture(device, true);
-                    _wasapiCapture.ShareMode = AudioClientShareMode.Shared;
-                    _wasapiCapture.DataAvailable += WasapiCaptureOnDataAvailable;
-                    _wasapiCapture.RecordingStopped += WasapiCaptureOnRecordingStopped;
-
-                    _udpVoiceHandler =
-                        new UdpVoiceHandler(guid, ipAddress, port, this, inputManager);
-                    var voiceSenderThread = new Thread(_udpVoiceHandler.Listen);
-
-                    voiceSenderThread.Start();
-
-                    _wasapiCapture.StartRecording();
-
-                    MessageHub.Instance.Subscribe<SRClient>(RemoveClientBuffer);
+                    InitMicInput();
                 }
                 catch (Exception ex)
                 {
@@ -285,16 +272,17 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
 
                     Environment.Exit(1);
                 }
-            }
-            else
-            {
-                //no mic....
-                _udpVoiceHandler =
-                    new UdpVoiceHandler(guid, ipAddress, port, this, inputManager);
-                MessageHub.Instance.Subscribe<SRClient>(RemoveClientBuffer);
-                var voiceSenderThread = new Thread(_udpVoiceHandler.Listen);
-                voiceSenderThread.Start();
-            }
+
+
+            //Start UDP handler
+            _udpVoiceHandler =
+                new UDPVoiceHandler(guid, endPoint);
+            _udpVoiceHandler.Connect();
+
+            _udpClientAudioProcessor = new UDPClientAudioProcessor(_udpVoiceHandler, this, guid);
+            _udpClientAudioProcessor.Start();
+
+            EventBus.Instance.SubscribeOnBackgroundThread(this);
         }
 
 
@@ -302,7 +290,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
         {
             Logger.Error("Recording Stopped");
         }
-        Stopwatch _stopwatch = new Stopwatch();
+      
         // private WaveFileWriter _beforeWaveFile;
         // private WaveFileWriter _afterFileWriter;
 
@@ -312,7 +300,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
             if (_resampler == null)
             {
                 //create and use in the same thread or COM issues
-                _resampler = new EventDrivenResampler(windowsN, _wasapiCapture.WaveFormat, new WaveFormat(AudioManager.MIC_SAMPLE_RATE, 16, 1));
+                _resampler = new EventDrivenResampler(windowsN, _wasapiCapture.WaveFormat, new WaveFormat(Constants.MIC_SAMPLE_RATE, 16, 1));
                  
                 // _afterFileWriter = new WaveFileWriter(@"C:\Temp\Test-Preview-after.wav", new WaveFormat(AudioManager.OUTPUT_SAMPLE_RATE, 16, 1));
             }
@@ -330,10 +318,10 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
                 }
 
                 //read out the queue
-                while (_micInputQueue.Count >= AudioManager.MIC_SEGMENT_FRAMES)
+                while (_micInputQueue.Count >= Constants.MIC_SEGMENT_FRAMES)
                 {
 
-                    for (var i = 0; i < AudioManager.MIC_SEGMENT_FRAMES; i++)
+                    for (var i = 0; i < Constants.MIC_SEGMENT_FRAMES; i++)
                     {
                         _pcmShort[i] = _micInputQueue.Dequeue();
                     }
@@ -382,7 +370,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
                             Buffer.BlockCopy(buff, 0, encoded, 0, len);
 
                             // Console.WriteLine("Sending: " + e.BytesRecorded);
-                            var clientAudio = _udpVoiceHandler.Send(encoded, len, voice);                         
+                            var clientAudio = _udpClientAudioProcessor.Send(encoded, len, voice);                         
 
                             // _beforeWaveFile.Write(pcmBytes, 0, pcmBytes.Length);
 
@@ -434,7 +422,8 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
                                         GlobalSettingsKeys.RecordAudio))
                                     {
                                         ///TODO cache this to avoid the contant lookup
-                                        _audioRecordingManager.AppendPlayerAudio(tempFloat, jitterBufferAudio.ReceivedRadio);
+                                        /// TODO fix recording here
+                                        // _audioRecordingManager.AppendPlayerAudio(tempFloat, jitterBufferAudio.ReceivedRadio);
                                     }
                                    
                                 }
@@ -443,7 +432,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
                         }
                         else
                         {
-                            Logger.Error($"Invalid Bytes for Encoding - {_pcmShort.Length} should be {MIC_SEGMENT_FRAMES} ");
+                            Logger.Error($"Invalid Bytes for Encoding - {_pcmShort.Length} should be {Constants.MIC_SEGMENT_FRAMES} ");
                         }
 
                         _errorCount = 0;
@@ -522,13 +511,13 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
 
         private void InitMixers()
         {
-            _finalMixdown = new SRSMixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(OUTPUT_SAMPLE_RATE, 2));
+            _finalMixdown = new SRSMixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(Constants.OUTPUT_SAMPLE_RATE, 2));
             _finalMixdown.ReadFully = true;
 
             _radioMixingProvider = new List<RadioMixingProvider>();
             for (int i = 0; i < _clientStateSingleton.DcsPlayerRadioInfo.radios.Length; i++)
             {
-                var mix = new RadioMixingProvider(WaveFormat.CreateIeeeFloatWaveFormat(OUTPUT_SAMPLE_RATE, 2), i);
+                var mix = new RadioMixingProvider(WaveFormat.CreateIeeeFloatWaveFormat(Constants.OUTPUT_SAMPLE_RATE, 2), i);
                 _radioMixingProvider.Add(mix);
                 _finalMixdown.AddMixerInput(mix);
             }
@@ -550,14 +539,15 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
             };
         }
 
-        private int _errorCount = 0;
-        //Stopwatch _stopwatch = new Stopwatch();
-
-        object lockObj = new object();
         public void StopEncoding()
         {
             lock(lockObj)
             {
+                           
+                //Stop input handler
+                _udpClientAudioProcessor?.Stop();
+                _udpClientAudioProcessor = null;
+
                 _wasapiCapture?.StopRecording();
                 _wasapiCapture?.Dispose();
                 _wasapiCapture = null;
@@ -584,11 +574,9 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
 
                 _volumeSampleProvider = null;
 
-                if(_radioMixingProvider!=null)
+                if (_radioMixingProvider != null)
                     foreach (var mixer in _radioMixingProvider)
-                    {
                         mixer.RemoveAllMixerInputs();
-                    }
 
                 _radioMixingProvider = new List<RadioMixingProvider>();
 
@@ -612,9 +600,10 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
                 SpeakerMax = -100;
                 MicMax = -100;
 
-                AudioRecordingManager.Instance.Stop();
+                //TODO
+                // AudioRecordingManager.Instance.Stop();
 
-                MessageHub.Instance.ClearSubscriptions();
+                EventBus.Instance.Unsubcribe(this);
             }
         }
 
@@ -667,46 +656,40 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Managers
                 Logger.Error(ex, "Error removing client input");
             }
         }
-
-        //MIC SEGMENT FRAMES IS SHORTS not bytes - which is two bytes
-        //however we only want half of a frame IN BYTES not short - so its MIC_SEGMENT_FRAMES *2 (for bytes) then / 2 for bytes again
-        //declare here to save on garbage collection
-        byte[] tempBuffferFirst20ms = new byte[MIC_SEGMENT_FRAMES];
-        byte[] tempBuffferSecond20ms = new byte[MIC_SEGMENT_FRAMES];
-        bool DoesFrameContainSpeech(byte[] audioFrame, short[] pcmShort)
+        
+        private bool DoesFrameContainSpeech(byte[] audioFrame, short[] pcmShort)
         {
-            Buffer.BlockCopy(audioFrame,0,tempBuffferFirst20ms,0, MIC_SEGMENT_FRAMES);
-            Buffer.BlockCopy(audioFrame, MIC_SEGMENT_FRAMES, tempBuffferSecond20ms, 0, MIC_SEGMENT_FRAMES);
+            Buffer.BlockCopy(audioFrame, 0, tempBuffferFirst20ms, 0, Constants.MIC_SEGMENT_FRAMES);
+            Buffer.BlockCopy(audioFrame, Constants.MIC_SEGMENT_FRAMES, tempBuffferSecond20ms, 0,
+                Constants.MIC_SEGMENT_FRAMES);
 
-            OperatingMode mode = (OperatingMode)_globalSettings.GetClientSettingInt(GlobalSettingsKeys.VOXMode);
+            var mode = (OperatingMode)_globalSettings.GetClientSettingInt(GlobalSettingsKeys.VOXMode);
 
-            if (_voxDectection.OperatingMode != mode)
-            {
-                InitVox();
-            }
+            if (_voxDectection.OperatingMode != mode) InitVox();
 
             //frame size is 40 - this only supports 20
-            bool voice = _voxDectection.HasSpeech(tempBuffferFirst20ms) || _voxDectection.HasSpeech(tempBuffferSecond20ms);
+            var voice = _voxDectection.HasSpeech(tempBuffferFirst20ms) || _voxDectection.HasSpeech(tempBuffferSecond20ms);
 
             if (voice)
             {
                 //calculate the RMS and see if we're over it
                 //voice run first as it ignores background hums very well
-                double rms = VolumeConversionHelper.CalculateRMS(pcmShort);
-                double min = _globalSettings.GetClientSettingDouble(GlobalSettingsKeys.VOXMinimumDB);
+                var rms = VolumeConversionHelper.CalculateRMS(pcmShort);
+                var min = _globalSettings.GetClientSettingDouble(GlobalSettingsKeys.VOXMinimumDB);
 
                 return rms > min;
             }
+
             //no voice so dont bother with RMS
             return false;
         }
 
-        public void PlaySoundEffectStartTransmit(int sendingOn, bool enc, float volume, Modulation modulation)
+        public void PlaySoundEffectStartTransmit(int sendingOn, bool enc, float volume, Radio.Modulation modulation)
         {
             _radioMixingProvider[sendingOn]?.PlaySoundEffectStartTransmit(enc,volume,modulation);
         }
 
-        public void PlaySoundEffectEndTransmit(int sendingOn, float radioVolume, Modulation radioModulation)
+        public void PlaySoundEffectEndTransmit(int sendingOn, float radioVolume, Radio.Modulation radioModulation)
         {
             _radioMixingProvider[sendingOn]?.PlaySoundEffectEndTransmit(radioVolume,radioModulation);
         }

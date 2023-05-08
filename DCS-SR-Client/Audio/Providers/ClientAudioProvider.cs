@@ -13,6 +13,7 @@ using NLog;
 using static Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models.DCSRadioInformation;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Recording;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 
 namespace Ciribob.DCS.SimpleRadio.Standalone.Client
 {
@@ -41,16 +42,16 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client
                 for (int i = 0;  i < radios; i++)
                 {
                     JitterBufferProviderInterface[i] =
-                        new JitterBufferProviderInterface(new WaveFormat(AudioManager.OUTPUT_SAMPLE_RATE, 1));
+                        new JitterBufferProviderInterface(new WaveFormat(Constants.OUTPUT_SAMPLE_RATE, 1));
 
                 }
                 
             }
            // waveWriter = new NAudio.Wave.WaveFileWriter($@"C:\\temp\\output{RandomFloat()}.wav", new WaveFormat(AudioManager.OUTPUT_SAMPLE_RATE, 1));
             
-            _decoder = OpusDecoder.Create(AudioManager.OUTPUT_SAMPLE_RATE, 1);
+            _decoder = OpusDecoder.Create(Constants.OUTPUT_SAMPLE_RATE, 1);
             _decoder.ForwardErrorCorrection = false;
-            _decoder.MaxDataBytes = AudioManager.OUTPUT_SAMPLE_RATE * 4;
+            _decoder.MaxDataBytes = Constants.OUTPUT_SAMPLE_RATE * 4;
         }
 
         public JitterBufferProviderInterface[] JitterBufferProviderInterface { get; }
@@ -125,7 +126,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client
             {
                 // System.Diagnostics.Debug.WriteLine(audio.ClientGuid+"ADDED");
                 //append ms of silence - this functions as our jitter buffer??
-                var silencePad = (AudioManager.OUTPUT_SAMPLE_RATE / 1000) * SILENCE_PAD;
+                var silencePad = (Constants.OUTPUT_SAMPLE_RATE / 1000) * SILENCE_PAD;
                 var newAudio = new float[audio.PcmAudioFloat.Length + silencePad];
                 Buffer.BlockCopy(audio.PcmAudioFloat, 0, newAudio, silencePad, audio.PcmAudioFloat.Length);
                 audio.PcmAudioFloat = newAudio;
@@ -144,7 +145,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client
                         Audio = audio.PcmAudioFloat,
                         PacketNumber = audio.PacketNumber,
                         Decryptable = decrytable,
-                        Modulation = (Modulation)audio.Modulation,
+                        Modulation = (Radio.Modulation)audio.Modulation,
                         ReceivedRadio = audio.ReceivedRadio,
                         Volume = audio.Volume,
                         IsSecondary = audio.IsSecondary,
@@ -168,7 +169,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client
                     Audio = audio.PcmAudioFloat,
                     PacketNumber = audio.PacketNumber,
                     Decryptable = decrytable,
-                    Modulation = (Modulation) audio.Modulation,
+                    Modulation = (Radio.Modulation) audio.Modulation,
                     ReceivedRadio = audio.ReceivedRadio,
                     Volume = audio.Volume,
                     IsSecondary = audio.IsSecondary,
@@ -189,7 +190,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client
                     Audio = audio.PcmAudioFloat,
                     PacketNumber = audio.PacketNumber,
                     Decryptable = decrytable,
-                    Modulation = (Modulation)audio.Modulation,
+                    Modulation = (Radio.Modulation)audio.Modulation,
                     ReceivedRadio = audio.ReceivedRadio,
                     Volume = audio.Volume,
                     IsSecondary = audio.IsSecondary,
@@ -206,7 +207,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client
 
         private void AdjustVolumeForLoss(ClientAudio clientAudio)
         {
-            if (clientAudio.Modulation == (short)Modulation.MIDS || clientAudio.Modulation == (short)Modulation.SATCOM)
+            if (clientAudio.Modulation == (short)Radio.Modulation.MIDS || clientAudio.Modulation == (short)Radio.Modulation.SATCOM)
             {
                 return;
             }

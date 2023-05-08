@@ -261,7 +261,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.RadioOverlayWindow
                     
                 }
 
-                if (currentRadio.modulation == DCSRadioInformation.Modulation.DISABLED) // disabled
+                if (currentRadio.modulation == Radio.Modulation.DISABLED) // disabled
                 {
                     RadioActive.Fill = new SolidColorBrush(Colors.Red);
                     RadioLabel.Text = "No Radio";
@@ -279,11 +279,11 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.RadioOverlayWindow
 
                
 
-                if (currentRadio.modulation == DCSRadioInformation.Modulation.INTERCOM) //intercom
+                if (currentRadio.modulation == Radio.Modulation.INTERCOM) //intercom
                 {
                     RadioFrequency.Text = "INTERCOM";
                 }
-                else if (currentRadio.modulation == DCSRadioInformation.Modulation.MIDS) //MIDS
+                else if (currentRadio.modulation == Radio.Modulation.MIDS) //MIDS
                 {
                     RadioFrequency.Text = "MIDS";
                     if (currentRadio.channel >= 0)
@@ -301,15 +301,15 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.RadioOverlayWindow
                         (currentRadio.freq / MHz).ToString("0.000",
                             CultureInfo.InvariantCulture); //make nuber UK / US style with decimals not commas!
                         
-                    if(currentRadio.modulation == DCSRadioInformation.Modulation.AM)
+                    if(currentRadio.modulation == Radio.Modulation.AM)
                     {
                         RadioFrequency.Text += "AM";
                     }
-                    else if(currentRadio.modulation == DCSRadioInformation.Modulation.FM)
+                    else if(currentRadio.modulation == Radio.Modulation.FM)
                     {
                         RadioFrequency.Text += "FM";
                     }
-                    else if (currentRadio.modulation == DCSRadioInformation.Modulation.HAVEQUICK)
+                    else if (currentRadio.modulation == Radio.Modulation.HAVEQUICK)
                     {
                         RadioFrequency.Text += "HQ";
                     }
@@ -395,7 +395,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.RadioOverlayWindow
                 //update stuff
                 if ((currentRadio.encMode == DCSRadioInformation.EncryptionMode.NO_ENCRYPTION)
                     || (currentRadio.encMode == DCSRadioInformation.EncryptionMode.ENCRYPTION_FULL)
-                    || (currentRadio.modulation == DCSRadioInformation.Modulation.INTERCOM))
+                    || (currentRadio.modulation == Radio.Modulation.INTERCOM))
                 {
                     //Disable everything
                     EncryptionKeySpinner.IsEnabled = false;
@@ -532,7 +532,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.RadioOverlayWindow
             var currentRadio = RadioHelper.GetRadio(RadioId);
 
             if (currentRadio != null &&
-                currentRadio.modulation != DCSRadioInformation.Modulation.DISABLED) // disabled
+                currentRadio.modulation != Radio.Modulation.DISABLED) // disabled
             {
                 //update stuff
                 if (currentRadio.encMode == DCSRadioInformation.EncryptionMode.ENCRYPTION_JUST_OVERLAY)

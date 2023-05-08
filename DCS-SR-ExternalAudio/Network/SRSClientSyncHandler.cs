@@ -155,7 +155,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.ExternalAudioClient.Network
 
                                        break;
                                     case NetworkMessage.MessageType.VERSION_MISMATCH:
-                                        Logger.Error($"Version Mismatch Between Client ({UpdaterChecker.VERSION}) & Server ({serverMessage.Version}) - Disconnecting");
+                                        Logger.Error($"Version Mismatch Between Client ({Constants.VERSION}) & Server ({serverMessage.Version}) - Disconnecting");
 
                                         Disconnect();
                                         break;
@@ -200,7 +200,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.ExternalAudioClient.Network
             try
             {
 
-                message.Version = UpdaterChecker.VERSION;
+                message.Version = Constants.VERSION;
 
                 var json = message.Encode();
 

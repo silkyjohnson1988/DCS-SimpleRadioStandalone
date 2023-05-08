@@ -4,14 +4,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace WPFCustomMessageBox
-{
-    using System.Drawing;
-    using System.Windows;
-    using System.Windows.Interop;
-    using System.Windows.Media;
-    using System.Windows.Media.Imaging;
+using System.Drawing;
+using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
+namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.WPFCustomMessageBox
+{
     /// <summary>
     /// TODO: Update summary.
     /// </summary>

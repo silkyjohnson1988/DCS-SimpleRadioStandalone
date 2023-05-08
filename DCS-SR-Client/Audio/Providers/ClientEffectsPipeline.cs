@@ -9,6 +9,7 @@ using Ciribob.DCS.SimpleRadio.Standalone.Client.DSP;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Settings;
 using Ciribob.DCS.SimpleRadio.Standalone.Common;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Setting;
 using MathNet.Filtering;
 using NAudio.Dsp;
@@ -70,12 +71,12 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
 
             _filters = new OnlineFilter[2];
             _filters[0] =
-                OnlineFilter.CreateBandpass(ImpulseResponse.Finite, AudioManager.OUTPUT_SAMPLE_RATE, 560, 3900);
+                OnlineFilter.CreateBandpass(ImpulseResponse.Finite, Constants.OUTPUT_SAMPLE_RATE, 560, 3900);
             _filters[1] =
-                OnlineFilter.CreateBandpass(ImpulseResponse.Finite, AudioManager.OUTPUT_SAMPLE_RATE, 100, 4500);
+                OnlineFilter.CreateBandpass(ImpulseResponse.Finite, Constants.OUTPUT_SAMPLE_RATE, 100, 4500);
 
-            _highPassFilter = BiQuadFilter.HighPassFilter(AudioManager.OUTPUT_SAMPLE_RATE, 520, 0.97f);
-            _lowPassFilter = BiQuadFilter.LowPassFilter(AudioManager.OUTPUT_SAMPLE_RATE, 4130, 2.0f);
+            _highPassFilter = BiQuadFilter.HighPassFilter(Constants.OUTPUT_SAMPLE_RATE, 520, 0.97f);
+            _lowPassFilter = BiQuadFilter.LowPassFilter(Constants.OUTPUT_SAMPLE_RATE, 4130, 2.0f);
             RefreshSettings();
 
             amCollisionEffect = CachedAudioEffectProvider.Instance.AMCollision;
@@ -134,17 +135,17 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
             // FOR HAVEQUICK - only if its MORE THAN TWO
             if (lastTransmission.ReceivedRadio != 0
                 && !lastTransmission.NoAudioEffects
-                && (lastTransmission.Modulation == DCSRadioInformation.Modulation.AM
-                    || lastTransmission.Modulation == DCSRadioInformation.Modulation.FM
-                    || lastTransmission.Modulation == DCSRadioInformation.Modulation.HAVEQUICK)
+                && (lastTransmission.Modulation == Radio.Modulation.AM
+                    || lastTransmission.Modulation == Radio.Modulation.FM
+                    || lastTransmission.Modulation == Radio.Modulation.HAVEQUICK)
                 && irlRadioRXInterference)
             {
                 if (transmissions.Count > 1)
                 {
                     //All AM is wrecked if more than one transmission
                     //For HQ - only if more than TWO transmissions
-                    if (lastTransmission.Modulation == DCSRadioInformation.Modulation.AM && amCollisionEffect.Loaded
-                    || lastTransmission.Modulation == DCSRadioInformation.Modulation.HAVEQUICK && transmissions.Count > 2)
+                    if (lastTransmission.Modulation == Radio.Modulation.AM && amCollisionEffect.Loaded
+                    || lastTransmission.Modulation == Radio.Modulation.HAVEQUICK && transmissions.Count > 2)
                     {
                         //replace the buffer with our own
                         int outIndex = 0;
@@ -162,7 +163,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
 
                         process = false;
                     }
-                    else if (lastTransmission.Modulation == DCSRadioInformation.Modulation.FM)
+                    else if (lastTransmission.Modulation == Radio.Modulation.FM)
                     {
                         //FM picketing / picket fencing - pick one transmission at random
                         //TODO improve this to pick the stronger frequency?
@@ -193,9 +194,9 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
         {
             if (!transmission.NoAudioEffects)
             {
-                if (transmission.Modulation == DCSRadioInformation.Modulation.MIDS
-                    || transmission.Modulation == DCSRadioInformation.Modulation.SATCOM
-                    || transmission.Modulation == DCSRadioInformation.Modulation.INTERCOM)
+                if (transmission.Modulation == Radio.Modulation.MIDS
+                    || transmission.Modulation == Radio.Modulation.SATCOM
+                    || transmission.Modulation == Radio.Modulation.INTERCOM)
                 {
                     if (radioEffects)
                     {
@@ -225,7 +226,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
             }
         }
 
-        private void AddRadioEffectIntercom(float[] buffer, int count, int offset,DCSRadioInformation.Modulation modulation)
+        private void AddRadioEffectIntercom(float[] buffer, int count, int offset,Radio.Modulation modulation)
         {
             int outputIndex = offset;
             while (outputIndex < offset + count)
@@ -255,7 +256,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
         }
 
 
-        private void AddRadioEffect(float[] buffer, int count, int offset, DCSRadioInformation.Modulation modulation, double freq)
+        private void AddRadioEffect(float[] buffer, int count, int offset, Radio.Modulation modulation, double freq)
         {
             int outputIndex = offset;
              
@@ -291,7 +292,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
                     }
                 }
 
-                if (modulation == DCSRadioInformation.Modulation.FM
+                if (modulation == Radio.Modulation.FM
                     && effectProvider.NATOTone.Loaded
                     && natoToneEnabled)
                 {
@@ -305,7 +306,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
                     }
                 }
 
-                if (modulation == DCSRadioInformation.Modulation.HAVEQUICK
+                if (modulation == Radio.Modulation.HAVEQUICK
                      && effectProvider.HAVEQUICKTone.Loaded
                      && hqToneEnabled)
                 {
@@ -344,11 +345,11 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
             }
         }
 
-        private double AddRadioBackgroundNoiseEffect(double audio, DCSRadioInformation.Modulation modulation, double freq)
+        private double AddRadioBackgroundNoiseEffect(double audio, Radio.Modulation modulation, double freq)
         {
             if (radioBackgroundNoiseEffect)
             {
-                if (modulation == DCSRadioInformation.Modulation.HAVEQUICK || modulation == DCSRadioInformation.Modulation.AM)
+                if (modulation == Radio.Modulation.HAVEQUICK || modulation == Radio.Modulation.AM)
                 {
                     //mix in based on frequency
                     if (freq >= 200d * 1000000)
@@ -397,7 +398,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
                         }
                     }
                 }
-                else if (modulation == DCSRadioInformation.Modulation.FM)
+                else if (modulation == Radio.Modulation.FM)
                 {
                     if (effectProvider.FMNoise.Loaded)
                     {

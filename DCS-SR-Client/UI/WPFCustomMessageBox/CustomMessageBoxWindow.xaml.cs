@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows;
 
-namespace WPFCustomMessageBox
+namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.WPFCustomMessageBox
 {
     /// <summary>
     /// Interaction logic for ModalDialog.xaml

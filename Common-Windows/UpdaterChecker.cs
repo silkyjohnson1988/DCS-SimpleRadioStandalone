@@ -19,15 +19,13 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Common
         // Required for all requests against the GitHub API, as per https://developer.github.com/v3/#user-agent-required
         public static readonly string GITHUB_USER_AGENT = $"{GITHUB_USERNAME}_{GITHUB_REPOSITORY}";
 
-        public static readonly string MINIMUM_PROTOCOL_VERSION = "1.9.0.0";
 
-        public static readonly string VERSION = "2.0.8.5";
 
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public static async void CheckForUpdate(bool checkForBetaUpdates)
         {
-            Version currentVersion = Version.Parse(VERSION);
+            Version currentVersion = Version.Parse(Constants.VERSION);
 
 #if DEBUG
             _logger.Info("Skipping update check due to DEBUG mode");

@@ -4,10 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace WPFCustomMessageBox
-{
-    using System.Windows;
+using System.Windows;
 
+namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.WPFCustomMessageBox
+{
     /// <summary>
     /// Displays a message box.
     /// </summary>

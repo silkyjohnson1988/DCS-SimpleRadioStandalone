@@ -59,6 +59,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common-Windows\Common-Windows.csproj" />
     <ProjectReference Include="..\DCS-SR-Common\DCS-SR-Common.csproj" />
   </ItemGroup>
   <ItemGroup>

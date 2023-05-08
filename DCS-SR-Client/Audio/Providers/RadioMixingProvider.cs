@@ -7,6 +7,8 @@ using Ciribob.DCS.SimpleRadio.Standalone.Client.Recording;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Settings;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons;
 using Ciribob.DCS.SimpleRadio.Standalone.Common;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Helpers;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 using NAudio.Utils;
 using NAudio.Wave;
 
@@ -34,7 +36,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
 
         private readonly CachedAudioEffectProvider _cachedAudioEffectsProvider;
 
-        DCSRadioInformation.Modulation lastModulation = DCSRadioInformation.Modulation.DISABLED;
+        Radio.Modulation lastModulation = Radio.Modulation.DISABLED;
 
         // put these in a struct? 
         private bool hasPlayedTransmissionEnd = true;
@@ -215,7 +217,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
         }
 
         private float[] HandleStartEndTones(float[] mixBuffer, int count, bool transmisson,
-          DCSRadioInformation.Modulation modulation, bool encryption, out int outputSamples)
+          Radio.Modulation modulation, bool encryption, out int outputSamples)
         {
             //enqueue
             if (transmisson && !hasPlayedTransmissionStart)
@@ -259,7 +261,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
             return mixBuffer;
         }
 
-        private void PlaySoundEffectEndReceive(DCSRadioInformation.Modulation modulation)
+        private void PlaySoundEffectEndReceive(Radio.Modulation modulation)
         {
             if (!profileSettings.GetClientSettingBool(ProfileSettingsKeys.RadioRxEffects_End))
             {
@@ -276,7 +278,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
                     effectsBuffer.Write(effect.AudioEffectFloat, 0, effect.AudioEffectFloat.Length);
                 }
             }
-            else if (modulation == DCSRadioInformation.Modulation.MIDS && midsTone)
+            else if (modulation == Radio.Modulation.MIDS && midsTone)
             {
                 //end receive tone for MIDS
                 var effect = _cachedAudioEffectsProvider.MIDSEndTone;
@@ -295,7 +297,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
             }
         }
 
-        public void PlaySoundEffectStartReceive(bool encrypted, DCSRadioInformation.Modulation modulation)
+        public void PlaySoundEffectStartReceive(bool encrypted, Radio.Modulation modulation)
         {
             if (!profileSettings.GetClientSettingBool(ProfileSettingsKeys.RadioRxEffects_Start))
             {
@@ -304,7 +306,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
 
             bool midsTone = profileSettings.GetClientSettingBool(ProfileSettingsKeys.MIDSRadioEffect);
 
-            if (modulation == DCSRadioInformation.Modulation.MIDS && midsTone)
+            if (modulation == Radio.Modulation.MIDS && midsTone)
             {
                 //no tone for MIDS
                 return;
@@ -339,7 +341,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
             }
         }
 
-        public void PlaySoundEffectStartTransmit(bool encrypted, float volume, DCSRadioInformation.Modulation modulation)
+        public void PlaySoundEffectStartTransmit(bool encrypted, float volume, Radio.Modulation modulation)
         {
             lastModulation = modulation;
             lastVolume = volume;
@@ -367,7 +369,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
                     effectsBuffer.Write(effect.AudioEffectFloat, 0, effect.AudioEffectFloat.Length);
                 }
             }
-            else if (modulation == DCSRadioInformation.Modulation.MIDS && midsTone)
+            else if (modulation == Radio.Modulation.MIDS && midsTone)
             {
                 var effect = _cachedAudioEffectsProvider.MIDSTransmitTone;
                 if (effect.Loaded)
@@ -386,7 +388,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
             }
         }
 
-        public void PlaySoundEffectEndTransmit(float volume, DCSRadioInformation.Modulation modulation)
+        public void PlaySoundEffectEndTransmit(float volume, Radio.Modulation modulation)
         {
             lastModulation = modulation;
             lastVolume = volume;
@@ -406,7 +408,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Audio.Providers
                     effectsBuffer.Write(effect.AudioEffectFloat, 0, effect.AudioEffectFloat.Length);
                 }
             }
-            else if (modulation == DCSRadioInformation.Modulation.MIDS && midsTone)
+            else if (modulation == Radio.Modulation.MIDS && midsTone)
             {
                 var effect = _cachedAudioEffectsProvider.MIDSEndTone;
                 if (effect.Loaded)

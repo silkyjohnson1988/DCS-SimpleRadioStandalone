@@ -39,7 +39,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Common.Network
 
         public string Encode()
         {
-            Version = UpdaterChecker.VERSION;
+            Version = Constants.VERSION;
             return JsonConvert.SerializeObject(this, JsonSerializerSettings) + "\n";
 
         }

@@ -1,12 +1,11 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Ciribob.DCS.SimpleRadio.Standalone.Client.Network;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons;
-using Ciribob.DCS.SimpleRadio.Standalone.Common;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 
-namespace Ciribob.DCS.SimpleRadio.Standalone.Overlay
+namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.RadioOverlayWindow
 {
     /// <summary>
     ///     Interaction logic for IntercomControlGroup.xaml
@@ -27,7 +26,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Overlay
         {
             var currentRadio = _clientStateSingleton.DcsPlayerRadioInfo.radios[RadioId];
 
-            if (currentRadio.modulation != DCSRadioInformation.Modulation.DISABLED)
+            if (currentRadio.modulation != Radio.Modulation.DISABLED)
             {
                 if (_clientStateSingleton.DcsPlayerRadioInfo.control ==
                     DCSPlayerRadioInfo.RadioSwitchControls.HOTAS)
@@ -47,7 +46,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Overlay
         {
             var currentRadio = _clientStateSingleton.DcsPlayerRadioInfo.radios[RadioId];
 
-            if (currentRadio.modulation != DCSRadioInformation.Modulation.DISABLED)
+            if (currentRadio.modulation != Radio.Modulation.DISABLED)
             {
                 if (currentRadio.volMode == DCSRadioInformation.VolumeMode.OVERLAY)
                 {
@@ -115,7 +114,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Overlay
 
                 }
 
-                if (currentRadio.modulation == DCSRadioInformation.Modulation.INTERCOM) //intercom
+                if (currentRadio.modulation == Radio.Modulation.INTERCOM) //intercom
                 {
                     RadioLabel.Text = "INTERCOM";
 

@@ -174,7 +174,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
                     {
                         var clientRadio = _clientStateSingleton.DcsPlayerRadioInfo.radios[i];
                         
-                        if (clientRadio.modulation != DCSRadioInformation.Modulation.DISABLED)
+                        if (clientRadio.modulation != Radio.Modulation.DISABLED)
                         {
                             tunedClients[i] = connectedClientsSingleton.ClientsOnFreq(clientRadio.freq, clientRadio.modulation);
                         }
@@ -297,7 +297,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
                     clientRadio.freqMax = 1;
                     clientRadio.secFreq = 0;
                     clientRadio.retransmit = false;
-                    clientRadio.modulation = DCSRadioInformation.Modulation.DISABLED;
+                    clientRadio.modulation = Radio.Modulation.DISABLED;
                     clientRadio.name = "No Radio";
                     clientRadio.rtMode = DCSRadioInformation.RetransmitMode.DISABLED;
                     clientRadio.retransmit = false;
@@ -314,7 +314,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
 
 
                 if ((updateRadio.expansion && !expansion) ||
-                    (updateRadio.modulation == DCSRadioInformation.Modulation.DISABLED))
+                    (updateRadio.modulation == Radio.Modulation.DISABLED))
                 {
                     //expansion radio, not allowed
                     clientRadio.freq = 1;
@@ -322,7 +322,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
                     clientRadio.freqMax = 1;
                     clientRadio.secFreq = 0;
                     clientRadio.retransmit = false;
-                    clientRadio.modulation = DCSRadioInformation.Modulation.DISABLED;
+                    clientRadio.modulation = Radio.Modulation.DISABLED;
                     clientRadio.name = "No Radio";
                     clientRadio.rtMode = DCSRadioInformation.RetransmitMode.DISABLED;
                     clientRadio.retransmit = false;

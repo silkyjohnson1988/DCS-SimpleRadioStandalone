@@ -10,7 +10,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Markup;
 
-namespace MvvmEventBinding
+namespace Ciribob.DCS.SimpleRadio.Standalone.Client.UI.MVVMEventBinding
 {
   public class EventBindingExtension : MarkupExtension
   {

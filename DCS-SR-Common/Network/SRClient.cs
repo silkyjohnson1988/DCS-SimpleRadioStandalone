@@ -1,8 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Net;
-using System.Net.Sockets;
-using System.Windows.Media;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Helpers;
 using Newtonsoft.Json;
 
@@ -61,24 +59,25 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Common.Network
             }
         }
 
-        [JsonIgnore]
-        public SolidColorBrush ClientCoalitionColour
-        {
-            get
-            {
-                switch (Coalition)
-                {
-                    case 0:
-                        return new SolidColorBrush(Colors.White);
-                    case 1:
-                        return new SolidColorBrush(Colors.Red);
-                    case 2:
-                        return new SolidColorBrush(Colors.Blue);
-                    default:
-                        return new SolidColorBrush(Colors.White);
-                }
-            }
-        }
+        //TODO fix this
+        // [JsonIgnore]
+        // public SolidColorBrush ClientCoalitionColour
+        // {
+        //     get
+        //     {
+        //         switch (Coalition)
+        //         {
+        //             case 0:
+        //                 return new SolidColorBrush(Colors.White);
+        //             case 1:
+        //                 return new SolidColorBrush(Colors.Red);
+        //             case 2:
+        //                 return new SolidColorBrush(Colors.Blue);
+        //             default:
+        //                 return new SolidColorBrush(Colors.White);
+        //         }
+        //     }
+        // }
 
         [JsonIgnore]
         public bool Muted { get; set; }

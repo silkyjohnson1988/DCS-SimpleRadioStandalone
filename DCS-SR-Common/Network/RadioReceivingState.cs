@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models;
+namespace Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 
 public class RadioReceivingState
 {
