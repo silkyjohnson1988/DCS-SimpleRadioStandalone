@@ -17,6 +17,8 @@ using Ciribob.DCS.SimpleRadio.Standalone.Client.UI.ClientWindow.ClientList;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.UI.WPFCustomMessageBox;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Utils;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Helpers;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Network.Client;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Network.EventMessages;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Singletons;
 using NAudio.CoreAudioApi;
@@ -45,6 +47,7 @@ public class MainWindowViewModel : PropertyChangedBase, IHandle<TCPClientStatusM
     private ServerSettingsWindow.ServerSettingsWindow _serverSettingsWindow;
 
     private RadioOverlayWindow.RadioOverlayWindow _singleRadioOverlay;
+    private TCPClientHandler _client;
 
     public MainWindowViewModel()
     {
@@ -274,9 +277,24 @@ public class MainWindowViewModel : PropertyChangedBase, IHandle<TCPClientStatusM
                     var port = GetPortFromTextBox();
 
                     //TODO fix this
-                    // _client = new TCPClientHandler(ClientStateSingleton.Instance.GUID,
-                    //     ClientStateSingleton.Instance.PlayerUnitState.PlayerUnitStateBase);
-                    // _client.TryConnect(new IPEndPoint(resolvedIp, port));
+                    _client = new TCPClientHandler(ClientStateSingleton.Instance.ShortGUID,
+                        new SRClient
+                        {
+                            Coalition = 0,
+                            AllowRecord =
+                                GlobalSettingsStore.Instance.GetClientSettingBool(GlobalSettingsKeys.AllowRecording),
+                            Muted = false,
+                            LastUpdate = 0,
+                            LastRadioUpdateSent = 0,
+                            RadioInfo = new RadioInfo(),
+                            LatLngPosition = new LatLngPosition(),
+                            LineOfSightLoss = 0,
+                            ClientGuid = ClientStateSingleton.Instance.ShortGUID,
+                            Name = GlobalSettingsStore.Instance.GetClientSetting(GlobalSettingsKeys.LastSeenName).RawValue,
+                            Seat = 0,
+
+                        });
+                    _client.TryConnect(new IPEndPoint(resolvedIp, port));
                 }
                 else
                 {
@@ -319,13 +337,12 @@ public class MainWindowViewModel : PropertyChangedBase, IHandle<TCPClientStatusM
         {
         }
 
-        //TODO fix
-      //  _client?.Disconnect();
-     //   _client = null;
 
-        //TODO
-        // ClientState.DcsPlayerRadioInfo.Reset();
-        // ClientState.PlayerCoaltionLocationMetadata.Reset();
+      _client?.Disconnect();
+      _client = null;
+      
+         ClientStateSingleton.Instance.DcsPlayerRadioInfo.Reset();
+         ClientStateSingleton.Instance.PlayerCoaltionLocationMetadata.Reset();
     }
 
     private string GetAddressFromTextBox()

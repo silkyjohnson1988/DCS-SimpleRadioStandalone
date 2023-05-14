@@ -12,549 +12,551 @@
     <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible">
         <StackPanel>
             <GroupBox Header="Global Settings">
-             <StackPanel>
-                 <GroupBox Header="Auto Connect">
-                          <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="2*" />
+                <StackPanel>
+                    <GroupBox Header="Auto Connect">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="2*" />
 
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
 
-                        </Grid.RowDefinitions>
-                    
-                  <Label Grid.Row="0"
-                         Grid.Column="0"
-                         HorizontalContentAlignment="Center"
-                         VerticalContentAlignment="Center"
-                         Content="Auto Connect" />
+                            </Grid.RowDefinitions>
 
-                  <clientSettingsControl:SettingsToggleControl
-                      Grid.Row="0"
-                      Grid.Column="1"
-                      ToggleValue="{Binding AutoConnect, Mode=TwoWay}" />
-                  
-                  <Label Grid.Row="1"
-                         Grid.Column="0"
-                         HorizontalContentAlignment="Center"
-                         VerticalContentAlignment="Center"
-                         Content="Auto Connect Prompt" />
+                            <Label Grid.Row="0"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Auto Connect" />
 
-                  <clientSettingsControl:SettingsToggleControl
-                      Grid.Row="1"
-                      Grid.Column="1"
-                      ToggleValue="{Binding AutoConnectPrompt, Mode=TwoWay}" />
-                  
-                  <Label Grid.Row="2"
-                         Grid.Column="0"
-                         HorizontalContentAlignment="Center"
-                         VerticalContentAlignment="Center"
-                         Content="Auto Connect Mismatch Prompt" />
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                ToggleValue="{Binding AutoConnect, Mode=TwoWay}" />
 
-                  <clientSettingsControl:SettingsToggleControl
-                      Grid.Row="2"
-                      Grid.Column="1"
-                      ToggleValue="{Binding AutoConnectMismatchPrompt, Mode=TwoWay}" />
+                            <Label Grid.Row="1"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Auto Connect Prompt" />
 
-                    </Grid>
-                 </GroupBox>
-                 <GroupBox Header="SRS Interface">
-                     <Grid>
-                         <Grid.ColumnDefinitions>
-                             <ColumnDefinition Width="2*" />
-                             <ColumnDefinition Width="2*" />
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                ToggleValue="{Binding AutoConnectPrompt, Mode=TwoWay}" />
 
-                         </Grid.ColumnDefinitions>
-                         <Grid.RowDefinitions>
-                             <RowDefinition />
-                             <RowDefinition />
-                             <RowDefinition />
-                             <RowDefinition />
-                             <RowDefinition />
-                             <RowDefinition />
-                         </Grid.RowDefinitions>
-                         
-                         <Label Grid.Row="0"
-                                Grid.Column="0"
-                                HorizontalContentAlignment="Center"
-                                VerticalContentAlignment="Center"
-                                Content="Reset Overlay" />
+                            <Label Grid.Row="2"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Auto Connect Mismatch Prompt" />
 
-                         <Button
-                             Grid.Row="0"
-                             Grid.Column="1"
-                             Content="Reset"
-                             Command="{Binding ResetOverlayCommand}" />
-                         
-                         <Label Grid.Row="1"
-                                Grid.Column="0"
-                                HorizontalContentAlignment="Center"
-                                VerticalContentAlignment="Center"
-                                Content="Hide Overlay Taskbar Item" />
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                ToggleValue="{Binding AutoConnectMismatchPrompt, Mode=TwoWay}" />
 
-                         <clientSettingsControl:SettingsToggleControl
-                             Grid.Row="1"
-                             Grid.Column="1"
-                             ToggleValue="{Binding RadioOverlayTaskbarHide, Mode=TwoWay}" />
-                         
-                         <Label Grid.Row="2"
-                                Grid.Column="0"
-                                HorizontalContentAlignment="Center"
-                                VerticalContentAlignment="Center"
-                                Content="Auto Refocus DCS" />
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="SRS Interface">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="2*" />
 
-                         <clientSettingsControl:SettingsToggleControl
-                             Grid.Row="2"
-                             Grid.Column="1"
-                             ToggleValue="{Binding RefocusDCS, Mode=TwoWay}" />
-                         
-                             
-                         <Label Grid.Row="3"
-                                Grid.Column="0"
-                                HorizontalContentAlignment="Center"
-                                VerticalContentAlignment="Center"
-                                Content="Minimise to tray" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
 
-                         <clientSettingsControl:SettingsToggleControl
-                             Grid.Row="3"
-                             Grid.Column="1"
-                             ToggleValue="{Binding MinimiseToTray, Mode=TwoWay}" />
-                         
-                         <Label Grid.Row="4"
-                                Grid.Column="0"
-                                HorizontalContentAlignment="Center"
-                                VerticalContentAlignment="Center"
-                                Content="Start minimised" />
+                            <Label Grid.Row="0"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Reset Overlay" />
 
-                         <clientSettingsControl:SettingsToggleControl
-                             Grid.Row="4"
-                             Grid.Column="1"
-                             ToggleValue="{Binding StartMinimised, Mode=TwoWay}" />
-                         
-                         <Label Grid.Row="5"
-                                Grid.Column="0"
-                                HorizontalContentAlignment="Center"
-                                VerticalContentAlignment="Center"
-                                Content="Show Transmitter Name (Requires Server ON too)" />
+                            <Button
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Content="Reset"
+                                Command="{Binding ResetOverlayCommand}" />
 
-                         <clientSettingsControl:SettingsToggleControl
-                             Grid.Row="5"
-                             Grid.Column="1"
-                             ToggleValue="{Binding ShowTransmitterName, Mode=TwoWay}" />
-                     </Grid>
-                 </GroupBox>
-                 <GroupBox Header="Microphone"> <Grid>
-                     <Grid.ColumnDefinitions>
-                         <ColumnDefinition Width="2*" />
-                         <ColumnDefinition Width="2*" />
+                            <Label Grid.Row="1"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Hide Overlay Taskbar Item" />
 
-                     </Grid.ColumnDefinitions>
-                     <Grid.RowDefinitions>
-                         <RowDefinition />
-                         <RowDefinition />
-                         <RowDefinition />
-                         <RowDefinition />
-                     </Grid.RowDefinitions>
-                     
-                     <Label Grid.Row="0"
-                            Grid.Column="0"
-                            HorizontalContentAlignment="Center"
-                            VerticalContentAlignment="Center"
-                            Content="Microphone Automatic Gain Control" />
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                ToggleValue="{Binding RadioOverlayTaskbarHide, Mode=TwoWay}" />
 
-                     <clientSettingsControl:SettingsToggleControl
-                         Grid.Row="0"
-                         Grid.Column="1"
-                         ToggleValue="{Binding MicAGC, Mode=TwoWay}" />
-                     
-                     <Label Grid.Row="1"
-                            Grid.Column="0"
-                            HorizontalContentAlignment="Center"
-                            VerticalContentAlignment="Center"
-                            Content="Microphone Noise Suppression" />
+                            <Label Grid.Row="2"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Auto Refocus DCS" />
 
-                     <clientSettingsControl:SettingsToggleControl
-                         Grid.Row="1"
-                         Grid.Column="1"
-                         ToggleValue="{Binding MicDenoise, Mode=TwoWay}" />
-                         
-                 </Grid></GroupBox>
-                 <GroupBox Header="Intercom Hot Mic Voice Detection">
-                     <Grid>
-                         <Grid.ColumnDefinitions>
-                             <ColumnDefinition Width="2*" />
-                             <ColumnDefinition Width="2*" />
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                ToggleValue="{Binding RefocusDCS, Mode=TwoWay}" />
 
-                         </Grid.ColumnDefinitions>
-                         <Grid.RowDefinitions>
-                             <RowDefinition />
-                             <RowDefinition />
-                             <RowDefinition />
-                             <RowDefinition />
-                         </Grid.RowDefinitions>
-                         
-                         <Label Grid.Row="0"
-                                Grid.Column="0"
-                                HorizontalContentAlignment="Center"
-                                VerticalContentAlignment="Center"
-                                Content="Use Voice Detection (VOX) on Intercom Hot Mic" />
 
-                         <clientSettingsControl:SettingsToggleControl
-                             Grid.Row="0"
-                             Grid.Column="1"
-                             ToggleValue="{Binding VOX, Mode=TwoWay}" />
-                         
-                         <Label Grid.Row="1"
-                                Grid.Column="0"
-                                HorizontalContentAlignment="Center"
-                                VerticalContentAlignment="Center"
-                                Content="Voice Detection minimum transmission length(ms)" />
-                         
-                         <StackPanel Grid.Row="1"
-                                     Grid.Column="1" Margin="10">
+                            <Label Grid.Row="3"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Minimise to tray" />
 
-                             <Slider 
-                                     TickPlacement="BottomRight"
-                                     SmallChange="100"
-                                     LargeChange="200"
-                                     IsSnapToTickEnabled="True"
-                                     TickFrequency="100"
-                                     VerticalAlignment="Center"
-                                     VerticalContentAlignment="Center"
-                                     Maximum="2000"
-                                     Value="{Binding VOXMinimumTime}"
-                                     Minimum="0"
-                                     IsEnabled="True" />
-                             <Grid>
-                                 <Grid.ColumnDefinitions>
-                                     <ColumnDefinition Width="*" />
-                                     <ColumnDefinition Width="*" />
-                                     <ColumnDefinition Width="*" />
-                                 </Grid.ColumnDefinitions>
-                                 <Label Grid.Column="0" FontSize="10" Content="0" HorizontalAlignment="Left" />
-                                 <Label Grid.Column="1" FontSize="10" Content="1000" HorizontalAlignment="Center" />
-                                 <Label Grid.Column="2" FontSize="10" Content="2000"
-                                        HorizontalAlignment="Right" />
-                             </Grid>
-                         </StackPanel>
-                         
-                         <Label Grid.Row="2"
-                                Grid.Column="0"
-                                HorizontalContentAlignment="Center"
-                                VerticalContentAlignment="Center"
-                                Content="Voice Detection Sensitivity" />
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                ToggleValue="{Binding MinimiseToTray, Mode=TwoWay}" />
 
-                         <StackPanel Grid.Row="2"
-                                     Grid.Column="1" Margin="10">
+                            <Label Grid.Row="4"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Start minimised" />
 
-                                        <Slider x:Name="VOXMode"
-                                                TickPlacement="BottomRight"
-                                                SmallChange="1"
-                                                LargeChange="1"
-                                                IsSnapToTickEnabled="True"
-                                                TickFrequency="1"
-                                                VerticalAlignment="Center"
-                                                VerticalContentAlignment="Center"
-                                                Maximum="3"
-                                                Value="{Binding VOXMode}"
-                                                Minimum="0"
-                                                ToolTip="The higher the sensitivity the less likely voice will be missed, but the higher the chance of a false positive "
-                                                IsEnabled="True" />
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" FontSize="10" Content="Higher" HorizontalAlignment="Left" />
-                                            <Label Grid.Column="3" FontSize="10" Content="Lower" HorizontalAlignment="Right" />
-                                        </Grid>
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="4"
+                                Grid.Column="1"
+                                ToggleValue="{Binding StartMinimised, Mode=TwoWay}" />
 
-                                    </StackPanel>
+                            <Label Grid.Row="5"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Show Transmitter Name (Requires Server ON too)" />
 
-                                    <Label Grid.Row="3"
-                                           Grid.Column="0"
-                                           HorizontalContentAlignment="Center"
-                                           VerticalContentAlignment="Center"
-                                           Content="Voice Detection Threshold" />
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="5"
+                                Grid.Column="1"
+                                ToggleValue="{Binding ShowTransmitterName, Mode=TwoWay}" />
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Microphone">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="2*" />
 
-                                    <StackPanel Grid.Row="3"
-                                                Grid.Column="1" Margin="10">
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
 
-                                        <Slider x:Name="VOXMinimumRMS"
-                                                TickPlacement="BottomRight"
-                                                SmallChange="2"
-                                                LargeChange="4"
-                                                IsSnapToTickEnabled="True"
-                                                TickFrequency="4"
-                                                VerticalAlignment="Center"
-                                                VerticalContentAlignment="Center"
-                                                Maximum="0"
-                                                Value="{Binding VOXMinimumDB}"
-                                                Minimum="-96"
-                                                IsEnabled="True" />
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" FontSize="10" Content="Lower" HorizontalAlignment="Left" />
-                                            <Label Grid.Column="2" FontSize="10" Content="Higher"
-                                                   HorizontalAlignment="Right" />
-                                        </Grid>
-                                    </StackPanel>
+                            <Label Grid.Row="0"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Microphone Automatic Gain Control" />
 
-                         
-                     </Grid>
-                 </GroupBox>
-                 <GroupBox Header="Recording"> <Grid>
-                     <Grid.ColumnDefinitions>
-                         <ColumnDefinition Width="2*" />
-                         <ColumnDefinition Width="2*" />
-                         
-                         
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                ToggleValue="{Binding MicAGC, Mode=TwoWay}" />
 
-                     </Grid.ColumnDefinitions>
-                     <Grid.RowDefinitions>
-                         <RowDefinition />
-                         <RowDefinition />
-                         <RowDefinition />
-                         <RowDefinition />
-                         <RowDefinition />
-                     </Grid.RowDefinitions>
-                     
-                         <Label Grid.Row="0"
+                            <Label Grid.Row="1"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Microphone Noise Suppression" />
+
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                ToggleValue="{Binding MicDenoise, Mode=TwoWay}" />
+
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Intercom Hot Mic Voice Detection">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="2*" />
+
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Row="0"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Use Voice Detection (VOX) on Intercom Hot Mic" />
+
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                ToggleValue="{Binding VOX, Mode=TwoWay}" />
+
+                            <Label Grid.Row="1"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Voice Detection minimum transmission length(ms)" />
+
+                            <StackPanel Grid.Row="1"
+                                        Grid.Column="1" Margin="10">
+
+                                <Slider
+                                    TickPlacement="BottomRight"
+                                    SmallChange="100"
+                                    LargeChange="200"
+                                    IsSnapToTickEnabled="True"
+                                    TickFrequency="100"
+                                    VerticalAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Maximum="2000"
+                                    Value="{Binding VOXMinimumTime}"
+                                    Minimum="0"
+                                    IsEnabled="True" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" FontSize="10" Content="0" HorizontalAlignment="Left" />
+                                    <Label Grid.Column="1" FontSize="10" Content="1000" HorizontalAlignment="Center" />
+                                    <Label Grid.Column="2" FontSize="10" Content="2000"
+                                           HorizontalAlignment="Right" />
+                                </Grid>
+                            </StackPanel>
+
+                            <Label Grid.Row="2"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Voice Detection Sensitivity" />
+
+                            <StackPanel Grid.Row="2"
+                                        Grid.Column="1" Margin="10">
+
+                                <Slider 
+                                        TickPlacement="BottomRight"
+                                        SmallChange="1"
+                                        LargeChange="1"
+                                        IsSnapToTickEnabled="True"
+                                        TickFrequency="1"
+                                        VerticalAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        Maximum="3"
+                                        Value="{Binding VOXMode}"
+                                        Minimum="0"
+                                        ToolTip="The higher the sensitivity the less likely voice will be missed, but the higher the chance of a false positive "
+                                        IsEnabled="True" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" FontSize="10" Content="Higher" HorizontalAlignment="Left" />
+                                    <Label Grid.Column="3" FontSize="10" Content="Lower" HorizontalAlignment="Right" />
+                                </Grid>
+
+                            </StackPanel>
+
+                            <Label Grid.Row="3"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Voice Detection Threshold" />
+
+                            <StackPanel Grid.Row="3"
+                                        Grid.Column="1" Margin="10">
+
+                                <Slider
+                                        TickPlacement="BottomRight"
+                                        SmallChange="2"
+                                        LargeChange="4"
+                                        IsSnapToTickEnabled="True"
+                                        TickFrequency="4"
+                                        VerticalAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        Maximum="0"
+                                        Value="{Binding VOXMinimumDB}"
+                                        Minimum="-96"
+                                        IsEnabled="True" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" FontSize="10" Content="Lower" HorizontalAlignment="Left" />
+                                    <Label Grid.Column="2" FontSize="10" Content="Higher"
+                                           HorizontalAlignment="Right" />
+                                </Grid>
+                            </StackPanel>
+
+
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Recording">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="2*" />
+
+
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Row="0"
                                    Grid.Column="0"
                                    HorizontalContentAlignment="Center"
                                    VerticalContentAlignment="Center"
                                    Content="Allow Transmissions To Be Recorded" />
 
-                         <clientSettingsControl:SettingsToggleControl
-                             Grid.Row="0"
-                             Grid.Column="1"
-                             ToggleValue="{Binding AllowRecording, Mode=TwoWay}" />
-                         
-                                    <Label Grid.Row="1"
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                ToggleValue="{Binding AllowRecording, Mode=TwoWay}" />
+
+                            <Label Grid.Row="1"
                                    Grid.Column="0"
                                    HorizontalContentAlignment="Center"
                                    VerticalContentAlignment="Center"
                                    Content="Record Transmissions" />
 
-                         <clientSettingsControl:SettingsToggleControl
-                             Grid.Row="1"
-                             Grid.Column="1"
-                             ToggleValue="{Binding RecordAudio, Mode=TwoWay}" />
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                ToggleValue="{Binding RecordAudio, Mode=TwoWay}" />
 
-                                    <Label Grid.Row="2"
+                            <Label Grid.Row="2"
                                    Grid.Column="0"
                                    HorizontalContentAlignment="Center"
                                    VerticalContentAlignment="Center"
                                    Content="Record to Single File" />
 
-                         <clientSettingsControl:SettingsToggleControl
-                             Grid.Row="2"
-                             Grid.Column="1"
-                             ToggleValue="{Binding SingleFileMixdown, Mode=TwoWay}" />
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                ToggleValue="{Binding SingleFileMixdown, Mode=TwoWay}" />
 
-                                    <Label Grid.Row="3"
+                            <Label Grid.Row="3"
                                    Grid.Column="0"
                                    HorizontalContentAlignment="Center"
                                    VerticalContentAlignment="Center"
                                    Content="Recording Quality" />
-                                    <StackPanel Grid.Row="3"
-                                                Grid.Column="1" Margin="10">
+                            <StackPanel Grid.Row="3"
+                                        Grid.Column="1" Margin="10">
 
-                                        <Slider x:Name="RecordingQuality"
-                                                TickPlacement="BottomRight"
-                                                SmallChange="1"
-                                                LargeChange="3"
-                                                IsSnapToTickEnabled="True"
-                                                TickFrequency="1"
-                                                VerticalAlignment="Center"
-                                                VerticalContentAlignment="Center"
-                                                Maximum="9"
-                                                Value="{Binding RecordingQuality}"
-                                                Minimum="0"
-                                                IsEnabled="True"
-                                                ToolTip="Quality can only be set if Record Transmissions is set to off"
-                                                ToolTipService.ShowOnDisabled="True"
-                                                />
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" FontSize="10" Content="0 - Highest" HorizontalAlignment="Left" />
-                                            <Label Grid.Column="1" FontSize="10" Content="Lowest - 9"
-                                                   HorizontalAlignment="Right" />
-                                        </Grid>
-                                    </StackPanel>
+                                <Slider x:Name="RecordingQuality"
+                                        TickPlacement="BottomRight"
+                                        SmallChange="1"
+                                        LargeChange="3"
+                                        IsSnapToTickEnabled="True"
+                                        TickFrequency="1"
+                                        VerticalAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        Maximum="9"
+                                        Value="{Binding RecordingQuality}"
+                                        Minimum="0"
+                                        IsEnabled="True"
+                                        ToolTip="Quality can only be set if Record Transmissions is set to off"
+                                        ToolTipService.ShowOnDisabled="True" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" FontSize="10" Content="0 - Highest"
+                                           HorizontalAlignment="Left" />
+                                    <Label Grid.Column="1" FontSize="10" Content="Lowest - 9"
+                                           HorizontalAlignment="Right" />
+                                </Grid>
+                            </StackPanel>
 
-                                    <Label Grid.Row="4"
+                            <Label Grid.Row="4"
                                    Grid.Column="0"
                                    HorizontalContentAlignment="Center"
                                    VerticalContentAlignment="Center"
                                    Content="Record Tone for Disallowed Audio" />
-                         <clientSettingsControl:SettingsToggleControl
-                             Grid.Row="4"
-                             Grid.Column="1"
-                             ToggleValue="{Binding DisallowedAudioTone, Mode=TwoWay}" />
-                         
-                 </Grid></GroupBox>
-                 <GroupBox Header="Miscellaneous Settings">
-                      <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*" />
-                        <ColumnDefinition Width="2*" />
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="4"
+                                Grid.Column="1"
+                                ToggleValue="{Binding DisallowedAudioTone, Mode=TwoWay}" />
 
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Miscellaneous Settings">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="2*" />
 
-                    </Grid.RowDefinitions>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
 
-                  
-      <Label Grid.Row="0"
+                            </Grid.RowDefinitions>
+
+
+                            <Label Grid.Row="0"
                                    Grid.Column="0"
                                    HorizontalContentAlignment="Center"
                                    VerticalContentAlignment="Center"
                                    Content="Auto Select Profile For Aircraft" />
 
-                                  
-      <clientSettingsControl:SettingsToggleControl
-          Grid.Row="0"
-          Grid.Column="1"
-          ToggleValue="{Binding AutoSelectSettingsProfile, Mode=TwoWay}" />
 
-                                    <Label Grid.Row="1"
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                ToggleValue="{Binding AutoSelectSettingsProfile, Mode=TwoWay}" />
+
+                            <Label Grid.Row="1"
                                    Grid.Column="0"
                                    HorizontalContentAlignment="Center"
                                    VerticalContentAlignment="Center"
                                    Content="Check for beta updates" />
 
-      <clientSettingsControl:SettingsToggleControl
-          Grid.Row="1"
-          Grid.Column="1"
-          ToggleValue="{Binding CheckForBetaUpdates, Mode=TwoWay}" />
-                                    <Label Grid.Row="2"
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                ToggleValue="{Binding CheckForBetaUpdates, Mode=TwoWay}" />
+                            <Label Grid.Row="2"
                                    Grid.Column="0"
                                    HorizontalContentAlignment="Center"
                                    VerticalContentAlignment="Center"
                                    Content="Set SRS Path for DCS" />
 
-                                    <Button Grid.Row="2"
+                            <Button Grid.Row="2"
                                     Grid.Column="1"
                                     HorizontalContentAlignment="Center"
                                     VerticalContentAlignment="Center"
                                     Command="{Binding SetSRSPathCommand}"
                                     Content="Set Path" />
 
-                                    <Label Grid.Row="3"
+                            <Label Grid.Row="3"
                                    Grid.Column="0"
                                    HorizontalContentAlignment="Center"
                                    VerticalContentAlignment="Center"
                                    Content="Require Admin" />
 
-      <clientSettingsControl:SettingsToggleControl
-          Grid.Row="3"
-          Grid.Column="1"
-          ToggleValue="{Binding RequireAdmin, Mode=TwoWay}" />
-      
-                                    <Label Grid.Row="4"
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                ToggleValue="{Binding RequireAdmin, Mode=TwoWay}" />
+
+                            <Label Grid.Row="4"
                                    Grid.Column="0"
                                    HorizontalContentAlignment="Center"
                                    VerticalContentAlignment="Center"
                                    Content="Allow VAICOM TX Inhibit" />
 
-      <clientSettingsControl:SettingsToggleControl
-          Grid.Row="4"
-          Grid.Column="1"
-          ToggleValue="{Binding VAICOMTXInhibitEnabled, Mode=TwoWay}" />
-
-                             
-
-                                    <Label Grid.Row="5"
-                                           Grid.Column="0"
-                                           HorizontalContentAlignment="Center"
-                                           VerticalContentAlignment="Center"
-                                           Content="Allow More Controller Input Devices" />
-      
-      <clientSettingsControl:SettingsToggleControl
-          Grid.Row="5"
-          Grid.Column="1"
-          ToggleValue="{Binding AllowMoreInputs, Mode=TwoWay}" />
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="4"
+                                Grid.Column="1"
+                                ToggleValue="{Binding VAICOMTXInhibitEnabled, Mode=TwoWay}" />
 
 
-                                    <Label Grid.Row="6"
-                                           Grid.Column="0"
-                                           HorizontalContentAlignment="Center"
-                                           VerticalContentAlignment="Center"
-                                           Content="Allow XInput Controller (Xbox controller)" />
+                            <Label Grid.Row="5"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Allow More Controller Input Devices" />
 
-      <clientSettingsControl:SettingsToggleControl
-          Grid.Row="6"
-          Grid.Column="1"
-          ToggleValue="{Binding AllowXInputController, Mode=TwoWay}" />
-      
-                                    <Label Grid.Row="7"
-                                           Grid.Column="0"
-                                           HorizontalContentAlignment="Center"
-                                           VerticalContentAlignment="Center"
-                                           Content="Play connection sounds" />
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="5"
+                                Grid.Column="1"
+                                ToggleValue="{Binding AllowMoreInputs, Mode=TwoWay}" />
 
-      <clientSettingsControl:SettingsToggleControl
-          Grid.Row="7"
-          Grid.Column="1"
-          ToggleValue="{Binding PlayConnectionSounds, Mode=TwoWay}" />
 
-                </Grid>
+                            <Label Grid.Row="6"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Allow XInput Controller (Xbox controller)" />
 
-                 </GroupBox>
-             </StackPanel>
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="6"
+                                Grid.Column="1"
+                                ToggleValue="{Binding AllowXInputController, Mode=TwoWay}" />
 
-               
+                            <Label Grid.Row="7"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Play connection sounds" />
+
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="7"
+                                Grid.Column="1"
+                                ToggleValue="{Binding PlayConnectionSounds, Mode=TwoWay}" />
+
+                        </Grid>
+
+                    </GroupBox>
+                </StackPanel>
+
+
             </GroupBox>
             <GroupBox Header="Profile">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
@@ -643,145 +645,145 @@
                                 <RowDefinition />
                             </Grid.RowDefinitions>
 
-                               <Label Grid.Row="0"
-                                           Grid.Column="0"
-                                           HorizontalContentAlignment="Center"
-                                           VerticalContentAlignment="Center"
-                                           Content="Radio Switch works as Push To Talk (PTT)" />
+                            <Label Grid.Row="0"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Radio Switch works as Push To Talk (PTT)" />
 
-                               <clientSettingsControl:SettingsToggleControl
-                                   Grid.Row="0"
-                                   Grid.Column="1"
-                                   ToggleValue="{Binding RadioSwitchIsPTT, Mode=TwoWay}" />
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                ToggleValue="{Binding RadioSwitchIsPTT, Mode=TwoWay}" />
 
 
-                                    <Label Grid.Row="1"
-                                           Grid.Column="0"
-                                           HorizontalContentAlignment="Center"
-                                           VerticalContentAlignment="Center"
-                                           Content="Auto Select First Channel Preset" />
+                            <Label Grid.Row="1"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Auto Select First Channel Preset" />
 
-                               <clientSettingsControl:SettingsToggleControl
-                                   Grid.Row="1"
-                                   Grid.Column="1"
-                                   ToggleValue="{Binding AutoSelectChannel, Mode=TwoWay}" />
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                ToggleValue="{Binding AutoSelectChannel, Mode=TwoWay}" />
 
-                                    <Label Grid.Row="2"
-                                           Grid.Column="0"
-                                           HorizontalContentAlignment="Center"
-                                           VerticalContentAlignment="Center"
-                                           Content="ALWAYS allow SRS Hotkeys" />
+                            <Label Grid.Row="2"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="ALWAYS allow SRS Hotkeys" />
 
-                               <clientSettingsControl:SettingsToggleControl
-                                   Grid.Row="2"
-                                   Grid.Column="1"
-                                   ToggleValue="{Binding AlwaysAllowHotasControls, Mode=TwoWay}" />
-                               
-                                    <Label Grid.Row="3"
-                                           Grid.Column="0"
-                                           HorizontalContentAlignment="Center"
-                                           VerticalContentAlignment="Center"
-                                           Content="ALWAYS allow Transponder Overlay Controls" />
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                ToggleValue="{Binding AlwaysAllowHotasControls, Mode=TwoWay}" />
 
-                               <clientSettingsControl:SettingsToggleControl
-                                   Grid.Row="3"
-                                   Grid.Column="1"
-                                   ToggleValue="{Binding AlwaysAllowTransponderOverlay, Mode=TwoWay}" />
+                            <Label Grid.Row="3"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="ALWAYS allow Transponder Overlay Controls" />
 
-                                    <Label Grid.Row="4"
-                                           Grid.Column="0"
-                                           HorizontalContentAlignment="Center"
-                                           VerticalContentAlignment="Center"
-                                           Content="Allow INCOCKPIT DCS Controlled PTT" />
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                ToggleValue="{Binding AlwaysAllowTransponderOverlay, Mode=TwoWay}" />
 
-                               <clientSettingsControl:SettingsToggleControl
-                                   Grid.Row="4"
-                                   Grid.Column="1"
-                                   ToggleValue="{Binding AllowDCSPTT, Mode=TwoWay}" />
+                            <Label Grid.Row="4"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Allow INCOCKPIT DCS Controlled PTT" />
 
-                                    <Label Grid.Row="5"
-                                           Grid.Column="0"
-                                           HorizontalContentAlignment="Center"
-                                           VerticalContentAlignment="Center"
-                                           Content="Rotary Style Frequency Increment/Decrement" />
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="4"
+                                Grid.Column="1"
+                                ToggleValue="{Binding AllowDCSPTT, Mode=TwoWay}" />
 
-                               <clientSettingsControl:SettingsToggleControl
-                                   Grid.Row="5"
-                                   Grid.Column="1"
-                                   ToggleValue="{Binding RotaryStyleIncrement, Mode=TwoWay}" />
-                               
-                                    <Label Grid.Row="6"
-                                           Grid.Column="0"
-                                           HorizontalContentAlignment="Center"
-                                           VerticalContentAlignment="Center"
-                                           Content="Push to Talk Release Delay (ms) - SRS Hotkeys only" />
+                            <Label Grid.Row="5"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Rotary Style Frequency Increment/Decrement" />
 
-                                    <StackPanel Grid.Row="6"
-                                                Grid.Column="1" Margin="10">
+                            <clientSettingsControl:SettingsToggleControl
+                                Grid.Row="5"
+                                Grid.Column="1"
+                                ToggleValue="{Binding RotaryStyleIncrement, Mode=TwoWay}" />
 
-                                        <Slider x:Name="PTTReleaseDelay"
-                                                TickPlacement="BottomRight"
-                                                SmallChange="20"
-                                                LargeChange="50"
-                                                IsSnapToTickEnabled="True"
-                                                TickFrequency="50"
-                                                VerticalAlignment="Center"
-                                                VerticalContentAlignment="Center"
-                                                Maximum="1000"
-                                                Value="{Binding PTTReleaseDelay}"
-                                                Minimum="0"
-                                                IsEnabled="True" />
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" FontSize="10" Content="0" HorizontalAlignment="Left" />
-                                            <Label Grid.Column="1" FontSize="10" Content="500"
-                                                   HorizontalAlignment="Center" />
-                                            <Label Grid.Column="2" FontSize="10" Content="1000"
-                                                   HorizontalAlignment="Right" />
-                                        </Grid>
+                            <Label Grid.Row="6"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Push to Talk Release Delay (ms) - SRS Hotkeys only" />
 
-                                    </StackPanel>
+                            <StackPanel Grid.Row="6"
+                                        Grid.Column="1" Margin="10">
 
-                                    <Label Grid.Row="7"
-                                           Grid.Column="0"
-                                           HorizontalContentAlignment="Center"
-                                           VerticalContentAlignment="Center"
-                                           Content="Push to Talk Start Delay (ms) - SRS Hotkeys only" />
+                                <Slider 
+                                        TickPlacement="BottomRight"
+                                        SmallChange="20"
+                                        LargeChange="50"
+                                        IsSnapToTickEnabled="True"
+                                        TickFrequency="50"
+                                        VerticalAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        Maximum="1000"
+                                        Value="{Binding PTTReleaseDelay}"
+                                        Minimum="0"
+                                        IsEnabled="True" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" FontSize="10" Content="0" HorizontalAlignment="Left" />
+                                    <Label Grid.Column="1" FontSize="10" Content="500"
+                                           HorizontalAlignment="Center" />
+                                    <Label Grid.Column="2" FontSize="10" Content="1000"
+                                           HorizontalAlignment="Right" />
+                                </Grid>
 
-                                    <StackPanel Grid.Row="7"
-                                                Grid.Column="1" Margin="10">
+                            </StackPanel>
 
-                                        <Slider x:Name="PTTStartDelay"
-                                                TickPlacement="BottomRight"
-                                                SmallChange="20"
-                                                LargeChange="50"
-                                                IsSnapToTickEnabled="True"
-                                                TickFrequency="50"
-                                                VerticalAlignment="Center"
-                                                VerticalContentAlignment="Center"
-                                                Maximum="1000"
-                                                Value="{Binding PTTStartDelay}"
-                                                Minimum="0"
-                                                IsEnabled="True" />
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" FontSize="10" Content="0" HorizontalAlignment="Left" />
-                                            <Label Grid.Column="1" FontSize="10" Content="500 "
-                                                   HorizontalAlignment="Center" />
-                                            <Label Grid.Column="2" FontSize="10" Content="1000"
-                                                   HorizontalAlignment="Right" />
-                                        </Grid>
+                            <Label Grid.Row="7"
+                                   Grid.Column="0"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   Content="Push to Talk Start Delay (ms) - SRS Hotkeys only" />
 
-                                    </StackPanel>
-                               
+                            <StackPanel Grid.Row="7"
+                                        Grid.Column="1" Margin="10">
+
+                                <Slider
+                                        TickPlacement="BottomRight"
+                                        SmallChange="20"
+                                        LargeChange="50"
+                                        IsSnapToTickEnabled="True"
+                                        TickFrequency="50"
+                                        VerticalAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        Maximum="1000"
+                                        Value="{Binding PTTStartDelay}"
+                                        Minimum="0"
+                                        IsEnabled="True" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" FontSize="10" Content="0" HorizontalAlignment="Left" />
+                                    <Label Grid.Column="1" FontSize="10" Content="500 "
+                                           HorizontalAlignment="Center" />
+                                    <Label Grid.Column="2" FontSize="10" Content="1000"
+                                           HorizontalAlignment="Right" />
+                                </Grid>
+
+                            </StackPanel>
+
                         </Grid>
                     </GroupBox>
 
@@ -880,14 +882,14 @@
                                    VerticalContentAlignment="Center"
                                    Content="Radio Transmit Start Effect" />
 
-                            <ComboBox 
-                                      Grid.Row="2"
-                                      Grid.Column="1"
-                                      Width="215"
-                                      HorizontalAlignment="Center"
-                                      VerticalAlignment="Top"
-                                      ItemsSource="{Binding RadioTransmissionStart}"
-                                      SelectedItem="{Binding SelectedRadioTransmissionStartEffect, Mode=TwoWay}" />
+                            <ComboBox
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Width="215"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                ItemsSource="{Binding RadioTransmissionStart}"
+                                SelectedItem="{Binding SelectedRadioTransmissionStartEffect, Mode=TwoWay}" />
 
                             <Label Grid.Row="3"
                                    Grid.Column="0"
@@ -895,15 +897,15 @@
                                    VerticalContentAlignment="Center"
                                    Content="Radio Transmit End Effect" />
 
-                            <ComboBox 
-                                      Grid.Row="3"
-                                      Grid.Column="1"
-                                      Width="215"
-                                      HorizontalAlignment="Center"
-                                      VerticalAlignment="Top"
-                                      ItemsSource="{Binding RadioTransmissionEnd}"
-                                      SelectedItem="{Binding SelectedRadioTransmissionEndEffect, Mode=TwoWay}" />
-                            
+                            <ComboBox
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Width="215"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                ItemsSource="{Binding RadioTransmissionEnd}"
+                                SelectedItem="{Binding SelectedRadioTransmissionEndEffect, Mode=TwoWay}" />
+
                             <Label Grid.Row="4"
                                    Grid.Column="0"
                                    HorizontalContentAlignment="Center"
@@ -943,8 +945,8 @@
                             <clientSettingsControl:SettingsToggleControl
                                 Grid.Row="6"
                                 Grid.Column="1"
-                                ToggleValue="{Binding EncryptionEffects, Mode=TwoWay}" />
-                            
+                                ToggleValue="{Binding RadioEncryptionEffects, Mode=TwoWay}" />
+
                             <Label Grid.Row="7"
                                    Grid.Column="0"
                                    HorizontalContentAlignment="Center"
@@ -954,7 +956,7 @@
                             <clientSettingsControl:SettingsToggleControl
                                 Grid.Row="7"
                                 Grid.Column="1"
-                                ToggleValue="{Binding MidsEffects, Mode=TwoWay}" />
+                                ToggleValue="{Binding MIDSRadioEffect, Mode=TwoWay}" />
 
                             <Label Grid.Row="8"
                                    Grid.Column="0"
@@ -1051,7 +1053,7 @@
                                 Grid.Row="15"
                                 Grid.Column="1"
                                 VolumeValue="{Binding FMEffectVolume,Mode=TwoWay}" />
-                            
+
                         </Grid>
                     </GroupBox>
 
@@ -1091,9 +1093,9 @@
                                    VerticalContentAlignment="Center"
                                    Content="Radio 1 Audio Channel" />
                             <clientSettingsControl:RadioChannelConfigUi x:Name="Radio1Config"
-                                                        Grid.Row="0"
-                                                        Grid.Column="1"
-                                                        VolumeValue="{Binding RadioChannel1, Mode=TwoWay}" />
+                                                                        Grid.Row="0"
+                                                                        Grid.Column="1"
+                                                                        VolumeValue="{Binding RadioChannel1, Mode=TwoWay}" />
 
                             <Label Grid.Row="1"
                                    Grid.Column="0"
@@ -1101,9 +1103,9 @@
                                    VerticalContentAlignment="Center"
                                    Content="Radio 2 Audio Channel" />
                             <clientSettingsControl:RadioChannelConfigUi x:Name="Radio2Config"
-                                                        Grid.Row="1"
-                                                        Grid.Column="1"
-                                                        VolumeValue="{Binding RadioChannel2, Mode=TwoWay}" />
+                                                                        Grid.Row="1"
+                                                                        Grid.Column="1"
+                                                                        VolumeValue="{Binding RadioChannel2, Mode=TwoWay}" />
 
                             <Label Grid.Row="2"
                                    Grid.Column="0"
@@ -1111,81 +1113,81 @@
                                    VerticalContentAlignment="Center"
                                    Content="Radio 3 Audio Channel" />
                             <clientSettingsControl:RadioChannelConfigUi x:Name="Radio3Config"
-                                                        Grid.Row="2"
-                                                        Grid.Column="1"
-                                                        VolumeValue="{Binding RadioChannel3, Mode=TwoWay}" />
+                                                                        Grid.Row="2"
+                                                                        Grid.Column="1"
+                                                                        VolumeValue="{Binding RadioChannel3, Mode=TwoWay}" />
                             <Label Grid.Row="3"
                                    Grid.Column="0"
                                    HorizontalContentAlignment="Center"
                                    VerticalContentAlignment="Center"
                                    Content="Radio 4 Audio Channel" />
                             <clientSettingsControl:RadioChannelConfigUi x:Name="Radio4Config"
-                                                        Grid.Row="3"
-                                                        Grid.Column="1"
-                                                        VolumeValue="{Binding RadioChannel4, Mode=TwoWay}" />
+                                                                        Grid.Row="3"
+                                                                        Grid.Column="1"
+                                                                        VolumeValue="{Binding RadioChannel4, Mode=TwoWay}" />
                             <Label Grid.Row="4"
                                    Grid.Column="0"
                                    HorizontalContentAlignment="Center"
                                    VerticalContentAlignment="Center"
                                    Content="Radio 5 Audio Channel" />
                             <clientSettingsControl:RadioChannelConfigUi x:Name="Radio5Config"
-                                                        Grid.Row="4"
-                                                        Grid.Column="1"
-                                                        VolumeValue="{Binding RadioChannel5, Mode=TwoWay}" />
+                                                                        Grid.Row="4"
+                                                                        Grid.Column="1"
+                                                                        VolumeValue="{Binding RadioChannel5, Mode=TwoWay}" />
                             <Label Grid.Row="5"
                                    Grid.Column="0"
                                    HorizontalContentAlignment="Center"
                                    VerticalContentAlignment="Center"
                                    Content="Radio 6 Audio Channel" />
                             <clientSettingsControl:RadioChannelConfigUi x:Name="Radio6Config"
-                                                        Grid.Row="5"
-                                                        Grid.Column="1"
-                                                        VolumeValue="{Binding RadioChannel6, Mode=TwoWay}" />
+                                                                        Grid.Row="5"
+                                                                        Grid.Column="1"
+                                                                        VolumeValue="{Binding RadioChannel6, Mode=TwoWay}" />
                             <Label Grid.Row="6"
                                    Grid.Column="0"
                                    HorizontalContentAlignment="Center"
                                    VerticalContentAlignment="Center"
                                    Content="Radio 7 Audio Channel" />
                             <clientSettingsControl:RadioChannelConfigUi x:Name="Radio7Config"
-                                                        Grid.Row="6"
-                                                        Grid.Column="1"
-                                                        VolumeValue="{Binding RadioChannel7, Mode=TwoWay}" />
+                                                                        Grid.Row="6"
+                                                                        Grid.Column="1"
+                                                                        VolumeValue="{Binding RadioChannel7, Mode=TwoWay}" />
                             <Label Grid.Row="7"
                                    Grid.Column="0"
                                    HorizontalContentAlignment="Center"
                                    VerticalContentAlignment="Center"
                                    Content="Radio 8 Audio Channel" />
                             <clientSettingsControl:RadioChannelConfigUi x:Name="Radio8Config"
-                                                        Grid.Row="7"
-                                                        Grid.Column="1"
-                                                        VolumeValue="{Binding RadioChannel8, Mode=TwoWay}" />
+                                                                        Grid.Row="7"
+                                                                        Grid.Column="1"
+                                                                        VolumeValue="{Binding RadioChannel8, Mode=TwoWay}" />
                             <Label Grid.Row="8"
                                    Grid.Column="0"
                                    HorizontalContentAlignment="Center"
                                    VerticalContentAlignment="Center"
                                    Content="Radio 9 Audio Channel" />
                             <clientSettingsControl:RadioChannelConfigUi x:Name="Radio9Config"
-                                                        Grid.Row="8"
-                                                        Grid.Column="1"
-                                                        VolumeValue="{Binding RadioChannel9, Mode=TwoWay}" />
+                                                                        Grid.Row="8"
+                                                                        Grid.Column="1"
+                                                                        VolumeValue="{Binding RadioChannel9, Mode=TwoWay}" />
                             <Label Grid.Row="9"
                                    Grid.Column="0"
                                    HorizontalContentAlignment="Center"
                                    VerticalContentAlignment="Center"
                                    Content="Radio 10 Audio Channel" />
                             <clientSettingsControl:RadioChannelConfigUi x:Name="Radio10Config"
-                                                        Grid.Row="9"
-                                                        Grid.Column="1"
-                                                        VolumeValue="{Binding RadioChannel10, Mode=TwoWay}" />
+                                                                        Grid.Row="9"
+                                                                        Grid.Column="1"
+                                                                        VolumeValue="{Binding RadioChannel10, Mode=TwoWay}" />
                             <Label Grid.Row="10"
                                    Grid.Column="0"
                                    HorizontalContentAlignment="Center"
                                    VerticalContentAlignment="Center"
                                    Content="Intercom Audio Channel" />
                             <clientSettingsControl:RadioChannelConfigUi x:Name="IntercomConfig"
-                                                        Grid.Row="10"
-                                                        Grid.Column="1"
-                                                        VolumeValue="{Binding Intercom, Mode=TwoWay}" />
+                                                                        Grid.Row="10"
+                                                                        Grid.Column="1"
+                                                                        VolumeValue="{Binding Intercom, Mode=TwoWay}" />
                         </Grid>
                     </GroupBox>
                 </Grid>

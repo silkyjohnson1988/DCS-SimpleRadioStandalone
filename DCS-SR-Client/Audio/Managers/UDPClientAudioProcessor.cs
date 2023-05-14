@@ -614,8 +614,7 @@ public class UDPClientAudioProcessor : IDisposable
                     try
                     {
                         var encodedOpusAudio = new byte[0];
-                        //TODO FIX this
-                     //   _encodedAudio.TryTake(out encodedOpusAudio, 100000, _stopFlag.Token);
+                        _udpClient.EncodedAudio.TryTake(out encodedOpusAudio, 100000, _stopFlag.Token);
 
                         var time = DateTime.Now.Ticks; //should add at the receive instead?
 

@@ -18,7 +18,7 @@ using LogManager = NLog.LogManager;
 
 namespace Ciribob.DCS.SimpleRadio.Standalone.Common.Network.Client
 {
-    public class SRSClientSyncHandler : IHandle<DisconnectRequestMessage>, IHandle<UnitUpdateMessage>
+    public class TCPClientHandler : IHandle<DisconnectRequestMessage>, IHandle<UnitUpdateMessage>
     {
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -42,7 +42,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Common.Network.Client
 
         private long idleTimeOut = 0;
 
-        public SRSClientSyncHandler(string guid, SRClient _playerUnitState, long idleTimeOut=0)
+        public TCPClientHandler(string guid, SRClient _playerUnitState, long idleTimeOut=0)
         {
             _guid = guid;
             //TODO pass in LatLng as well
