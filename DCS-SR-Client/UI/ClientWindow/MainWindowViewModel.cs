@@ -226,6 +226,8 @@ public class MainWindowViewModel : PropertyChangedBase, IHandle<TCPClientStatusM
                 }
 
             StartAudio(obj.Address);
+            //Start DCS
+            
         }
         else
         {
@@ -338,8 +340,8 @@ public class MainWindowViewModel : PropertyChangedBase, IHandle<TCPClientStatusM
         }
 
 
-      _client?.Disconnect();
-      _client = null;
+        _client?.Disconnect();
+        _client = null;
       
          ClientStateSingleton.Instance.DcsPlayerRadioInfo.Reset();
          ClientStateSingleton.Instance.PlayerCoaltionLocationMetadata.Reset();

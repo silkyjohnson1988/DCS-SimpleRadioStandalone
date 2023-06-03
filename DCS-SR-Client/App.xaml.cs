@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Settings;
+using Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
@@ -102,7 +103,18 @@ namespace DCS_SR_Client
             RequireAdmin();
 #endif
             InitNotificationIcon();
+            InitSingletons();
 
+        }
+
+        private void InitSingletons()
+        {
+            //TODO use proper simple container - this just inits all our singletons
+            DCSRadioSyncManagerSingleton.Instance.ToString();
+            ConnectedClientsSingleton.Instance.ToString();
+            ClientStateSingleton.Instance.ToString();
+            AudioInputSingleton.Instance.ToString();
+            AudioOutputSingleton.Instance.ToString();
         }
 
         private void ListArgs()

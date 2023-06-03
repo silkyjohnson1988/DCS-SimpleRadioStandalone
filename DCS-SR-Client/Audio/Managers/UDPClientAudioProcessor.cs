@@ -44,7 +44,7 @@ public class UDPClientAudioProcessor : IDisposable
 
     
     private bool _stop;
-    private UDPCommandHandler _udpCommandListener;
+   
 
     private readonly byte[] _guidAsciiBytes;
     //  private UDPStateSender _udpStateSender;
@@ -63,7 +63,6 @@ public class UDPClientAudioProcessor : IDisposable
     {
         _ptt = false;
         _stopFlag?.Dispose();
-        _udpCommandListener?.Stop();
     }
 
     public void Start()
@@ -73,8 +72,9 @@ public class UDPClientAudioProcessor : IDisposable
         var decoderThread = new Thread(UdpAudioDecode);
         decoderThread.Start();
         InputDeviceManager.Instance.StartPTTListening(PTTHandler);
-        _udpCommandListener = new UDPCommandHandler();
-        _udpCommandListener.Start();
+     
+        //TODO
+        
         // _udpStateSender = new UDPStateSender();
         // _udpStateSender.Start();
     }
@@ -938,8 +938,6 @@ public class UDPClientAudioProcessor : IDisposable
             _stop = true;
             _stopFlag.Cancel();
             _clientStateSingleton.RadioSendingState.IsSending = false;
-            _udpCommandListener?.Stop();
-            _udpCommandListener = null;
             // _udpStateSender?.Stop();
             // _udpStateSender = null;
         }

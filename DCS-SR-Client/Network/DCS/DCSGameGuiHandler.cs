@@ -10,16 +10,19 @@ using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Settings;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons;
 using Ciribob.DCS.SimpleRadio.Standalone.Common;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Network.EventMessages;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Setting;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Singletons;
 using Newtonsoft.Json;
 using NLog;
+using SyncedServerSettings = Ciribob.DCS.SimpleRadio.Standalone.Client.Settings.SyncedServerSettings;
 
 namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
 {
     public class DCSGameGuiHandler
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private readonly DCSRadioSyncManager.ClientSideUpdate _clientSideUpdate;
         private readonly GlobalSettingsStore _globalSettings = GlobalSettingsStore.Instance;
         private volatile bool _stop = false;
         private UdpClient _dcsGameGuiUdpListener;
@@ -27,9 +30,8 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
         private ClientStateSingleton _clientStateSingleton = ClientStateSingleton.Instance;
         private readonly SyncedServerSettings _serverSettings = SyncedServerSettings.Instance;
 
-        public DCSGameGuiHandler(DCSRadioSyncManager.ClientSideUpdate clientSideUpdate)
+        public DCSGameGuiHandler()
         {
-            _clientSideUpdate = clientSideUpdate;
         }
 
         public void Start()
@@ -87,11 +89,19 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
                             //only update if position is changed 
                             if (_clientStateSingleton.DcsPlayerRadioInfo.IsCurrent() &&  (changed || shouldUpdate))
                             {
-                                _clientSideUpdate();
+                                EventBus.Instance.PublishOnBackgroundThreadAsync(new UnitUpdateMessage()
+                                {
+                                    FullUpdate = false,
+                                    UnitUpdate = new SRClient()
+                                    {
+                                        Coalition = currentInfo.side,
+                                        Name = currentInfo.name,
+                                        Seat = currentInfo.seat,
+                                        AllowRecord = _globalSettings.GetClientSettingBool(GlobalSettingsKeys.AllowRecording),
+                                        LatLngPosition = _clientStateSingleton.PlayerCoaltionLocationMetadata.ToNetworkLatLng()
+                                    }
+                                });
                             }
-                                
-                            //     count = 0;
-
                             _clientStateSingleton.DcsGameGuiLastReceived = DateTime.Now.Ticks;
                         }
                     }

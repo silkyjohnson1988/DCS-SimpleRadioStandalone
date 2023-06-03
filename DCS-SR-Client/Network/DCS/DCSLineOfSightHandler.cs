@@ -29,9 +29,9 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
         private volatile bool _stop = false;
         private UdpClient _dcsLOSListener;
 
-        public DCSLineOfSightHandler(string guid)
+        public DCSLineOfSightHandler()
         {
-            _guid = guid;
+            _guid = ClientStateSingleton.Instance.ShortGUID;
         }
 
         public void Start()

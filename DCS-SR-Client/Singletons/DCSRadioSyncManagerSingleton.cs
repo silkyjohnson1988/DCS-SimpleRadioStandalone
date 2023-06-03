@@ -1,25 +1,28 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using Caliburn.Micro;
+using Ciribob.DCS.SimpleRadio.Standalone.Client.Network;
+using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS;
 using Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS.Models;
-using Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons;
-using Ciribob.DCS.SimpleRadio.Standalone.Common;
+using Ciribob.DCS.SimpleRadio.Standalone.Client.Settings;
+using Ciribob.DCS.SimpleRadio.Standalone.Client.UI;
 using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Network.EventMessages;
 using Newtonsoft.Json;
 using NLog;
+using LogManager = NLog.LogManager;
 
 /**
 Keeps radio information in Sync Between DCS and
-
 **/
 
-namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
+namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons
 {
-    public class DCSRadioSyncManager
+    public class DCSRadioSyncManagerSingleton: IHandle<TCPClientStatusMessage>
     {
         private readonly SendRadioUpdate _clientRadioUpdate;
         private readonly ClientSideUpdate _clientSideUpdate;
@@ -40,23 +43,57 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
 
         private readonly ConnectedClientsSingleton _clients = ConnectedClientsSingleton.Instance;
         private DispatcherTimer _clearRadio;
+        private static DCSRadioSyncManagerSingleton _instance;
+        private static object _lock = new object();
 
         public bool IsListening { get; private set; }
 
-        public DCSRadioSyncManager(SendRadioUpdate clientRadioUpdate, ClientSideUpdate clientSideUpdate,
-           string guid, DCSRadioSyncHandler.NewAircraft _newAircraftCallback)
+        private DCSRadioSyncManagerSingleton()
         {
-            _clientRadioUpdate = clientRadioUpdate;
-            _clientSideUpdate = clientSideUpdate;
             IsListening = false;
-            _lineOfSightHandler = new DCSLineOfSightHandler(guid);
+
+            _lineOfSightHandler = new DCSLineOfSightHandler();
             _udpCommandHandler = new UDPCommandHandler();
-            _dcsGameGuiHandler = new DCSGameGuiHandler(clientSideUpdate);
-            _dcsRadioSyncHandler = new DCSRadioSyncHandler(clientRadioUpdate, _newAircraftCallback);
+            _dcsGameGuiHandler = new DCSGameGuiHandler();
+            _dcsRadioSyncHandler = new DCSRadioSyncHandler();
 
             _clearRadio = new DispatcherTimer(DispatcherPriority.Background, Application.Current.Dispatcher) { Interval = TimeSpan.FromSeconds(1) };
             _clearRadio.Tick += CheckIfRadioIsStale;
            
+        }
+        
+        public static DCSRadioSyncManagerSingleton Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    lock (_lock)
+                    {
+                        if (_instance == null)
+                            _instance = new DCSRadioSyncManagerSingleton();
+                    }
+                }
+
+                return _instance;
+            }
+        }
+        
+        public async Task HandleAsync(TCPClientStatusMessage obj, CancellationToken cancellationToken)
+        {
+            if (obj.Connected)
+            {
+               //Start DCS sync
+               //Lotatc Sync
+               //UDP Command handler
+               Start();
+            
+            }
+            else
+            {
+              //STOP listeners & DCS sync
+              Stop();
+            }
         }
 
         private void CheckIfRadioIsStale(object sender, EventArgs e)

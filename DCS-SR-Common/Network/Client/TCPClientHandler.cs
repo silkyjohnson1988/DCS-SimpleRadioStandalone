@@ -33,14 +33,14 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Common.Network.Client
         private static readonly int MAX_DECODE_ERRORS = 5;
 
         private long _lastSent = -1;
-        private System.Timers.Timer _idleTimeout;
+        private System.Timers.Timer _idleTimeoutTimer;
         
         private readonly ConnectedClientsSingleton _clients = ConnectedClientsSingleton.Instance;
         private readonly SyncedServerSettings _serverSettings = SyncedServerSettings.Instance;
 
         private SRClient _playerUnitState;
 
-        private long idleTimeOut = 0;
+        private long idleTimeOutTime = 0;
 
         public TCPClientHandler(string guid, SRClient _playerUnitState, long idleTimeOut=0)
         {
@@ -48,15 +48,16 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Common.Network.Client
             //TODO pass in LatLng as well
             this._playerUnitState = _playerUnitState;
 
-            _idleTimeout= new System.Timers.Timer(10000);
-            _idleTimeout.Elapsed += new ElapsedEventHandler(CheckIfIdleTimeOut);
-            _idleTimeout.Interval = TimeSpan.FromSeconds(10).TotalMilliseconds;
+            idleTimeOutTime = idleTimeOut;
+            _idleTimeoutTimer= new System.Timers.Timer(10000);
+            _idleTimeoutTimer.Elapsed += new ElapsedEventHandler(CheckIfIdleTimeOut);
+            _idleTimeoutTimer.Interval = TimeSpan.FromSeconds(10).TotalMilliseconds;
 
         }
 
         private void CheckIfIdleTimeOut(object sender, ElapsedEventArgs elapsedEventArgs)
         {
-            if (_lastSent != -1 && idleTimeOut > 0 && TimeSpan.FromTicks(DateTime.Now.Ticks - _lastSent).TotalSeconds > idleTimeOut)
+            if (_lastSent != -1 && idleTimeOutTime > 0 && TimeSpan.FromTicks(DateTime.Now.Ticks - _lastSent).TotalSeconds > idleTimeOutTime)
             {
                 Logger.Warn("Disconnecting - Idle Time out");
                 Disconnect();
@@ -129,11 +130,11 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Common.Network.Client
         //     CallExternalAWACSModeOnMain(false, 0);
         // }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
+      //  [MethodImpl(MethodImplOptions.Synchronized)]
         private void Connect()
         {
             _lastSent = DateTime.Now.Ticks;
-            _idleTimeout.Start();
+            _idleTimeoutTimer.Start();
 
             //TODO move out
             // if (_radioDCSSync != null)
@@ -294,7 +295,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Common.Network.Client
                         MsgType = NetworkMessage.MessageType.SYNC,
                     });
 
-                EventBus.Instance.PublishOnUIThreadAsync(new TCPClientStatusMessage(true, _serverEndpoint));
+                    EventBus.Instance.PublishOnUIThreadAsync(new TCPClientStatusMessage(true, _serverEndpoint));
 
                     string line;
                     while ((line = reader.ReadLine()) != null)
@@ -581,16 +582,16 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Common.Network.Client
             }
         }
 
-        //implement IDispose? To close stuff properly?
-        [MethodImpl(MethodImplOptions.Synchronized)]
+        // //implement IDispose? To close stuff properly?
+        // [MethodImpl(MethodImplOptions.Synchronized)]
         public void Disconnect()
         {
-        EventBus.Instance.Unsubcribe(this);
+            EventBus.Instance.Unsubcribe(this);
 
             _stop = true;
 
             _lastSent = DateTime.Now.Ticks;
-            _idleTimeout?.Stop();
+            _idleTimeoutTimer?.Stop();
 
             //TODO
             //DisconnectExternalAWACSMode();
@@ -598,10 +599,11 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Common.Network.Client
             try
             {
                 if (_tcpClient != null)
-                {
-                    EventBus.Instance.PublishOnUIThreadAsync(new TCPClientStatusMessage(false));
-                    _tcpClient.Close(); // this'll stop the socket blocking
+                {   _tcpClient.Close(); // this'll stop the socket blocking
                     _tcpClient = null;
+                    
+                    EventBus.Instance.PublishOnUIThreadAsync(new TCPClientStatusMessage(false));
+                    
                 }
             }
             catch (Exception)

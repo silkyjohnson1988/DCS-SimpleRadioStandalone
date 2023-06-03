@@ -29,8 +29,6 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network
 
         private void StartUDPCommandListener()
         {
-            
-
             Task.Factory.StartNew(() =>
             {
                 while (!_stop)

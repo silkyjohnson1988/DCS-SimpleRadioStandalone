@@ -29,14 +29,14 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.LotATC
         private readonly SyncedServerSettings _serverSettings = SyncedServerSettings.Instance;
         private volatile bool _stop = false;
         private readonly ClientStateSingleton _clientStateSingleton;
-        private readonly DCSRadioSyncManager.ClientSideUpdate _clientSideUpdate;
+        private readonly DCSRadioSyncManagerSingleton.ClientSideUpdate _clientSideUpdate;
         private readonly ConnectedClientsSingleton _clients = ConnectedClientsSingleton.Instance;
         private readonly string _guid;
         private long _lastSent = 0;
 
         private double _heightOffset;
 
-        public LotATCSyncHandler(DCSRadioSyncManager.ClientSideUpdate clientSideUpdate, string guid)
+        public LotATCSyncHandler(DCSRadioSyncManagerSingleton.ClientSideUpdate clientSideUpdate, string guid)
         {
             _clientSideUpdate = clientSideUpdate;
             _guid = guid;

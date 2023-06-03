@@ -18,12 +18,16 @@ using Ciribob.DCS.SimpleRadio.Standalone.Common.Network;
 using Newtonsoft.Json;
 using NLog;
 using System.Threading;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Network.EventMessages;
+using Ciribob.DCS.SimpleRadio.Standalone.Common.Singletons;
+using ConnectedClientsSingleton = Ciribob.DCS.SimpleRadio.Standalone.Client.Singletons.ConnectedClientsSingleton;
+using SyncedServerSettings = Ciribob.DCS.SimpleRadio.Standalone.Client.Settings.SyncedServerSettings;
 
 namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
 {
     public class DCSRadioSyncHandler
     {
-        private readonly DCSRadioSyncManager.SendRadioUpdate _radioUpdate;
+       
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly ClientStateSingleton _clientStateSingleton = ClientStateSingleton.Instance;
@@ -40,16 +44,16 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
 
         private volatile bool _stop;
 
-        public delegate void NewAircraft(string name, int seat);
-
-        private readonly NewAircraft _newAircraftCallback;
+        // public delegate void NewAircraft(string name, int seat);
+        //  private readonly DCSRadioSyncManagerSingleton.SendRadioUpdate _radioUpdate;
+        // private readonly NewAircraft _newAircraftCallback;
 
         private long _identStart = 0;
 
-        public DCSRadioSyncHandler(DCSRadioSyncManager.SendRadioUpdate radioUpdate, NewAircraft _newAircraft)
+        public DCSRadioSyncHandler()
         {
-            _radioUpdate = radioUpdate;
-            _newAircraftCallback = _newAircraft;
+            // _radioUpdate = radioUpdate;
+            // _newAircraftCallback = _newAircraft;
         }
 
         public void Start()
@@ -148,6 +152,7 @@ namespace Ciribob.DCS.SimpleRadio.Standalone.Client.Network.DCS
             {
                 Logger.Debug("Sending Radio Info To Server - Update");
                 _clientStateSingleton.LastSent = DateTime.Now.Ticks;
+                EventBus.Instance.PublishOnBackgroundThreadAsync(new UnitUpdateMessage(){})
                 _radioUpdate();
             }
         }
