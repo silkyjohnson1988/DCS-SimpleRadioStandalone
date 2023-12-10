@@ -1,0 +1,18 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "dotnet",
+			"task": "clean",
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"problemMatcher": [],
+			"label": "dotnet: clean"
+		}
+	]
+/**
+ * This file contains the configuration for tasks in Visual Studio Code.
+ */
+}
